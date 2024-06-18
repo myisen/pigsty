@@ -1,86 +1,91 @@
 # Pigsty
 
-> "**P**ostgreSQL **I**n **G**reat **STY**le."
+> "**P**ostgreSQL **I**n **G**reat **STY**le": **P**ostgres, **I**nfras, **G**raphics, **S**ervice, **T**oolbox, it's all **Y**ours.
 >
-> —— **A battery-included, local-first, open-source RDS PG alternative.**
+> —— Battery-Included, Local-First **PostgreSQL** Distribution as an Open-Source **RDS** Alternative
 >
-> [Release v2.2.0](https://github.com/Vonng/pigsty/releases/tag/v2.2.0) | [Repo](https://github.com/Vonng/pigsty) | [Demo](http://demo.pigsty.cc) | [Docs](https://vonng.github.io/pigsty/#/) | [Blog](https://pigsty.cc/en/) | [Telegram](https://t.me/joinchat/gV9zfZraNPM3YjFh) | [Discord](https://discord.gg/6nA2fDXt)
+> [Website](https://pigsty.io/) | [Demo](https://demo.pigsty.cc) | [Blog](https://pigsty.io/blog) | [Discuss](https://github.com/Vonng/pigsty/discussions) | [Discord](https://discord.gg/j5pG8qfKxU) | [Roadmap](https://github.com/users/Vonng/projects/2/views/3) | [站点](https://pigsty.cc/zh/) | [博客](https://pigsty.cc/zh/blog)
 >
-> [Get Started](docs/INSTALL.md) with `curl -fsSL http://get.pigsty.cc/latest | bash` 
+> [Get Started](https://pigsty.io/docs/setup/install/) with the latest [v2.7.0](https://github.com/Vonng/pigsty/releases/tag/v2.7.0) release: `curl -fsSL https://get.pigsty.cc/i | bash`
 
 
+----------------
 
 ## Features
 
-Free RDS for PostgreSQL! Check [**Feature**](docs/FEATURE.md) | [**亮点特性**](docs/FEATURE_ZH.md) for details.
+> Pigsty is your postgres, infra, grafana service toolbox, check [**Feature**](https://pigsty.io/docs/about/feature/) | [**特性**](https://pigsty.io/zh/docs/about/feature/) and [**Demo**](https://demo.pigsty.cc) for details.
 
-- Battery-Included [PostgreSQL](https://www.postgresql.org/) Distribution, with [PostGIS](https://postgis.net/), [TimescaleDB](https://www.timescale.com/), [Citus](https://www.citusdata.com/), [PGVector](https://github.com/pgvector/pgvector), etc...
-- Incredible observability powered by [Prometheus](https://prometheus.io/) & [Grafana](https://grafana.com/) stack.
-- Self-healing HA PGSQL cluster, powered by [patroni](https://patroni.readthedocs.io/en/latest/), [haproxy](http://www.haproxy.org/), [etcd](https://etcd.io/).
-- Auto-Configured PITR, powered by [pgBackRest](https://pgbackrest.org/) and optional [MinIO](https://min.io/) repo.
-- Declarative API, Database-as-Code implemented with [Ansible](https://www.ansible.com/) playbooks.
-- Versatile Use-cases, Run [Docker](https://www.docker.com/) Apps, Run demos, Visualize data with [ECharts](https://echarts.apache.org/).
-- Handy Tools, provision IaaS with [Terraform](https://www.terraform.io/), and try with local [Vagrant](https://www.vagrantup.com/) sandbox.
-- Run [Redis](https://redis.io/) (standalone, sentinel, cluster), MinIO, Etcd, Haproxy, MongoDB([FerretDB](https://www.ferretdb.io/)) clusters
+[![pigsty-desc](https://pigsty.io/img/pigsty/desc.png)](https://pigsty.io/)
 
-[![pigsty-distro](https://user-images.githubusercontent.com/8587410/226076217-77e76e0c-94ac-4faa-9014-877b4a180e09.jpg)](docs/FEATURE.md)
+There are **255** unique [extensions](https://pigsty.io/docs/reference/extension) available in Pigsty, **34** of which are maintained by Pigsty itself.
 
-[![Dashboards](https://github-production-user-asset-6210df.s3.amazonaws.com/8587410/258681605-cf6b99e5-9c8f-4db2-9bce-9ded95407c0c.jpg)](http://demo.pigsty.cc)
-
-
+----------------
 
 ## Get Started
 
-Bootstrap with one command! Check [**Get Started**](docs/INSTALL.md) | [**快速上手**](docs/INSTALL_ZH.md) for details.
+> Setup everything with one command! Check [**Get Started**](https://pigsty.io/docs/setup/install/) | [**快速上手**](https://pigsty.io/zh/docs/setup/install/) for details.
+
+[**Prepare**](https://pigsty.io/docs/setup/prepare/) a fresh Linux x86_64 node that runs [**compatible**](https://pigsty.io/docs/reference/compatibility/) OS distros,
+
+Run this [**`install`**](https://github.com/Vonng/pigsty/blob/master/bin/install) script as the admin user with nopass `ssh` & `sudo` privilege:
 
 ```bash
-# Linux x86_64 EL 7/8/9 compatible, with nopass sudo/ssh
-bash -c "$(curl -fsSL http://get.pigsty.cc/latest)";
+bash -c "$(curl -fsSL https://get.pigsty.cc/install)"
 cd ~/pigsty; ./bootstrap; ./configure; ./install.yml;
 ```
 
-Then you will have a pigsty singleton node ready, with Web Services on port `80` and Postgres on port `5432`.
+Then you will have a pigsty singleton node ready, with Web Services on port `80/443` and Postgres on port `5432`.
 
-<details><summary>Download with Get</summary>
+<details><summary>Install Script Output</summary><br>
+
+If you don't like the idea of running the [`install`](https://github.com/Vonng/pigsty/blob/master/bin/install) script from the Internet.
+
+Consider download pigsty source tarball & offline package and perform an [offline install](https://pigsty.io/docs/setup/offline/) without the Internet access. 
 
 ```bash
-$ curl http://get.pigsty.cc/latest | bash
-...
-[Checking] ===========================================
-[ OK ] SOURCE from CDN due to GFW
-FROM CDN    : bash -c "$(curl -fsSL http://get.pigsty.cc/latest)"
-FROM GITHUB : bash -c "$(curl -fsSL https://raw.githubusercontent.com/Vonng/pigsty/master/bin/get)"
-[Downloading] ===========================================
-[ OK ] download pigsty source code from CDN
-[ OK ] $ curl -SL http://get.pigsty.cc/v2.2.0/pigsty-v2.2.0.tgz
-...
-MD5: abcdef1234567890abcdef1234567890  /tmp/pigsty-v2.2.0.tgz
-[Extracting] ===========================================
-[ OK ] extract '/tmp/pigsty-v2.2.0.tgz' to '/root/pigsty'
-[ OK ] $ tar -xf /tmp/pigsty-v2.2.0.tgz -C ~;
-cd ~/pigsty      # entering pigsty home directory before proceeding
-[Proceeding] ===========================================
-./bootstrap      # install ansible & download the optional offline packages
-./configure      # preflight-check and generate config according to your env
-./install.yml    # install pigsty on this node and init it as the admin node
-[Reference] ===========================================
-Get Started:     https://vonng.github.io/pigsty/#/INSTALL
-Documentation:   https://vonng.github.io/pigsty
-Github Repo:     https://github.com/Vonng/pigsty
-Public Demo:     http://demo.pigsty.cc
-Official Site:   https://pigsty.cc
+$ bash -c "$(curl -fsSL https://get.pigsty.cc/install)"
+[v2.7.0] ===========================================
+$ curl -fsSL https://pigsty.cc/install | bash
+[Site] https://pigsty.io
+[Demo] https://demo.pigsty.cc
+[Repo] https://github.com/Vonng/pigsty
+[Docs] https://pigsty.io/docs/setup/install
+[Download] ===========================================
+[ OK ] version = v2.7.0 (from default)
+curl -fSL https://get.pigsty.cc/v2.7.0/pigsty-v2.7.0.tgz -o /tmp/pigsty-v2.7.0.tgz
+########################################################################### 100.0%
+[ OK ] md5sums = some_random_md5_hash_value_here_  /tmp/pigsty-v2.7.0.tgz
+[Install] ===========================================
+[ OK ] install = /home/vagrant/pigsty, from /tmp/pigsty-v2.7.0.tgz
+[Resource] ===========================================
+[HINT] rocky 8  have [OPTIONAL] offline package available: https://pigsty.io/docs/setup/offline
+curl -fSL https://github.com/Vonng/pigsty/releases/download/v2.7.0/pigsty-pkg-v2.7.0.el8.x86_64.tgz -o /tmp/pkg.tgz
+curl -fSL https://get.pigsty.cc/v2.7.0/pigsty-pkg-v2.7.0.el8.x86_64.tgz -o /tmp/pkg.tgz # or use alternative CDN
+[TodoList] ===========================================
+cd /home/vagrant/pigsty
+./bootstrap      # [OPTIONAL] install ansible & use offline package
+./configure      # [OPTIONAL] preflight-check and config generation
+./install.yml    # install pigsty modules according to your config.
+[Complete] ===========================================
 ```
+
+> HINT: To install a specific version, passing the version string as the first parameter:
+>
+> ```bash
+> bash -c "$(curl -fsSL https://get.pigsty.cc/i)" -- v2.6.0
+> curl -fsSL https://get.pigsty.cc/i | bash -s v2.6.0
+> ```
 
 </details>
 
 
 <details><summary>Download with Git</summary>
 
-You can also download pigsty source with `git`, don't forget to checkout a specific version.
+You can also download pigsty source with `git`, don't forget to check out a specific version tag, the `master` branch is for development.
 
 ```bash
 git clone https://github.com/Vonng/pigsty;
-cd pigsty; git checkout v2.2.0
+cd pigsty; git checkout v2.7.0
 ```
 
 </details>
@@ -88,52 +93,78 @@ cd pigsty; git checkout v2.2.0
 
 <details><summary>Download Directly</summary>
 
-You can also download pigsty source & offline pkgs directly from GitHub release page.
+You can also download pigsty source tarball & [offline packages](https://pigsty.io/docs/setup/offline/) directly from GitHub release page.
+
+| Package                      | GitHub Release                                                                                                                          | CDN Mirror                                                                                                  |
+|------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------|
+| Pigsty Source Tarball        | [pigsty-v2.7.0.tgz](https://github.com/Vonng/pigsty/releases/download/v2.7.0/pigsty-v2.7.0.tgz)                                         | [pigsty-v2.7.0.tgz](https://get.pigsty.cc/v2.7.0/pigsty-v2.7.0.tgz)                                         |
+| EL8 Offline Package          | [pigsty-pkg-2.7.0.el8.x86_64.tgz](https://github.com/Vonng/pigsty/releases/download/v2.7.0/pigsty-pkg-v2.7.0.el8.x86_64.tgz)            | [pigsty-pkg-2.7.0.el8.x86_64.tgz](https://get.pigsty.cc/v2.7.0/pigsty-pkg-v2.7.0.el8.x86_64.tgz)            |
+| Debian 12 Offline Package    | [pigsty-pkg-v2.7.0.debian12.x86_64.tgz](https://github.com/Vonng/pigsty/releases/download/v2.7.0/pigsty-pkg-v2.7.0.debian12.x86_64.tgz) | [pigsty-pkg-v2.7.0.debian12.x86_64.tgz](https://get.pigsty.cc/v2.7.0/pigsty-pkg-v2.7.0.debian12.x86_64.tgz) |
+| Ubuntu 22.04 Offline Package | [pigsty-pkg-v2.7.0.ubuntu22.x86_64.tgz](https://github.com/Vonng/pigsty/releases/download/v2.7.0/pigsty-pkg-v2.7.0.ubuntu22.x86_64.tgz) | [pigsty-pkg-v2.7.0.ubuntu22.x86_64.tgz](https://get.pigsty.cc/v2.7.0/pigsty-pkg-v2.7.0.ubuntu22.x86_64.tgz) |
+
 
 ```bash
-# get from GitHub
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/Vonng/pigsty/master/bin/get)"
+# download tarball directly from GitHub with curl
+curl -L https://github.com/Vonng/pigsty/releases/download/v2.7.0/pigsty-v2.7.0.tgz -o ~/pigsty.tgz                      # Pigsty Source Tarball
+curl -L https://github.com/Vonng/pigsty/releases/download/v2.7.0/pigsty-pkg-v2.7.0.el8.x86_64.tgz      -o /tmp/pkg.tgz  # Offline Package for Rocky 8.9    (Green Obsidian)
+curl -L https://github.com/Vonng/pigsty/releases/download/v2.7.0/pigsty-pkg-v2.7.0.debian12.x86_64.tgz -o /tmp/pkg.tgz  # Offline Package for Debian 12    (bookworm, 12.4)
+curl -L https://github.com/Vonng/pigsty/releases/download/v2.7.0/pigsty-pkg-v2.7.0.ubuntu22.x86_64.tgz -o /tmp/pkg.tgz  # Offline Package for Ubuntu 22.04 (jammy, 22.04.3)
 
-# or download tarball directly with curl
-curl -L https://github.com/Vonng/pigsty/releases/download/v2.2.0/pigsty-v2.2.0.tgz -o ~/pigsty.tgz                 # SRC
-curl -L https://github.com/Vonng/pigsty/releases/download/v2.2.0/pigsty-pkg-v2.2.0.el9.x86_64.tgz -o /tmp/pkg.tgz  # EL9
-curl -L https://github.com/Vonng/pigsty/releases/download/v2.2.0/pigsty-pkg-v2.2.0.el8.x86_64.tgz -o /tmp/pkg.tgz  # EL8
-curl -L https://github.com/Vonng/pigsty/releases/download/v2.2.0/pigsty-pkg-v2.2.0.el7.x86_64.tgz -o /tmp/pkg.tgz  # EL7
+# or use the alternative CDN in china
+curl -L https://get.pigsty.cc/v2.7.0/pigsty-v2.7.0.tgz -o ~/pigsty.tgz                      # Pigsty Source Tarball
+curl -L https://get.pigsty.cc/v2.7.0/pigsty-pkg-v2.7.0.el8.x86_64.tgz      -o /tmp/pkg.tgz  # Offline Package for Rocky 8.9    (Green Obsidian)
+curl -L https://get.pigsty.cc/v2.7.0/pigsty-pkg-v2.7.0.debian12.x86_64.tgz -o /tmp/pkg.tgz  # Offline Package for Debian 12    (bookworm, 12.4)
+curl -L https://get.pigsty.cc/v2.7.0/pigsty-pkg-v2.7.0.ubuntu22.x86_64.tgz -o /tmp/pkg.tgz  # Offline Package for Ubuntu 22.04 (jammy, 22.04.3)
 ```
+
+Beware that pre-packed offline packages are OS Minor version specific, if you are using a different minor version (e.g: 8.6, 22.04.2), consider not using the offline package and perform the default online installation.
 
 </details>
 
-[![asciicast](https://asciinema.org/a/568771.svg)](https://asciinema.org/a/568771)
+
+----------------
+
+**Example: Online Singleton Installation on Ubuntu 22.04:** 
+
+[![asciicast](https://asciinema.org/a/659640.svg)](https://asciinema.org/a/659640)
+
+<details><summary>Example: Install with Offline Package (EL8)</summary>
+
+[![asciicast](https://asciinema.org/a/659637.svg)](https://asciinema.org/a/659637)
+
+</details>
 
 
-
+----------------
 
 ## Architecture
 
-Pigsty uses a **modular** design. There are six default modules available:
+Pigsty uses a **modular** design. There are several default [**modules**](https://pigsty.io/docs/about/module/) available:
 
-* [`INFRA`](docs/INFRA.md): Local yum repo, Nginx, DNS, and entire Prometheus & Grafana observability stack.
-* [`NODE`](docs/NODE.md):   Init node name, repo, pkg, NTP, ssh, admin, tune, expose services, collect logs & metrics.
-* [`ETCD`](docs/ETCD.md):   Init etcd cluster for HA Postgres DCS or Kubernetes, used as distributed config store.
-* [`PGSQL`](docs/PGSQL.md): Autonomous self-healing PostgreSQL cluster powered by Patroni, Pgbouncer, PgBackrest & HAProxy
-* [`REDIS`](docs/REDIS.md): Deploy Redis servers in standalone master-replica, sentinel, and native cluster mode, optional.
-* [`MINIO`](docs/MINIO.md): S3-compatible object storage service used as an optional central backup server for `PGSQL`.
+* [`INFRA`](https://pigsty.io/docs/infra/): Local yum|apt repo, Nginx, DNS, and entire Prometheus & Grafana observability stack.
+* [`NODE`](https://pigsty.io/docs/node/):   Init node name, repo, pkg, NTP, ssh, admin, tune, expose services, collect logs & metrics.
+* [`ETCD`](https://pigsty.io/docs/etcd/):   Init etcd cluster for HA Postgres DCS or Kubernetes, used as distributed config store.
+* [`PGSQL`](https://pigsty.io/docs/pgsql/): Autonomous self-healing PostgreSQL cluster powered by Patroni, Pgbouncer, PgBackrest & HAProxy
+* [`REDIS`](https://pigsty.io/docs/redis/): Deploy Redis servers in standalone master-replica, sentinel, and native cluster mode, **optional**.
+* [`MINIO`](https://pigsty.io/docs/minio/): S3-compatible object storage service used as an optional central backup server for `PGSQL`, **optional**.
 
 You can compose them freely in a declarative manner. If you want host monitoring, `INFRA` & `NODE` will suffice.
 `ETCD` and `PGSQL` are used for HA PG clusters, install them on multiple nodes will automatically form a HA cluster.
 You can also reuse pigsty infra and develop your own modules, `KAFKA`, `MYSQL`, `GPSQL`, and more will come.
 
-The default [`install.yml`](install.yml) playbook in [Get Started](#get-started) will install `INFRA`, `NODE`, `ETCD` & `PGSQL` on the current node. 
+The default [`install.yml`](https://github.com/Vonng/pigsty/blob/master/install.yml) playbook in [Get Started](#get-started) will install `INFRA`, `NODE`, `ETCD` & `PGSQL` on the current node. 
 which gives you a battery-included PostgreSQL singleton instance (`admin_ip:5432`) with everything ready.
 This node can be used as an admin center & infra provider to manage, deploy & monitor more nodes & clusters.
 
-Check [**Architecture**](docs/ARCH.md) for details.
+[![pigsty-arch.jpg](https://pigsty.io/img/pigsty/arch.jpg)](https://pigsty.io/docs/concept/arch/)
 
 
+
+----------------
 
 ## More Clusters
 
-To deploy a 3-node HA Postgres Cluster with streaming replication, [define](https://github.com/Vonng/pigsty/blob/master/pigsty.yml#L54) a new cluster on `all.children.pg-test` of [`pigsty.yml`](https://github.com/Vonng/pigsty/blob/master/pigsty.yml):
+To deploy a 3-node HA Postgres Cluster with streaming replication, [**define**](https://github.com/Vonng/pigsty/blob/master/pigsty.yml#L53) a new cluster on `all.children.pg-test` of [`pigsty.yml`](https://github.com/Vonng/pigsty/blob/master/pigsty.yml):
 
 ```yaml 
 pg-test:
@@ -150,7 +181,9 @@ Then create it with built-in playbooks:
 bin/pgsql-add pg-test   # init pg-test cluster 
 ```
 
-You can deploy different kinds of instance roles such as primary, replica, offline, delayed, sync standby, and different kinds of clusters, such as standby clusters, Citus clusters, and even Redis/MinIO/Etcd clusters.
+[![](https://pigsty.io/img/pigsty/ha.png)](https://pigsty.io/docs/concept/ha/)
+
+You can deploy different kinds of instance roles such as primary, replica, offline, delayed, sync standby, and different kinds of clusters, such as standby clusters, Citus clusters, and even Redis / MinIO / Etcd clusters.
 
 <details><summary>Example: Complex Postgres Customize</summary>
 
@@ -329,6 +362,9 @@ all:
     pg_shard: pg-citus                # citus shard name: pg-citus
     patroni_citus_db: meta            # citus distributed database name
     pg_dbsu_password: DBUser.Postgres # all dbsu password access for citus cluster
+    pg_libs: 'citus, timescaledb, pg_stat_statements, auto_explain' # citus will be added by patroni automatically
+    pg_extensions:
+      - postgis34_${ pg_version }* timescaledb-2-postgresql-${ pg_version }* pgvector_${ pg_version }* citus_${ pg_version }*
     pg_users: [ { name: dbuser_meta ,password: DBUser.Meta ,pgbouncer: true ,roles: [ dbrole_admin ] } ]
     pg_databases: [ { name: meta ,extensions: [ { name: citus }, { name: postgis }, { name: timescaledb } ] } ]
     pg_hba_rules:
@@ -342,17 +378,23 @@ all:
 
 ```yaml
 redis-ms: # redis classic primary & replica
-  hosts: { 10.10.10.10: { redis_node: 1 , redis_instances: { 6501: { }, 6502: { replica_of: '10.10.10.10 6501' } } } }
+  hosts: { 10.10.10.10: { redis_node: 1 , redis_instances: { 6379: { }, 6380: { replica_of: '10.10.10.10 6379' } } } }
   vars: { redis_cluster: redis-ms ,redis_password: 'redis.ms' ,redis_max_memory: 64MB }
 
 redis-meta: # redis sentinel x 3
-  hosts: { 10.10.10.11: { redis_node: 1 , redis_instances: { 6001: { } ,6002: { } , 6003: { } } } }
-  vars: { redis_cluster: redis-meta ,redis_password: 'redis.meta' ,redis_mode: sentinel ,redis_max_memory: 16MB }
+  hosts: { 10.10.10.11: { redis_node: 1 , redis_instances: { 26379: { } ,26380: { } ,26381: { } } } }
+  vars:
+    redis_cluster: redis-meta
+    redis_password: 'redis.meta'
+    redis_mode: sentinel
+    redis_max_memory: 16MB
+    redis_sentinel_monitor: # primary list for redis sentinel, use cls as name, primary ip:port
+      - { name: redis-ms, host: 10.10.10.10, port: 6379 ,password: redis.ms, quorum: 2 }
 
 redis-test: # redis native cluster: 3m x 3s
   hosts:
-    10.10.10.12: { redis_node: 1 ,redis_instances: { 6501: { } ,6502: { } ,6503: { } } }
-    10.10.10.13: { redis_node: 2 ,redis_instances: { 6501: { } ,6502: { } ,6503: { } } }
+    10.10.10.12: { redis_node: 1 ,redis_instances: { 6379: { } ,6380: { } ,6381: { } } }
+    10.10.10.13: { redis_node: 2 ,redis_instances: { 6379: { } ,6380: { } ,6381: { } } }
   vars: { redis_cluster: redis-test ,redis_password: 'redis.test' ,redis_mode: cluster, redis_max_memory: 32MB }
 ```
 
@@ -402,31 +444,33 @@ minio:
 
 </details>
 
-Check [**Configuration**](docs/CONFIG.md) for details.
+
+<details><summary>Example: Install Pigsty 4-Node Sandbox</summary>
+
+[![asciicast](https://asciinema.org/a/566220.svg)](https://asciinema.org/a/566220)
+
+</details>
 
 
+Check [**Configuration**](https://pigsty.io/docs/setup/config/) & [**PGSQL Conf**](https://pigsty.io/docs/pgsql/config/) for details.
 
+
+----------------
 
 ## About
 
-> Pigsty (/ˈpɪɡˌstaɪ/) is the abbreviation of "**P**ostgreSQL **I**n **G**reat **STY**le."
+Docs: https://pigsty.io/
 
-Docs: https://vonng.github.io/pigsty/
-
-Wiki: https://github.com/Vonng/pigsty/wiki
-
-Website: https://pigsty.cc/en/ | https://pigsty.cc/zh/
+Website: https://pigsty.io/ | https://pigsty.cc/zh/
 
 WeChat: Search `pigsty-cc` to join the WeChat group.
 
 Telegram: https://t.me/joinchat/gV9zfZraNPM3YjFh
 
-Discord: https://discord.gg/6nA2fDXt
+Discord: https://discord.gg/j5pG8qfKxU
 
 Author: [Vonng](https://vonng.com/en) ([rh@vonng.com](mailto:rh@vonng.com))
 
 License: [AGPL-3.0](LICENSE)
 
-Sponsor: [Backers](docs/BACKERS.md)
-
-Copyright 2018-2023 rh@vonng.com
+Copyright: 2018-2024 rh@vonng.com

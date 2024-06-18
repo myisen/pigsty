@@ -4,7 +4,7 @@
 # File      :   redis.yml
 # Desc      :   init redis cluster / node / instance
 # Ctime     :   2020-11-22
-# Mtime     :   2022-12-29
+# Mtime     :   2023-09-15
 # Path      :   redis.yml
 # Author    :   Ruohang Feng (rh@vonng.com)
 # License   :   AGPLv3
@@ -25,8 +25,8 @@
 #  init all redis instances specific node
 #   ./redis.yml -l 10.10.10.10    # create redis cluster
 #
-#  init one specific instance 10.10.10.11:6501
-#   ./redis.yml -l 10.10.10.11 -e redis_port=6501 -t redis
+#  init one specific instance 10.10.10.10:6379
+#   ./redis.yml -l 10.10.10.11 -e redis_port=6379 -t redis
 #
 #--------------------------------------------------------------#
 # Utils
@@ -34,7 +34,7 @@
 #
 #  bin/redis-add redis-ms          # create redis cluster 'redis-ms'
 #  bin/redis-add 10.10.10.10       # create redis node '10.10.10.10'
-#  bin/redis-add 10.10.10.10 6501  # create redis instance '10.10.10.10:6501'
+#  bin/redis-add 10.10.10.10 6379  # create redis instance '10.10.10.10:6379'
 #
 #--------------------------------------------------------------#
 # Tasks
@@ -43,15 +43,16 @@
 #   - redis_install : install redis & redis_exporter
 #   - redis_user    : create os user redis
 #   - redis_dir     # redis redis fhs
-# redis_exporter    : stop and disable redis_exporter
+# redis_exporter    : config and launch redis_exporter
 #   - redis_exporter_config  : generate redis_exporter config
 #   - redis_exporter_launch  : launch redis_exporter
-# redis_instance    : stop and disable redis cluster/node/instance
+# redis_instance    : config and launch redis cluster/node/instance
 #   - redis_check   : check redis instance existence
 #   - redis_clean   : purge existing redis instance
 #   - redis_config  : generate redis instance config
 #   - redis_launch  : launch redis instance
-# redis_register    : remove redis data (rdb, aof)
+# redis_register    : register redis to prometheus
+# redis_ha          : setup redis sentinel
 # redis_join        : join redis cluster
 #--------------------------------------------------------------#
 
@@ -64,7 +65,65 @@
   become: true
   gather_facts: no
   tags: redis
-  roles: [{ role: redis }]
+  roles: [{ role: node_id },  { role: redis }]
+
+
+#--------------------------------------------------------------#
+# setup redis sentinel targets                        [redis_ha]
+#--------------------------------------------------------------#
+- name: REDIS HA
+  hosts: all
+  become: true
+  gather_facts: no
+  tags: redis-ha
+  tasks:
+
+    - name: skip if not a redis sentinel cluster
+      when: redis_port is defined or redis_mode|default('standalone') != 'sentinel' or redis_sentinel_monitor is not defined or redis_sentinel_monitor|length == 0
+      meta: end_host
+
+    - name: setup redis ha with sentinel
+      ignore_errors: true
+      when: redis_port is not defined
+      run_once: true
+      block:
+
+        - name: render redis sentinel monitor commands
+          copy:
+            dest: /tmp/{{ redis_cluster }}.monitor
+            mode: 0700
+            content: |
+              {% macro abort(error) %}{{ None['[ERROR] ' ~ error][0] }}{% endmacro %}
+              {% for master in redis_sentinel_monitor %}
+              {% if 'name' not in master or 'host' not in master %}
+              {{ abort("redis_sentinel_monitor require master name and host") }}
+              {% endif %}
+              SENTINEL REMOVE {{ master.name }}
+              {% if not master.remove|default(false) %}
+              SENTINEL MONITOR {{ master.name }} {{ master.host }} {{ master.port|default(6379) }} {{ master.quorum|default(1) }}
+              {% endif %}
+              {% if 'password' in master and master.password != '' %}
+              SENTINEL SET {{ master.name }} auth-pass {{ master.password }}
+              {% endif %}
+              {% endfor %}
+
+        - name: render redis sentinel monitor scripts
+          copy:
+            dest: /tmp/{{ redis_cluster }}-ha.sh
+            mode: 0700
+            content: |
+              {% set redis_meta = hostvars|json_query(cluster_query) %}
+              #!/bin/bash
+              {% for i in redis_meta %}
+              {% for port, _ in i.redis_instances.items() %}
+              cat /tmp/{{ redis_cluster }}.monitor | redis-cli -h {{ i.inventory_hostname }} -p {{ port }} -a {{ i.redis_password|default('') }}
+              {% endfor %}
+              {% endfor %}
+          vars: { cluster_query: "[@.*][0][?redis_cluster=='{{ redis_cluster }}']" }
+
+        - name: execute redis cluster sentinel monitor script
+          shell: "/tmp/{{ redis_cluster }}-ha.sh"
+          args: { executable: /bin/bash }
 
 
 #--------------------------------------------------------------#
@@ -114,5 +173,5 @@
           run_once: true
           when: redis_port is not defined
           shell: "/tmp/{{ redis_cluster }}-join.sh"
-
+          args: { executable: /bin/bash }
 ...

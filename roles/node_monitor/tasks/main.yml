@@ -47,6 +47,35 @@
 
 
 #--------------------------------------------------------------#
+# Register Instance DNS Name                           [vip_dns]
+#--------------------------------------------------------------#
+- name: register node vip dns name
+  tags: [ node_vip, vip_dns, vip_dns_config ]
+  when: vip_enabled|bool
+  delegate_to: '{{ item }}'
+  with_items: "{{ groups['infra'] }}"
+  ignore_errors: true
+  copy:
+    dest: /etc/hosts.d/{{ dnsname }}
+    mode: 0644
+    owner: root
+    group: root
+    content: "{{ vip_address }} {{ dnsname }}"
+  vars:
+    dnsname: "{{ node_cluster }}{{ vip_dns_suffix|default('') }}"
+
+# reload meta node nginx (maybe not appropriate here)
+- name: reload dnsmasq on infra node for node vip
+  tags: [ node_vip, vip_dns, vip_dns_reload ]
+  when: vip_enabled|bool
+  delegate_to: '{{ item }}'
+  run_once: true
+  ignore_errors: true
+  with_items: '{{ groups["infra"] }}'
+  systemd: name=dnsmasq state=reloaded enabled=yes daemon_reload=yes
+
+
+#--------------------------------------------------------------#
 # Config node_exporter                    [node_exporter_config]
 #--------------------------------------------------------------#
 - name: config node_exporter
@@ -54,18 +83,19 @@
   block:
 
     - name: config node_exporter systemd unit
-      copy: src=node_exporter.service dest=/usr/lib/systemd/system/node_exporter.service
+      copy: src=node_exporter.service dest={{ systemd_dir }}/node_exporter.service
+      vars: { systemd_dir: "{% if os_package is defined and os_package == 'deb' %}/lib/systemd/system/{% else %}/usr/lib/systemd/system{% endif %}" }
+
     - name: config default node_exporter options
       copy:
         dest: /etc/default/node_exporter
         content: |
           NODE_EXPORTER_OPTS="--web.listen-address=':{{ node_exporter_port }}' --web.telemetry-path='{{ exporter_metrics_path }}' {{ node_exporter_options }}"
 
-
 #--------------------------------------------------------------#
 # Launch node_exporter                    [node_exporter_launch]
 #--------------------------------------------------------------#
-- name: Launch node_exporter
+- name: launch node_exporter
   tags: [ node_exporter, node_exporter_launch ]
   when: node_exporter_enabled|bool
   block:
@@ -76,44 +106,101 @@
 
 
 #--------------------------------------------------------------#
+# Config keepalived_exporter               [vip_exporter_config]
+#--------------------------------------------------------------#
+- name: config keepalived_exporter
+  tags: [ node_vip, vip_exporter, vip_exporter_config ]
+  when: vip_enabled|bool
+  block:
+
+    - name: config keepalived_exporter systemd unit
+      copy: src=keepalived_exporter.service dest={{ systemd_dir }}/keepalived_exporter.service
+      vars: { systemd_dir: "{% if os_package is defined and os_package == 'deb' %}/lib/systemd/system/{% else %}/usr/lib/systemd/system{% endif %}" }
+
+    - name: config default keepalived_exporter options
+      copy:
+        dest: /etc/default/keepalived_exporter
+        content: |
+          KEEPALIVED_EXPORTER_OPTS="--web.listen-address=':{{ vip_exporter_port }}' --web.telemetry-path='{{ exporter_metrics_path }}'"
+
+
+#--------------------------------------------------------------#
+# Launch keepalived_exporter               [vip_exporter_launch]
+#--------------------------------------------------------------#
+- name: launch keepalived_exporter
+  tags: [ node_vip, vip_exporter, vip_exporter_launch ]
+  when: vip_enabled|bool
+  block:
+    - name: launch keepalived_exporter systemd service
+      systemd: name=keepalived_exporter state=restarted enabled=yes daemon_reload=yes
+    - name: wait for keepalived_exporter service online
+      wait_for: host=127.0.0.1 port={{ vip_exporter_port }} state=started timeout=10
+
+
+#--------------------------------------------------------------#
 # Register Node             [node_register, register_prometheus]
 #--------------------------------------------------------------#
 # /etc/prometheus/targets/node/{{ ip }}.yml
 - name: register node as prometheus target
-  tags: [ node_register, register_prometheus ]
+  tags: [ node_vip, node_register, register_prometheus ]
   ignore_errors: true
   delegate_to: '{{ item }}'
   with_items: '{{ groups["infra"] }}'
   copy:
-    dest: /etc/prometheus/targets/node/{{ inventory_hostname }}.yml
+    dest: "{{ prometheus_sd_dir }}/node/{{ inventory_hostname }}.yml"
     owner: prometheus
     content: |
       # {{ inventory_hostname }}
+      # node, haproxy, promtail
       - labels: { ip: {{ inventory_hostname }} , ins: {{ nodename }} , cls: {{ node_cluster|default('nodes') }} }
         targets: {% if not node_exporter_enabled|bool and not haproxy_enabled|bool and not promtail_enabled|bool %}[]{% endif %} 
-
           {% if node_exporter_enabled|bool %}- {{ inventory_hostname }}:{{ node_exporter_port }}{% endif %}
       
           {% if haproxy_enabled|bool %}- {{ inventory_hostname }}:{{ haproxy_exporter_port }}{% endif %}
       
           {% if promtail_enabled|bool %}- {{ inventory_hostname }}:{{ promtail_port }}{% endif %}
 
-          {% if docker_enabled is defined and docker_enabled|bool %}- {{ inventory_hostname }}:9323{% endif %}
+
+      {% if docker_enabled is defined and docker_enabled|bool %}
+      # docker
+      - labels: { ip: {{ inventory_hostname }} , ins: {{ nodename }} , cls: {{ node_cluster|default('nodes') }}  }
+        targets: [ {{ inventory_hostname }}:9323 ]
+      {% endif %}
+      
+      
+      {% if vip_enabled|bool and vip_address is defined and vip_address != '' %}
+      # keepalived
+      - labels: { ip: {{ inventory_hostname }} , ins: {{ nodename }} , cls: {{ node_cluster|default('nodes') }}, vip: {{ vip_address }} }
+        targets: [ {{ inventory_hostname }}:{{ vip_exporter_port }} ]
+      {% endif %}
 
 
-- name: register node as blackbox exporter target
+- name: register node as ping target
   tags: [ node_register, register_prometheus ]
   ignore_errors: true
   delegate_to: '{{ item }}'
   with_items: '{{ groups["infra"] }}'
   copy:
-    dest: /etc/prometheus/targets/ping/{{ inventory_hostname }}.yml
+    dest: "{{ prometheus_sd_dir }}/ping/{{ inventory_hostname }}.yml"
     owner: prometheus
     content: |
       # {{ inventory_hostname }}
       - labels: { ip: {{ inventory_hostname }} , ins: {{ nodename }} , cls: {{ node_cluster|default('nodes') }} }
         targets: [ {{inventory_hostname }} ]
 
+- name: register node vip as ping target
+  tags: [ node_vip, node_register, register_prometheus ]
+  when: vip_enabled|bool and vip_address is defined and vip_address != ''
+  ignore_errors: true
+  delegate_to: '{{ item }}'
+  with_items: '{{ groups["infra"] }}'
+  copy:
+    dest: "{{ prometheus_sd_dir }}/ping/{{ vip_address }}---{{ inventory_hostname }}.yml"
+    owner: prometheus
+    content: |
+      # {{ vip_address }}@{{ inventory_hostname }}
+      - labels: { ip: {{ inventory_hostname }} , ins: {{ nodename }} , cls: {{ node_cluster|default('nodes') }}, vip: {{ vip_address }} , job: node-vip }
+        targets: [ {{ vip_address }} ]
 
 
 #--------------------------------------------------------------#
@@ -146,17 +233,18 @@
 #--------------------------------------------------------------#
 # Install Promtail                            [promtail_install]
 #--------------------------------------------------------------#
-- name: install promtail via yum
+- name: install promtail
   tags: promtail_install
   ignore_errors: "{{ not promtail_enabled|bool }}"  # ignore errors if not enabled
   block:
-    - name: install promtail via yum
+    - name: install promtail systemd service
       package: name=promtail state=present
     - name: remove promtail /etc/systemd service
       file: dest=/etc/systemd/system/promtail.service state=absent
-    - name: create promtail systemd service
-      copy: src=promtail.service dest=/usr/lib/systemd/system/promtail.service
 
+    - name: create promtail systemd service
+      copy: src=promtail.service dest={{ systemd_dir }}/promtail.service
+      vars: { systemd_dir: "{% if os_package is defined and os_package == 'deb' %}/lib/systemd/system/{% else %}/usr/lib/systemd/system{% endif %}" }
 
 #--------------------------------------------------------------#
 # Launch Promtail                              [promtail_launch]

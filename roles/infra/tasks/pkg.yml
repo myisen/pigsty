@@ -1,10 +1,10 @@
 ---
 #--------------------------------------------------------------#
-# Infra Yum Packages                             [infra_pkg_yum]
+# Infra rpm/deb Packages                             [infra_pkg]
 #--------------------------------------------------------------#
 - name: install infra node packages
-  tags: infra_pkg_yum
-  yum: name={{ item }} disable_gpg_check=true
+  tags: infra_pkg
+  package: name={{ item }}
   with_items: "{{ infra_packages|default([]) }}"
 
 #--------------------------------------------------------------#
@@ -33,12 +33,11 @@
     
     mkdir -p ${PYTHON_DIR}; cd ${PYTHON_DIR}
     if ! compgen -G ${PYTHON_DIR}/pip*.whl ; then
-        echo "f============================fuck"
         ${PYTHON_BIN} -m pip install --upgrade pip
         ${PYTHON_BIN} -m pip download pip
         ${PYTHON_BIN} -m pip download {{ infra_packages_pip }}
     fi
     ${PYTHON_BIN} -m pip install ${PYTHON_DIR}/pip* || /bin/true
     ${PYTHON_BIN} -m pip install ${PYTHON_DIR}/*    || /bin/true
-
+  args: { executable: /bin/bash }
 ...

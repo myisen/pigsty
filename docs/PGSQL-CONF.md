@@ -91,7 +91,7 @@ It will apply to the offline instance and any instances with [`pg_offline_query`
 
 ## Sync Standby
 
-PostgreSQL uses asynchronous commit in stream replication by default. Which may have a small replication lag. (10KB / 10ms).
+Pigsty uses asynchronous stream replication by default. Which may have a small replication lag. (10KB / 10ms).
 A small window of data loss may occur when the primary fails (can be controlled with [`pg_rpo`](PARAM#pg_rpo).), but it is acceptable for most scenarios. 
 
 But in some critical scenarios (e.g. financial transactions), data loss is totally unacceptable or read-your-write consistency is required.
@@ -122,6 +122,9 @@ $ pg edit-config pg-test    # run on admin node with admin user
 Apply these changes? [y/N]: y
 ```
 
+If `synchronous_mode: true`, the [`synchronous_standby_names`](https://www.postgresql.org/docs/current/runtime-config-replication.html#synchronous_standby_names) parameter will be managed by patroni.
+It will choose a sync standby from all available replicas and write its name to the primary's configuration file.
+
 
 
 ----------------
@@ -133,25 +136,23 @@ Primary will wait until the standby instance flushes to disk before a commit is 
 
 However, you can achieve an even higher/lower consistency level with the quorum commit (trade-off with availability).
 
-For example, to have any 2 replicas to confirm a commit: 
+For example, to have **all** 2 replicas to confirm a commit:
 
-```bash
-pg-test:
-  hosts:
-    10.10.10.10: { pg_seq: 1, pg_role: primary } # <--- pg-test-1
-    10.10.10.11: { pg_seq: 2, pg_role: replica } # <--- pg-test-2
-    10.10.10.12: { pg_seq: 3, pg_role: replica } # <--- pg-test-3
-    10.10.10.13: { pg_seq: 4, pg_role: replica } # <--- pg-test-4
-  vars:
-    pg_cluster: pg-test
-    pg_conf: crit.yml   # <--- use crit template
+```yaml
+synchronous_mode: true          # make sure synchronous mode is enabled
+synchronous_node_count: 2       # at least 2 nodes to confirm a commit
 ```
 
-Adjust  [`synchronous_standby_names`](https://www.postgresql.org/docs/current/runtime-config-replication.html#synchronous_standby_names) and `synchronous_node_count` accordingly:
-* `synchronous_standby_names = ANY 2 (pg-test-2, pg-test-3, pg-test-4)`
-* `synchronous_node_count : 2`
+If you have more replicas and wish to have more sync standby, increase `synchronous_node_count` accordingly.
+Beware of adjust `synchronous_node_count` accordingly when you [append](PGSQL-ADMIN#append-replica) or [remove](PGSQL-ADMIN#remove-replica) replicas.
 
-<details><summary>Example: Enable Quorum Commit</summary>
+The postgres `synchronous_standby_names` parameter will be managed by patroni:
+
+```yaml
+synchronous_standby_names = '2 ("pg-test-3","pg-test-2")'
+```
+
+<details><summary>Example: Multiple Sync Standby</summary>
 
 ```bash
 $ pg edit-config pg-test
@@ -169,7 +170,7 @@ $ pg edit-config pg-test
 Apply these changes? [y/N]: y
 ```
 
-After the application, the configuration takes effect, and two Sync Standby appear. When the cluster has Failover or expansion and contraction, please adjust these parameters to avoid service unavailability.
+And we can see that the two replicas are selected as sync standby now.
 
 ```bash
 + Cluster: pg-test (7080814403632534854) +---------+----+-----------+-----------------+
@@ -178,9 +179,35 @@ After the application, the configuration takes effect, and two Sync Standby appe
 | pg-test-1 | 10.10.10.10 | Leader       | running |  1 |           | clonefrom: true |
 | pg-test-2 | 10.10.10.11 | Sync Standby | running |  1 |         0 | clonefrom: true |
 | pg-test-3 | 10.10.10.12 | Sync Standby | running |  1 |         0 | clonefrom: true |
-| pg-test-4 | 10.10.10.13 | Replica      | running |  1 |         0 | clonefrom: true |
 +-----------+-------------+--------------+---------+----+-----------+-----------------+
 ```
+
+</details>
+
+The classic quorum commit is to use **majority** of replicas to confirm a commit.
+
+```yaml
+synchronous_mode: quorum        # use quorum commit
+postgresql:
+  parameters:                   # change the PostgreSQL parameter `synchronous_standby_names`, use the `ANY n ()` notion
+    synchronous_standby_names: 'ANY 1 (*)'  # you can specify a list of standby names, or use `*` to match them all
+```
+
+<details><summary>Example: Enable Quorum Commit</summary>
+
+```bash
+$ pg edit-config pg-test
+
++    synchronous_standby_names: 'ANY 1 (*)' # You have to configure this manually
++ synchronous_mode: quorum        # use quorum commit mode, undocumented parameter
+- synchronous_node_count: 2       # this parameter is no longer needed in quorum mode
+
+Apply these changes? [y/N]: y
+```
+
+After applying the configuration, we can see that all replicas are no longer sync standby, but just normal replicas.
+
+After that, when we can check `pg_stat_replication.sync_state`, it becomes `quorum` instead of `sync` or `async`.
 
 </details>
 
@@ -215,7 +242,7 @@ pg-test2:
 
 And `pg-test2-1`, the primary of `pg-test2` will be a replica of `pg-test` and serve as a **Standby Leader** in `pg-test2`.
 
-Just make sure that the [`pg_upstream`](/en/docs/pgsql/config#pg_upstream) parameter is configured on the primary of the backup cluster to pull backups from the original upstream automatically.
+Just make sure that the [`pg_upstream`](PARAM#pg_upstream) parameter is configured on the primary of the backup cluster to pull backups from the original upstream automatically.
 
 ```bash
 bin/pgsql-add pg-test     # Creating the original cluster
@@ -337,7 +364,7 @@ It takes more resources, but can be much faster and have less impact than [PITR]
 
 ## Citus Cluster
 
-Pigsty has native citus support. Check [`files/pigsty/citus.yml`](https://github.com/Vonng/pigsty/blob/master/files/pigsty/citus.yml) for example.
+Pigsty has native citus support. Check [`files/pigsty/citus.yml`](https://github.com/Vonng/pigsty/blob/master/files/pigsty/citus.yml) & [`prod.yml`](https://github.com/Vonng/pigsty/blob/master/files/pigsty/prod.yml#L298) for example.
 
 To define a citus cluster, you have to specify the following parameters:
 
@@ -351,7 +378,7 @@ Besides, extra hba rules that allow ssl access from local & other data nodes are
 ```yaml
 all:
   children:
-    pg-citus0: # citus coordinator, pg_group = 0
+    pg-citus0: # citus data node 0
       hosts: { 10.10.10.10: { pg_seq: 1, pg_role: primary } }
       vars: { pg_cluster: pg-citus0 , pg_group: 0 }
     pg-citus1: # citus data node 1
@@ -377,8 +404,7 @@ all:
       - { user: 'all' ,db: all  ,addr: intra        ,auth: ssl ,title: 'all user ssl access from intranet'  }
 ```
 
-
-And you can create distributed table & reference table on the coordinator node, and query them from any data node.
+And you can create distributed table & reference table on the coordinator node. Any data node can be used as the coordinator node since citus 11.2.
 
 ```bash
 SELECT create_distributed_table('pgbench_accounts', 'aid'); SELECT truncate_local_data_after_distributing_table($$public.pgbench_accounts$$);
@@ -396,22 +422,24 @@ SELECT create_reference_table('pgbench_tellers')          ; SELECT truncate_loca
 
 ## Major Version
 
-Pigsty works on PostgreSQL 10+. While the pre-packaged packages only includes 12 - 16(beta) for now.
+Pigsty works on PostgreSQL 10+. While the pre-packaged packages only includes 12 - 16 for now.
 
-| version | Comment                                                          | Packages         |
-|---------|------------------------------------------------------------------|------------------|
-| 16beta  | The latest beta with postgres cores only                         | Core             |
-| 15      | The stable major version, with full extension support, (default) | Core, L1, L2, L3 |
-| 14      | The old stable major version, with L1, L2 extension support      | Core, L1, L2     |
-| 13      | Older major version, with L1 extension support only              | Core, L1         |
-| 12      | Older major version, with L1 extension support only              | Core, L1         |
+| version | Comment                                                         | Packages       |
+|---------|-----------------------------------------------------------------|----------------|
+| 16      | The latest version with important extensions                    | Core, L1 L2    |
+| 15      | The stable major version, with full extension support (default) | Core, L1,L2,L3 |
+| 14      | The old stable major version, ith L1 extension support only     | Core, L1       |
+| 13      | Older major version, with L1 extension support only             | Core, L1       |
+| 12      | Older major version, with L1 extension support only             | Core, L1       |
 
-- Core: `postgresql*`
-- L1 extensions: `wal2json`, `pg_repack`, `passwordcheck_cracklib`  (Available on PG 12, 13, 14, 15)
-- L2 extensions: `postgis`, `citus`, `timescaledb`, `pgvector`, `pg_logical`, `pg_cron` (Available on PG 14,15)
-- L3 extensions: Other miscellaneous extensions (Available on PG 15 only)
+- Core: `postgresql*`, available on PG 12 - 16 
+- L1 extensions: `wal2json`, `pg_repack`, `passwordcheck_cracklib` (PG 12 - 16)
+- L2 extensions: `postgis`, `citus`, `timescaledb`, `pgvector` (PG15, PG16)
+- L3 extensions: Other miscellaneous extensions (PG15 only)
 
-Since some extensions are not available on PG 12,13,16, you may have to change [`pg_extensions`](PARAM#pg_extensions) and [`pg_libs`](PARAM#pg_extensions) to fit your needs.
+
+
+Since some extensions are not available on PG 12,13,14,16, you may have to change [`pg_extensions`](PARAM#pg_extensions) and [`pg_libs`](PARAM#pg_libs) to fit your needs.
 
 Here are some example cluster definition with different major versions.
 
@@ -422,7 +450,7 @@ pg-v12:
     pg_cluster: pg-v12
     pg_version: 12
     pg_libs: 'pg_stat_statements, auto_explain'
-    pg_extensions: [ 'wal2json_13* pg_repack_13* passwordcheck_cracklib_13*' ]
+    pg_extensions: [ 'wal2json_12* pg_repack_12* passwordcheck_cracklib_12*' ]
 
 pg-v13:
   hosts: { 10.10.10.13: { pg_seq: 1 ,pg_role: primary } }
@@ -449,8 +477,6 @@ pg-v16:
   vars:
     pg_cluster: pg-v16
     pg_version: 16
-    pg_libs: 'pg_stat_statements, auto_explain'
-    pg_extensions: [ ]
 ```
 
 Beware that these extensions are just not included in Pigsty's default repo. You can have these extensions on older pg version with proper configuration. 

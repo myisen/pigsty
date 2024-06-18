@@ -334,13 +334,15 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 16,
                     "valueSize": 16
                 },
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -403,7 +405,6 @@
                     "refId": "B"
                 }
             ],
-            "transformations": [],
             "type": "stat"
         },
         {
@@ -815,7 +816,6 @@
                 "y": 1
             },
             "id": 38,
-            "links": [],
             "options": {
                 "cellHeight": "sm",
                 "footer": {
@@ -834,7 +834,7 @@
                     }
                 ]
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "format": "table",
@@ -1048,7 +1048,6 @@
                 "y": 8
             },
             "id": 62,
-            "links": [],
             "options": {
                 "colorMode": "background",
                 "graphMode": "area",
@@ -1061,9 +1060,11 @@
                     "fields": "/.*/",
                     "values": false
                 },
-                "textMode": "value"
+                "showPercentChange": false,
+                "textMode": "value",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -1364,7 +1365,6 @@
                 "y": 12
             },
             "id": 53,
-            "links": [],
             "options": {
                 "colorMode": "background",
                 "graphMode": "area",
@@ -1375,12 +1375,14 @@
                     "fields": "",
                     "values": true
                 },
+                "showPercentChange": false,
                 "text": {
                     "valueSize": 16
                 },
-                "textMode": "auto"
+                "textMode": "auto",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "format": "table",
@@ -1526,7 +1528,6 @@
                 "y": 12
             },
             "id": 10,
-            "links": [],
             "options": {
                 "colorMode": "background",
                 "graphMode": "area",
@@ -1539,12 +1540,14 @@
                     "fields": "/.*/",
                     "values": true
                 },
+                "showPercentChange": false,
                 "text": {
                     "valueSize": 16
                 },
-                "textMode": "auto"
+                "textMode": "auto",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "format": "table",
@@ -1628,7 +1631,6 @@
                 "y": 12
             },
             "id": 30,
-            "links": [],
             "options": {
                 "colorMode": "background",
                 "graphMode": "area",
@@ -1639,12 +1641,14 @@
                     "fields": "/.*/",
                     "values": true
                 },
+                "showPercentChange": false,
                 "text": {
                     "valueSize": 16
                 },
-                "textMode": "auto"
+                "textMode": "auto",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "format": "table",
@@ -1763,7 +1767,6 @@
                 "y": 12
             },
             "id": 37,
-            "links": [],
             "options": {
                 "colorMode": "background",
                 "graphMode": "area",
@@ -1774,12 +1777,14 @@
                     "fields": "/.*/",
                     "values": true
                 },
+                "showPercentChange": false,
                 "text": {
                     "valueSize": 16
                 },
-                "textMode": "auto"
+                "textMode": "auto",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "format": "table",
@@ -1881,7 +1886,6 @@
                 "y": 15
             },
             "id": 36,
-            "links": [],
             "options": {
                 "colorMode": "background",
                 "graphMode": "area",
@@ -1892,12 +1896,14 @@
                     "fields": "/.*/",
                     "values": true
                 },
+                "showPercentChange": false,
                 "text": {
                     "valueSize": 14
                 },
-                "textMode": "value"
+                "textMode": "value",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "format": "table",
@@ -1997,7 +2003,6 @@
                 "y": 20
             },
             "id": 35,
-            "links": [],
             "options": {
                 "colorMode": "background",
                 "graphMode": "area",
@@ -2008,12 +2013,14 @@
                     "fields": "",
                     "values": true
                 },
+                "showPercentChange": false,
                 "text": {
                     "valueSize": 16
                 },
-                "textMode": "value"
+                "textMode": "value",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "format": "table",
@@ -2313,10 +2320,12 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {},
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -2359,7 +2368,7 @@
                     "hide": false,
                     "metricColumn": "none",
                     "rawQuery": true,
-                    "rawSql": "SELECT ratio AS \"Bloat Ratio\" FROM monitor.pg_table_bloat WHERE relname = '${tblname}'",
+                    "rawSql": "SELECT ratio AS \"Bloat Ratio\" FROM pg_table_bloat WHERE relname = '${tblname}'",
                     "refId": "B",
                     "select": [
                         [
@@ -2454,7 +2463,6 @@
                 "y": 27
             },
             "id": 11,
-            "links": [],
             "options": {
                 "colorMode": "background",
                 "graphMode": "area",
@@ -2467,12 +2475,14 @@
                     "fields": "",
                     "values": true
                 },
+                "showPercentChange": false,
                 "text": {
                     "valueSize": 16
                 },
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "format": "table",
@@ -2607,7 +2617,6 @@
                 "y": 27
             },
             "id": 39,
-            "links": [],
             "options": {
                 "colorMode": "background",
                 "graphMode": "area",
@@ -2620,12 +2629,14 @@
                     "fields": "",
                     "values": true
                 },
+                "showPercentChange": false,
                 "text": {
                     "valueSize": 16
                 },
-                "textMode": "auto"
+                "textMode": "auto",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "format": "table",
@@ -2746,7 +2757,6 @@
                 "y": 27
             },
             "id": 40,
-            "links": [],
             "options": {
                 "colorMode": "background",
                 "graphMode": "area",
@@ -2759,12 +2769,14 @@
                     "fields": "/.*/",
                     "values": true
                 },
+                "showPercentChange": false,
                 "text": {
                     "valueSize": 16
                 },
-                "textMode": "auto"
+                "textMode": "auto",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "format": "table",
@@ -2886,7 +2898,6 @@
                 "y": 27
             },
             "id": 41,
-            "links": [],
             "options": {
                 "colorMode": "background",
                 "graphMode": "area",
@@ -2899,12 +2910,14 @@
                     "fields": "/.*/",
                     "values": true
                 },
+                "showPercentChange": false,
                 "text": {
                     "valueSize": 16
                 },
-                "textMode": "auto"
+                "textMode": "auto",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "format": "table",
@@ -3162,7 +3175,6 @@
                 "y": 37
             },
             "id": 55,
-            "links": [],
             "options": {
                 "cellHeight": "sm",
                 "footer": {
@@ -3181,7 +3193,7 @@
                     }
                 ]
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -3323,8 +3335,7 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#e3e3e3e0",
-                                "value": null
+                                "color": "#e3e3e3e0"
                             }
                         ]
                     }
@@ -3519,8 +3530,7 @@
                                     "mode": "absolute",
                                     "steps": [
                                         {
-                                            "color": "#3e668f",
-                                            "value": null
+                                            "color": "#3e668f"
                                         },
                                         {
                                             "color": "super-light-blue",
@@ -3749,7 +3759,6 @@
                 "y": 45
             },
             "id": 52,
-            "links": [],
             "options": {
                 "cellHeight": "sm",
                 "footer": {
@@ -3768,7 +3777,7 @@
                     }
                 ]
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.1.5",
             "targets": [
                 {
                     "datasource": {
@@ -3933,8 +3942,7 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#e3e3e3e0",
-                                "value": null
+                                "color": "#e3e3e3e0"
                             }
                         ]
                     }
@@ -3967,8 +3975,7 @@
                                     "mode": "absolute",
                                     "steps": [
                                         {
-                                            "color": "super-light-blue",
-                                            "value": null
+                                            "color": "super-light-blue"
                                         },
                                         {
                                             "color": "#3e668f",
@@ -4189,8 +4196,7 @@
                                     "mode": "absolute",
                                     "steps": [
                                         {
-                                            "color": "#3e668f",
-                                            "value": null
+                                            "color": "#3e668f"
                                         }
                                     ]
                                 }
@@ -4275,8 +4281,7 @@
                                     "mode": "absolute",
                                     "steps": [
                                         {
-                                            "color": "transparent",
-                                            "value": null
+                                            "color": "transparent"
                                         },
                                         {
                                             "color": "#7a7a7a40",
@@ -4330,8 +4335,7 @@
                                     "mode": "absolute",
                                     "steps": [
                                         {
-                                            "color": "transparent",
-                                            "value": null
+                                            "color": "transparent"
                                         },
                                         {
                                             "color": "#7d7d7d33",
@@ -4364,8 +4368,7 @@
                                     "mode": "absolute",
                                     "steps": [
                                         {
-                                            "color": "transparent",
-                                            "value": null
+                                            "color": "transparent"
                                         },
                                         {
                                             "color": "#7d7d7d33",
@@ -4398,8 +4401,7 @@
                                     "mode": "absolute",
                                     "steps": [
                                         {
-                                            "color": "transparent",
-                                            "value": null
+                                            "color": "transparent"
                                         },
                                         {
                                             "color": "#7d7d7d33",
@@ -4428,8 +4430,7 @@
                                     "mode": "absolute",
                                     "steps": [
                                         {
-                                            "color": "transparent",
-                                            "value": null
+                                            "color": "transparent"
                                         },
                                         {
                                             "color": "#7d7d7d33",
@@ -4458,8 +4459,7 @@
                                     "mode": "absolute",
                                     "steps": [
                                         {
-                                            "color": "transparent",
-                                            "value": null
+                                            "color": "transparent"
                                         },
                                         {
                                             "color": "#7d7d7d33",
@@ -4512,7 +4512,7 @@
                     "metricColumn": "none",
                     "range": true,
                     "rawQuery": true,
-                    "rawSql": "SELECT queryid::TEXT AS qid, d.datname, r.rolname, s.*\nFROM monitor.pg_stat_statements s\n         LEFT JOIN pg_database d ON s.dbid = d.oid\n         LEFT JOIN pg_roles r ON s.userid = r.oid\nWHERE datname='$datname' AND query ~ '$tblname'\nORDER BY mean_exec_time DESC\nLIMIT 100;",
+                    "rawSql": "SELECT queryid::TEXT AS qid, d.datname, r.rolname, s.*\nFROM pg_stat_statements s\n         LEFT JOIN pg_database d ON s.dbid = d.oid\n         LEFT JOIN pg_roles r ON s.userid = r.oid\nWHERE datname='$datname' AND query ~ '$tblname'\nORDER BY mean_exec_time DESC\nLIMIT 100;",
                     "refId": "A",
                     "select": [
                         [
@@ -4684,10 +4684,9 @@
             "type": "table"
         }
     ],
-    "refresh": "5m",
+    "refresh": "",
     "revision": 1,
-    "schemaVersion": 38,
-    "style": "light",
+    "schemaVersion": 39,
     "tags": [
         "Pigsty",
         "PGSQL",

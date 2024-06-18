@@ -40,7 +40,8 @@
     # pgbouncer systemd services
     - name: create pgbouncer systemd service
       tags: pgbouncer_svc
-      template: src=pgbouncer.service.j2 dest=/etc/systemd/system/pgbouncer.service owner=root mode=0644
+      template: src=pgbouncer.service.j2 dest={{ systemd_dir }}/pgbouncer.service owner=root mode=0644
+      vars: { systemd_dir: "{% if os_package is defined and os_package == 'deb' %}/lib/systemd/system/{% else %}/usr/lib/systemd/system{% endif %}" }
 
     - name: render pgbouncer config
       tags: pgbouncer_ini
@@ -96,6 +97,7 @@
         /bin/bash /pg/bin/pgb-user "{{ pg_dbsu }}" NULL
         /bin/bash /pg/bin/pgb-user "{{ pg_monitor_username }}"
         /bin/bash /pg/bin/pgb-user "{{ pg_admin_username }}"
+      args: { executable: /bin/bash }
 
     # retrieve biz user password in AUTO mode
     # ignore errors, in case of user not exists
@@ -105,6 +107,7 @@
       ignore_errors: true
       become_user: "{{ pg_dbsu }}"
       shell: /bin/bash /pg/bin/pgb-user '{{ user.name }}' AUTO
+      args: { executable: /bin/bash }
       vars: {user: "{{ item }}" }
       with_items: "{{ pg_users }}"
 

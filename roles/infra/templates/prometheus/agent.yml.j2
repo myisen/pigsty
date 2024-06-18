@@ -2,7 +2,7 @@
 #==============================================================#
 # File      :   agent.yml
 # Ctime     :   2022-11-09
-# Mtime     :   2023-02-17
+# Mtime     :   2023-08-17
 # Desc      :   Agent Rules
 # Path      :   /etc/prometheus/rules/agent.yml
 # Author    :   Ruohang Feng (rh@vonng.com)
@@ -14,21 +14,21 @@ groups:
   - name: agent-rules
     rules:
 
-      # INFRA
-
-
       # NODE
       - record: node_up
-        expr: up{instance=~".*:{{ node_exporter_port }}"}
+        expr: up{instance=~".*:{{ node_exporter_port|default('9100') }}"}
 
       - record: haproxy_up
-        expr: up{instance=~".*:{{ haproxy_exporter_port }}"}
+        expr: up{instance=~".*:{{ haproxy_exporter_port|default('9101') }}"}
+
+      - record: keepalived_exporter_up
+        expr: up{instance=~".*:{{ vip_exporter_port|default('9650') }}"}
 
       - record: docker_up
         expr: up{instance=~".*:9323"}
 
       - record: promtail_up
-        expr: up{instance=~".*:{{ promtail_port }}"}
+        expr: up{instance=~".*:{{ promtail_port|default('9080') }}"}
 
       # ETCD
       - record: etcd_up
@@ -40,11 +40,19 @@ groups:
 
       # PGSQL
       - record: pg_exporter_agent_up
-        expr: up{instance=~".*:{{ pg_exporter_port }}"}
+        expr: up{instance=~".*:{{ pg_exporter_port|default('9630') }}"}
 
       - record: pgbouncer_exporter_agent_up
-        expr: up{instance=~".*:{{ pgbouncer_exporter_port }}"}
+        expr: up{instance=~".*:{{ pgbouncer_exporter_port|default('9631') }}"}
 
       - record: patroni_up
-        expr: up{instance=~".*:{{ patroni_port }}"}
+        expr: up{instance=~".*:{{ patroni_port|default('8008') }}"}
+
+      # MONGO
+      - record: mongo_up
+        expr: up{job="mongo"}
+
+      # MYSQL
+      - record: mysql_exporter_up
+        expr: up{job="mysql"}
 ...

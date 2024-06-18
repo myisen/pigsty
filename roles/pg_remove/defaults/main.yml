@@ -15,6 +15,10 @@ pg_uninstall: false               # uninstall pg_packages? false by default
 #-----------------------------------------------------------------
 etcd_port: 2379                   # etcd client port, 2379 by default
 #-----------------------------------------------------------------
+# PROMETHEUS (Reference)
+#-----------------------------------------------------------------
+prometheus_sd_dir: /etc/prometheus/targets # prometheus file service discovery directory
+#-----------------------------------------------------------------
 # GRAFANA (Reference)
 #-----------------------------------------------------------------
 grafana_admin_username: admin     # default grafana admin username
@@ -28,19 +32,15 @@ pg_databases: []                  # postgres business databases
 #-----------------------------------------------------------------
 pg_dbsu: postgres                 # os dbsu name, postgres by default, better not change it
 pg_dbsu_home: /var/lib/pgsql      # postgresql home directory, `/var/lib/pgsql` by default
-pg_version: 15                    # postgres major version to be installed, 15 by default
+pg_version: 16                    # postgres major version to be installed, 16 by default
 pg_bin_dir: /usr/pgsql/bin        # postgres binary dir, `/usr/pgsql/bin` by default
 pg_log_dir: /pg/log/postgres      # postgres log dir, `/pg/log/postgres` by default
 pg_packages:                      # pg packages to be installed, `${pg_version}` will be replaced
   - postgresql${pg_version}*
-  - pgbouncer pg_exporter pgbadger vip-manager patroni patroni-etcd pgbackrest
+  - patroni pgbouncer pgbackrest pg_exporter pgbadger vip-manager patroni-etcd             # pgdg common tools
+  - pg_repack_${pg_version}* wal2json_${pg_version}* passwordcheck_cracklib_${pg_version}* # important extensions
 pg_extensions:                    # pg extensions to be installed, `${pg_version}` will be replaced
-  - pg_repack_${pg_version} wal2json_${pg_version}
-  - postgis33_${pg_version} postgis33_${pg_version}-devel postgis33_${pg_version}-utils
-  - timescaledb-2-postgresql-${pg_version}
-  - citus*${pg_version}*
-  - pgvector_${pg_version}*
-
+  - postgis34_${pg_version}* timescaledb-2-postgresql-${pg_version}* pgvector_${pg_version}*
 #-----------------------------------------------------------------
 # PG_BOOTSTRAP (Reference)
 #-----------------------------------------------------------------
@@ -53,11 +53,15 @@ pg_namespace: /pg                 # top level key namespace in etcd, used by pat
 patroni_ssl_enabled: false        # secure patroni RestAPI communications with SSL?
 pg_service_provider: ''           # dedicate haproxy node group name, or empty string for local nodes by default
 #-----------------------------------------------------------------
-# PG_BACKUP
+# PG_BACKUP (Reference)
 #-----------------------------------------------------------------
 pgbackrest_enabled: true          # enable pgbackrest on pgsql host?
 pgbackrest_clean: true            # remove pg backup data during init?
 pgbackrest_method: local          # pgbackrest repo method: local,minio,[user-defined...]
+#-----------------------------------------------------------------
+# PG_SERVICE (Reference)
+#-----------------------------------------------------------------
+pg_vip_enabled: false             # enable a l2 vip for pgsql primary? false by default
 #-----------------------------------------------------------------
 # INFRA (Reference)
 #-----------------------------------------------------------------

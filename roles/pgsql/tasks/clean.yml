@@ -1,22 +1,25 @@
 ---
-#---------------------------------------------------------------
-# PURGE PROCEDURE
-#---------------------------------------------------------------
-# check postgres instance precondition
-#  --- empty  ---> clean ---> init
-#  --- exist  ^--> [pg_safeguard=true]  ---> abort
-#             ^--> [pg_safeguard=false]
-#                         ^--> [pg_clean=false] ---> abort
-#                         ^--> [pg_clean=true]  ---> purge
-#---------------------------------------------------------------
-
-
 #--------------------------------------------------------------#
 # Check PostgreSQL Exists                             [pg_check]
 #--------------------------------------------------------------#
 - name: check postgres exists
   tags: pg_check
   block:
+
+    # check node is managed by pigsty by the existence of ca.crt
+    - name: check if node is managed by pigsty
+      stat: path=/etc/pki/ca.crt
+      register: check_ca_crt_result
+
+    # abort if any node is not init by pigsty (TODO, validate use the same CA crt)
+    - name: ABORT due to install on unmanaged node
+      when: not check_ca_crt_result.stat.exists
+      connection: local
+      any_errors_fatal: true
+      ignore_errors: false
+      fail:
+        msg: >-
+          Abort because the node {{ inventory_hostname }} seems not managed by pigsty, use ./node.yml to init node first.  
 
     # check postgres by listening port
     - name: check postgres exists
@@ -41,6 +44,18 @@
           Abort because pg instance {{ pg_cluster }}-{{ pg_seq }} @ {{ inventory_hostname }} exists. 
            {% if pg_safeguard|bool %}pg_safeguard enabled, please disable it before purging.{% endif %}
            {% if not pg_clean|bool %}pg_clean = false, use -e pg_safeguard=false to override.{% endif %}
+
+
+#---------------------------------------------------------------
+# PURGE PROCEDURE
+#---------------------------------------------------------------
+# check postgres instance precondition
+#  --- empty  ---> clean ---> init
+#  --- exist  ^--> [pg_safeguard=true]  ---> abort
+#             ^--> [pg_safeguard=false]
+#                         ^--> [pg_clean=false] ---> abort
+#                         ^--> [pg_clean=true]  ---> purge
+#---------------------------------------------------------------
 
 
 #--------------------------------------------------------------#
@@ -69,23 +84,19 @@
         systemctl stop pgbouncer
         systemctl stop pg_exporter
         systemctl stop pgbouncer_exporter
-
-        # then, manually stop service if still exists
-        if ps -u postgres -o pid:1,command | grep -E 'postmaster|postgres:|-D'  | grep checkpointer ; then
-            pg_ctl -D {{ pg_data }} stop --mode=immediate
+        systemctl stop --no-block postgresql
+        if ps -u postgres -o pid:1,command | grep -E 'postmaster|postgres:|-D' ; then
+            {{ pg_bin_dir }}/pg_ctl -D {{ pg_data }} stop --mode=immediate
+        fi
+        if ps -u postgres -o pid:1,command | grep -E 'postmaster|postgres:|-D'  ; then
+            sleep 2
             ps -u postgres -o pid:1,command | grep -E 'postmaster|postgres:|-D' | awk '{print $1}' | xargs kill -9
         fi
-
-        if ps -u postgres -o pid:1,command | grep -E 'postmaster|postgres:|-D'  | grep checkpointer ; then
-            ps -u postgres -o pid:1,command | grep -E 'postmaster|postgres:|-D' | awk '{print $1}' | xargs kill -9
-            sleep 5 # if still alive, leave 5s grace peroid and force a kill -9
-        fi
-
         if ps -u postgres -o pid:1,command | grep -E 'postmaster|postgres:|-D'  | grep checkpointer ; then
             exit 1  # report failure if still alive
         fi
         exit 0
-
+      args: { executable: /bin/bash }
 
     # when cleanup primary, remove etcd metadata
     - name: remove postgres metadata from etcd
@@ -108,6 +119,7 @@
         export ETCDCTL_KEY=/etc/pki/infra.key
         etcdctl del "${META_DIR}" --prefix=true
         /bin/true
+      args: { executable: /bin/bash }
 
     - name: remove postgres data
       tags: pg_clean_data

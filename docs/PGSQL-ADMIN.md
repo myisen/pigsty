@@ -22,6 +22,8 @@ Here are some SOP for common pgsql admin tasks
 - Case 16: [Major Upgrade](#major-upgrade)
 
 
+----------------
+
 ## Cheatsheet
 
 PGSQL playbooks and shortcuts:
@@ -83,7 +85,7 @@ systemctl stop postgres                 # only when patroni_mode == 'remove'
 
 
 
-
+----------------
 
 ## Create Cluster
 
@@ -94,6 +96,8 @@ bin/node-add <cls>                # init nodes for cluster <cls>           # ./n
 bin/pgsql-add <cls>               # init pgsql instances of cluster <cls>  # ./pgsql.yml -l <cls>
 ```
 
+> Beware, perform `bin/node-add` first, then `bin/pgsql-add`, PGSQL works on managed nodes only.
+
 <details><summary>Example: Create Cluster</summary>
 
 [![asciicast](https://asciinema.org/a/568810.svg)](https://asciinema.org/a/568810)
@@ -102,6 +106,7 @@ bin/pgsql-add <cls>               # init pgsql instances of cluster <cls>  # ./p
 
 
 
+----------------
 
 ## Create User
 
@@ -119,6 +124,7 @@ bin/pgsql-user <cls> <username>   # ./pgsql-user.yml -l <cls> -e username=<usern
 
 
 
+----------------
 
 ## Create Database
 
@@ -138,6 +144,7 @@ Note: If the database has specified an owner, the user should already exist, or 
 
 
 
+----------------
 
 ## Reload Service
 
@@ -160,7 +167,7 @@ bin/pgsql-svc <cls> [ip...]       # pgsql.yml -l ip... -t pg_service -e pg_reloa
 
 
 
-
+----------------
 
 ## Reload HBARule
 
@@ -184,6 +191,7 @@ bin/pgsql-hba <cls> [ip...]       # pgsql.yml -l ip... -t pg_hba,pgbouncer_hba,p
 
 
 
+----------------
 
 ## Config Cluster
 
@@ -221,7 +229,7 @@ Note: patroni unsafe RestAPI access is limit from infra/admin nodes and protecte
 
 </details>
 
-<details><summary>Example: Config Cluster with PatroniCtl</summary>
+<details><summary>Example: Config Cluster with patronictl</summary>
 
 [![asciicast](https://asciinema.org/a/568799.svg)](https://asciinema.org/a/568799)
 
@@ -229,6 +237,7 @@ Note: patroni unsafe RestAPI access is limit from infra/admin nodes and protecte
 
 
 
+----------------
 
 ## Append Replica
 
@@ -284,6 +293,7 @@ which is similar to cluster init but only works on single instance。
 
 
 
+----------------
 
 ## Remove Replica
 
@@ -336,6 +346,7 @@ bin/pgsql-svc pg-test             # reload pg service on pg-test
 
 
 
+----------------
 
 ## Remove Cluster
 
@@ -366,6 +377,7 @@ You can use playbook command line args to explicitly overwrite it to force the p
 
 
 
+----------------
 
 ## Switchover
 
@@ -438,7 +450,7 @@ curl -u 'postgres:Patroni.API' \
 
 
 
-
+----------------
 
 ## Backup Cluster
 
@@ -455,8 +467,6 @@ pb info                           # check backup information
 Check [Backup](PGSQL-PITR) & PITR for details.
 
 <details><summary>Example: Make Backups</summary>
-
-You can add crontab to [`node_crontab`](PARAM#node_crontab) to specify your backup policy.
 
 [![asciicast](https://asciinema.org/a/568813.svg)](https://asciinema.org/a/568813)
 
@@ -480,6 +490,7 @@ You can add crontab to [`node_crontab`](PARAM#node_crontab) to specify your back
 
 
 
+----------------
 
 ## Restore Cluster
 
@@ -516,6 +527,7 @@ pgbackrest --stanza=pg-meta --type=immediate --target-action=promote \
 
 
 
+----------------
 
 ## Adding Packages
 
@@ -533,11 +545,18 @@ ansible pg-test -b -m package -a "name=pg_cron_15,topn_15,pg_stat_monitor_15*"  
 
 ```bash
 # add repo upstream on admin node, then download them manually
-cd ~/pigsty; ./infra.yml -t repo_upstream                 # add upstream repo (internet)
-cd /www/pigsty;  repotrack "some_new_package_name"        # download the latest RPMs
-cd ~/pigsty; ./infra.yml -t repo_create                   # re-create local yum repo
+cd ~/pigsty; ./infra.yml -t repo_upstream,repo_cache # add upstream repo (internet)
+cd /www/pigsty;  repotrack "some_new_package_name"   # download the latest RPMs
+
+# re-create local repo on admin node, then refresh yum/apt cache on all nodes
+cd ~/pigsty; ./infra.yml -t repo_create              # recreate local repo on admin node
+./node.yml -t node_repo                              # refresh yum/apt cache on all nodes
+
+# alternatives: clean and remake cache on all nodes with ansible command
 ansible all -b -a 'yum clean all'                         # clean node repo cache
-ansible all -b -a 'yum makecache'                         # remake yum cache from the new repo
+ansible all -b -a 'yum makecache'                         # remake cache from the new repo
+ansible all -b -a 'apt clean'                             # clean node repo cache (Ubuntu/Debian)
+ansible all -b -a 'apt update'                            # remake cache from the new repo (Ubuntu/Debian)
 ```
 
 For example, you can then install or upgrade packages with:
@@ -549,7 +568,7 @@ ansible pg-test -b -m package -a "name=postgresql15* state=latest"
 </details>
 
 
-
+----------------
 
 ## Install Extension
 
@@ -575,12 +594,14 @@ psql -h pg-test -d postgres -c 'CREATE EXTENSION pg_cron;'  # install pg_cron on
 
 </details>
 
+Check [PGSQL Extensions: Install](PGSQL-EXTENSION#install-extension) for details.
 
 
+----------------
 
 ## Minor Upgrade
 
-To perform a minor server version upgrade/downgrade, you have to [add packages](#adding-packages) to yum repo first.
+To perform a minor server version upgrade/downgrade, you have to [add packages](#adding-packages) to yum/apt repo first.
 
 Then perform a rolling upgrade/downgrade from all replicas, then switchover the cluster to upgrade the leader.
 
@@ -591,13 +612,13 @@ pg restart --force <cls>                                # restart cluster
 
 <details><summary>Example: Downgrade PostgreSQL 15.2 to 15.1</summary>
 
-Add 15.1 packages to yum repo and refresh node yum cache:
+Add 15.1 packages to yum/apt repo and refresh node package manager cache:
 
 ```bash
 cd ~/pigsty; ./infra.yml -t repo_upstream               # add upstream repo backup
 cd /www/pigsty; repotrack postgresql15-*-15.1           # add 15.1 packages to yum repo
 cd ~/pigsty; ./infra.yml -t repo_create                 # re-create repo
-ansible pg-test -b -a 'yum clean all'                   # clean node repo cache
+ansible pg-test -b -a 'yum clean all'                   # clean node repo cache (use apt in debian/ubuntu)
 ansible pg-test -b -a 'yum makecache'                   # remake yum cache from the new repo
 ``` 
 
@@ -626,6 +647,7 @@ pg restart --role primary --force pg-test               # restart primary
 
 
 
+----------------
 
 ## Major Upgrade
 
@@ -633,7 +655,7 @@ The simplest way to achieve a major version upgrade is to create a new cluster w
 
 You can also perform an in-place major upgrade, which is not recommended especially when certain extensions are installed. But it is possible.
 
-Assume you want to upgrade PostgreSQL 14 to 15, you have to [add packages](#adding-packages) to yum repo, and guarantee the extensions has exact same version too. 
+Assume you want to upgrade PostgreSQL 14 to 15, you have to [add packages](#adding-packages) to yum/apt repo, and guarantee the extensions has exact same version too. 
 
 ```bash
 ./pgsql.yml -t pg_pkg -e pg_version=15                         # install packages for pg 15

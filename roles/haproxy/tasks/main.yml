@@ -17,8 +17,8 @@
       file: path=/etc/default/haproxy state=touch mode=0644
 
     - name: create haproxy systemd service
-      copy: src=haproxy.service dest=/usr/lib/systemd/system/haproxy.service
-
+      copy: src=haproxy.service dest={{ systemd_dir }}/haproxy.service
+      vars: { systemd_dir: "{% if os_package is defined and os_package == 'deb' %}/lib/systemd/system/{% else %}/usr/lib/systemd/system{% endif %}" }
 
 #--------------------------------------------------------------#
 # Config Haproxy                                [haproxy_config]
@@ -30,6 +30,7 @@
     - name: wipe haproxy config dir
       when: haproxy_clean|bool
       shell: "mkdir -p /etc/haproxy; rm -f /etc/haproxy/* ; /bin/true"
+      args: { executable: /bin/bash }
 
     - name: render haproxy default config
       template: src=haproxy.cfg.j2 dest=/etc/haproxy/haproxy.cfg owner=root mode=0644

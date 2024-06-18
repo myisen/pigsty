@@ -10,31 +10,29 @@ Pigsty runs on nodes, which are Bare Metals or Virtual Machines. You can prepare
 
 ## Sandbox
 
-Pigsty has a sandbox, which is a 4-node deployment with fixed IP addresses and other identifiers. Check [`demo.yml`](https://github.com/Vonng/pigsty/blob/master/files/pigsty/demo.yml) for details.
+Pigsty has a sandbox, which is a 4-node deployment with fixed IP addresses and other identifiers.
+Check [`demo.yml`](https://github.com/Vonng/pigsty/blob/master/files/pigsty/demo.yml) for details.
 
 The sandbox consists of 4 nodes with fixed IP addresses: `10.10.10.10`, `10.10.10.11`, `10.10.10.12`, `10.10.10.13`.
-
-and a 3-instance PostgreSQL HA cluster: `pg-test`
 
 There's a primary singleton PostgreSQL cluster: `pg-meta` on the `meta` node, which can be used alone if you don't care about PostgreSQL high availability.
 
 * `meta    10.10.10.10  pg-meta pg-meta-1`
 
-There are 3 additional nodes in the sandbox, with a 3-instance PostgreSQL HA cluster `pg-test`.
+There are 3 additional nodes in the sandbox, form a 3-instance PostgreSQL HA cluster `pg-test`.
 
 * `node-1  10.10.10.11  pg-test.pg-test-1`
 * `node-2  10.10.10.12  pg-test.pg-test-2`
 * `node-3  10.10.10.13  pg-test.pg-test-3`
 
-Two optional L2 VIP are bind on primary instances of  `pg-meta`  and `pg-test`:
+Two optional L2 VIP are bind on primary instances of cluster `pg-meta`  and `pg-test`:
 
 * `10.10.10.2  pg-meta`
 * `10.10.10.2  pg-test`
 
 There's also a 1-instance `etcd` cluster, and 1-instance `minio` cluster on the `meta` node, too.
 
-![pigsty-sandbox](https://user-images.githubusercontent.com/8587410/218279650-5d5e8b09-8907-42bf-a48c-4c28bcc73ddd.jpg)
-
+![pigsty-sandbox.jpg](https://repo.pigsty.cc/img/pigsty-sandbox.jpg)
 
 You can run sandbox on local VMs or cloud VMs. Pigsty offers a local sandbox based on [Vagrant](#vagrant) (pulling up local VMs using Virtualbox or libvirt), and a cloud sandbox based on Terraform (creating VMs using the cloud vendor API).
 
@@ -48,39 +46,39 @@ You can run sandbox on local VMs or cloud VMs. Pigsty offers a local sandbox bas
 
 ## Vagrant
 
-
 [Vagrant](https://www.vagrantup.com/) can create local VMs according to specs in a declarative way.
 Check [Vagrant Templates Intro](https://github.com/Vonng/pigsty/tree/master/vagrant/README.md) for details 
 
 Vagrant will use  [VirtualBox](https://www.virtualbox.org/) as the default VM provider.
 however libvirt, docker, parallel desktop and vmware can also be used. We will use VirtualBox in this guide.
 
+
 ### Installation
 
 Make sure [Vagrant](https://www.vagrantup.com/) and [Virtualbox](https://www.virtualbox.org/) are installed and available on your OS. 
 
-If you are using macOS, You can use `homebrew` to install both of them with one command (reboot required).
+If you are using macOS, You can use `homebrew` to install both of them with one command (reboot required). You can also use [vagrant-libvirt](https://vagrant-libvirt.github.io/vagrant-libvirt/) on Linux.
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew install vagrant virtualbox ansible
+brew install vagrant virtualbox ansible   # Run on MacOS with one command, but only works on x86_64 Intel chips
 ```
 
 ### Configuration
 
 [`vagarnt/Vagranfile`](https://github.com/Vonng/pigsty/blob/master/vagrant/Vagrantfile) is a ruby script file describing VM nodes. Here are some default specs of Pigsty.
 
-|         Templates         | Shortcut |      Spec       |               Comment               |
-|:-------------------------:|:--------:|:---------------:|:-----------------------------------:|
-|  [meta.rb](spec/meta.rb)  |   `v1`   |    4C8G x 1     |          Single Meta Node           |
-|  [full.rb](spec/full.rb)  |   `v4`   | 2C4G + 1C2G x 3 |      Full 4 Nodes Sandbox Demo      |
-|   [el7.rb](spec/el7.rb)   |   `v7`   | 2C4G + 1C2G x 3 |       EL7 3-node Testing Env        |
-|   [el8.rb](spec/el8.rb)   |   `v8`   | 2C4G + 1C2G x 3 |       EL8 3-node Testing Env        |
-|   [el9.rb](spec/el9.rb)   |   `v9`   | 2C4G + 1C2G x 3 |       EL9 3-node Testing Env        |
-| [build.rb](spec/build.rb) |   `vb`   |    2C4G x 3     | 3-Node EL7,8,9 Building Environment |
-| [citus.rb](spec/citus.rb) |   `vc`   | 2C4G + 1C2G x 4 |    5-Node Citus/Etcd Testing Env    |
-| [minio.rb](spec/minio.rb) |   `vm`   | 2C4G x 3 + Disk |    3-Node MinIO/etcd Testing Env    |
-|  [prod.rb](spec/prod.rb)  |   `vp`   |    45 nodes     |    Prod simulation with 45 Nodes    |
+|                                   Templates                                   | Shortcut |      Spec       |               Comment               |
+|:-----------------------------------------------------------------------------:|:--------:|:---------------:|:-----------------------------------:|
+|  [meta.rb](https://github.com/Vonng/pigsty/blob/master/vagrant/spec/meta.rb)  |   `v1`   |    4C8G x 1     |          Single Meta Node           |
+|  [full.rb](https://github.com/Vonng/pigsty/blob/master/vagrant/spec/full.rb)  |   `v4`   | 2C4G + 1C2G x 3 |      Full 4 Nodes Sandbox Demo      |
+|   [el7.rb](https://github.com/Vonng/pigsty/blob/master/vagrant/spec/el7.rb)   |   `v7`   | 2C4G + 1C2G x 3 |       EL7 3-node Testing Env        |
+|   [el8.rb](https://github.com/Vonng/pigsty/blob/master/vagrant/spec/el8.rb)   |   `v8`   | 2C4G + 1C2G x 3 |       EL8 3-node Testing Env        |
+|   [el9.rb](https://github.com/Vonng/pigsty/blob/master/vagrant/spec/el9.rb)   |   `v9`   | 2C4G + 1C2G x 3 |       EL9 3-node Testing Env        |
+| [build.rb](https://github.com/Vonng/pigsty/blob/master/vagrant/spec/build.rb) |   `vb`   |    2C4G x 3     | 3-Node EL7,8,9 Building Environment |
+| [check.rb](https://github.com/Vonng/pigsty/blob/master/vagrant/spec/check.rb) |   `vc`   |   2C4G x 30     |    30 Node EL7-EL9 PG 12-16 Env     |
+| [minio.rb](https://github.com/Vonng/pigsty/blob/master/vagrant/spec/minio.rb) |   `vm`   | 2C4G x 3 + Disk |    3-Node MinIO/etcd Testing Env    |
+|  [prod.rb](https://github.com/Vonng/pigsty/blob/master/vagrant/spec/prod.rb)  |   `vp`   |    45 nodes     |    Prod simulation with 45 Nodes    |
 
 
 Each spec file contains a `Specs` variable describe VM nodes. For example, the `full.rb` contains the 4-node sandbox specs.
@@ -94,7 +92,7 @@ Specs = [
 ]
 ```
 
-You can switch specs with the [`switch`](switch) script, it will render the final `Vagrantfile` according to the spec.
+You can switch specs with the `vagrant/switch` script, it will render the final `Vagrantfile` according to the spec.
 
 ```bash
 cd ~/pigsty
@@ -108,8 +106,9 @@ vagrant/switch el9      # 3-node el9 test       | alias:  `make v9`
 vagrant/switch prod     # prod simulation       | alias:  `make vp`
 vagrant/switch build    # building environment  | alias:  `make vd`
 vagrant/switch minio    # 3-node minio env
-vagrant/switch citus    # 5-node citus env
+vagrant/switch check    # 30-node check env
 ```
+
 
 ### Management
 
@@ -150,13 +149,14 @@ make el9      # 3-node el9 test
 make prod     # prod simulation
 make build    # building environment
 make minio    # 3-node minio env
-make citus    # 5-node citus env
+make check    # 30-node check env
 ```
 
 ```bash
-make meta install  # create and install pigsty on 1-node singleton meta
-make full install  # create and install pigsty on 4-node sandbox
-make prod install  # create and install pigsty on 42-node KVM libvirt environment
+make meta  install   # create and install pigsty on 1-node singleton meta
+make full  install   # create and install pigsty on 4-node sandbox
+make prod  install   # create and install pigsty on 42-node KVM libvirt environment
+make check install   # create and install pigsty on 30-node testing & validating environment
 ...
 ```
 
@@ -164,10 +164,11 @@ make prod install  # create and install pigsty on 42-node KVM libvirt environmen
 
 ----------------
 
-
 ## Terraform
 
 [Terraform](https://www.terraform.io/) is an open-source tool to practice 'Infra as Code'. Describe the cloud resource you want and create them with one command.
+
+Pigsty has terraform templates for AWS, Aliyun, and Tencent Cloud, you can use them to create VMs on the cloud for Pigsty Demo.
 
 Terraform can be easily installed with homebrew, too: `brew install terraform`. You will have to create a cloud account to obtain AccessKey and AccessSecret credentials to proceed.
 
@@ -177,8 +178,8 @@ The `terraform/` dir have two example templates: one for AWS, and one for Aliyun
 Take Aliyun as example:
 
 ```bash
-cd terraform                         # goto the terraform dir
-cp spec/alicloud.tf terraform.tf     # use aliyun template
+cd terraform                          # goto the terraform dir
+cp spec/aliyun.tf terraform.tf        # use aliyun template
 ```
 
 You have to perform `terraform init` before `terraform apply`:
@@ -190,7 +191,4 @@ terraform apply     # generate execution plans: create VMs, virtual segments/swi
 
 After running `apply` and answering `yes` to the prompt, Terraform will create the VMs and configure the network for you.
 
-The admin node ip address will be printed out at the end of the execution, you can log in and start pigsty [installation](INSTALL) 
-
-
-
+The admin node ip address will be printed out at the end of the execution, you can ssh login and start pigsty [installation](INSTALL).

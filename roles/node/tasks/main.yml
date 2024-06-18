@@ -12,6 +12,7 @@
   when: nodename_overwrite|bool and nodename is defined and nodename != ''
   ignore_errors: yes
   shell: hostname "{{ nodename }}"
+  args: { executable: /bin/bash }
   # hostname: name="{{ nodename }}"
 
 #--------------------------------------------------------------#
@@ -49,5 +50,11 @@
 # 8. TIME                   [node_timezone, node_ntp, node_cron]
 #--------------------------------------------------------------#
 - import_tasks: time.yml
+
+#--------------------------------------------------------------#
+# 9. VIP                    [vip_config, vip_launch, vip_reload]
+#--------------------------------------------------------------#
+- import_tasks: vip.yml
+  when: vip_enabled|bool
 
 ...

@@ -282,13 +282,15 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 16,
                     "valueSize": 16
                 },
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -336,7 +338,6 @@
                     "refId": "B"
                 }
             ],
-            "transformations": [],
             "type": "stat"
         },
         {
@@ -725,7 +726,7 @@
                     }
                 ]
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -906,13 +907,15 @@
                     "fields": "/.*/",
                     "values": true
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 16,
                     "valueSize": 16
                 },
-                "textMode": "value"
+                "textMode": "value",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -1094,10 +1097,12 @@
                     "fields": "/.*/",
                     "values": true
                 },
+                "showPercentChange": false,
                 "text": {},
-                "textMode": "auto"
+                "textMode": "auto",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -1891,7 +1896,6 @@
                 "y": 9
             },
             "id": 198,
-            "links": [],
             "options": {
                 "cellHeight": "sm",
                 "footer": {
@@ -1911,7 +1915,7 @@
                     }
                 ]
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -3136,7 +3140,6 @@
                 "y": 23
             },
             "id": 189,
-            "links": [],
             "options": {
                 "cellHeight": "sm",
                 "footer": {
@@ -3156,7 +3159,7 @@
                     }
                 ]
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -5154,8 +5157,7 @@
     ],
     "refresh": "",
     "revision": 1,
-    "schemaVersion": 38,
-    "style": "light",
+    "schemaVersion": 39,
     "tags": [
         "Pigsty",
         "PGSQL",

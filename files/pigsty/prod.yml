@@ -3,16 +3,13 @@
 # File      :   prod.yml
 # Desc      :   Pigsty config for a prod simulation env on a BM
 # Ctime     :   2023-07-20
-# Mtime     :   2023-07-30
-# Docs      :   https://vonng.github.io/pigsty/#/CONFIG
+# Mtime     :   2024-02-19
+# Docs      :   https://pigsty.io/docs/setup/config/
 # Author    :   Ruohang Feng (rh@vonng.com)
 # License   :   AGPLv3
 #==============================================================#
 
-#==============================================================#
-# 10.10.10.1  <------- pg-dell-1  the bare metal 72C 256G 4T SSD
-# Vagrantfile: vagrant/spec/dell.rb
-#==============================================================#
+
 all:
 
   children:
@@ -22,6 +19,7 @@ all:
     # infra: 2 nodes
     #==========================================================#
     # ./infra.yml -l infra
+    # ./docker.yml -l infra (optional)
     infra:
       hosts:
         10.10.10.10: { infra_seq: 1 ,nodename: infra-1 }
@@ -30,7 +28,22 @@ all:
         node_id_from_pg: false
         node_cluster: infra
         node_conf: oltp
-        docker_enabled: true
+        pg_exporters:           # bin/pgmon-add pg-meta2/pg-test2/pg-src2/pg-dst2
+          20001: {pg_cluster: pg-meta2   ,pg_seq: 1 ,pg_host: 10.10.10.10, pg_databases: [{ name: meta }]}
+          20002: {pg_cluster: pg-meta2   ,pg_seq: 2 ,pg_host: 10.10.10.11, pg_databases: [{ name: meta }]}
+
+          20003: {pg_cluster: pg-test2   ,pg_seq: 1 ,pg_host: 10.10.10.41, pg_databases: [{ name: test }]}
+          20004: {pg_cluster: pg-test2   ,pg_seq: 2 ,pg_host: 10.10.10.42, pg_databases: [{ name: test }]}
+          20005: {pg_cluster: pg-test2   ,pg_seq: 3 ,pg_host: 10.10.10.43, pg_databases: [{ name: test }]}
+          20006: {pg_cluster: pg-test2   ,pg_seq: 4 ,pg_host: 10.10.10.44, pg_databases: [{ name: test }]}
+
+          20007: {pg_cluster: pg-src2    ,pg_seq: 1 ,pg_host: 10.10.10.45, pg_databases: [{ name: src }]}
+          20008: {pg_cluster: pg-src2    ,pg_seq: 2 ,pg_host: 10.10.10.46, pg_databases: [{ name: src }]}
+          20009: {pg_cluster: pg-src2    ,pg_seq: 3 ,pg_host: 10.10.10.47, pg_databases: [{ name: src }]}
+
+          20010: {pg_cluster: pg-dst2    ,pg_seq: 3 ,pg_host: 10.10.10.48, pg_databases: [{ name: dst }]}
+          20011: {pg_cluster: pg-dst2    ,pg_seq: 4 ,pg_host: 10.10.10.49, pg_databases: [{ name: dst }]}
+
 
     #==========================================================#
     # node: 42 nodes 71C-174G
@@ -38,49 +51,49 @@ all:
     # ./node.yml
     nodes:
       hosts:
-        10.10.10.10 : { nodename: meta-1        ,cpu: 8 ,mem: 32768  ,image: generic/rocky9 }
-        10.10.10.11 : { nodename: meta-2        ,cpu: 8 ,mem: 32768  ,image: generic/rocky9 }
-        10.10.10.12 : { nodename: pg-v12-1      ,cpu: 2 ,mem: 4096   ,image: generic/rocky9 }
-        10.10.10.13 : { nodename: pg-v13-1      ,cpu: 2 ,mem: 4096   ,image: generic/rocky9 }
-        10.10.10.14 : { nodename: pg-v14-1      ,cpu: 2 ,mem: 4096   ,image: generic/rocky9 }
-        10.10.10.15 : { nodename: pg-v15-1      ,cpu: 2 ,mem: 4096   ,image: generic/rocky9 }
-        10.10.10.16 : { nodename: pg-v16-1      ,cpu: 2 ,mem: 4096   ,image: generic/rocky9 }
-        10.10.10.21 : { nodename: etcd-1        ,cpu: 2 ,mem: 4096   ,image: generic/rocky9 }
-        10.10.10.22 : { nodename: etcd-2        ,cpu: 2 ,mem: 4096   ,image: generic/rocky9 }
-        10.10.10.23 : { nodename: etcd-3        ,cpu: 2 ,mem: 4096   ,image: generic/rocky9 }
-        10.10.10.24 : { nodename: etcd-4        ,cpu: 2 ,mem: 4096   ,image: generic/rocky9 }
-        10.10.10.25 : { nodename: etcd-5        ,cpu: 2 ,mem: 4096   ,image: generic/rocky9 }
-        10.10.10.26 : { nodename: minio-1       ,cpu: 2 ,mem: 4096   ,image: generic/rocky9 }
-        10.10.10.27 : { nodename: minio-2       ,cpu: 2 ,mem: 4096   ,image: generic/rocky9 }
-        10.10.10.28 : { nodename: minio-3       ,cpu: 2 ,mem: 4096   ,image: generic/rocky9 }
-        10.10.10.29 : { nodename: proxy-1       ,cpu: 2 ,mem: 4096   ,image: generic/rocky9 }
-        10.10.10.30 : { nodename: proxy-2       ,cpu: 2 ,mem: 4096   ,image: generic/rocky9 }
-        10.10.10.41 : { nodename: pg-test-1     ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.42 : { nodename: pg-test-2     ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.43 : { nodename: pg-test-3     ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.44 : { nodename: pg-test-4     ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.45 : { nodename: pg-src-1      ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.46 : { nodename: pg-src-2      ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.47 : { nodename: pg-src-3      ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.48 : { nodename: pg-dst-1      ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.49 : { nodename: pg-dst-2      ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.50 : { nodename: pg-citus0-1   ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.51 : { nodename: pg-citus0-2   ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.52 : { nodename: pg-citus1-1   ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.53 : { nodename: pg-citus1-2   ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.54 : { nodename: pg-citus2-1   ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.55 : { nodename: pg-citus2-2   ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.56 : { nodename: pg-citus3-1   ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.57 : { nodename: pg-citus3-2   ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.58 : { nodename: pg-citus4-1   ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.59 : { nodename: pg-citus4-2   ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.81 : { nodename: redis-test-1  ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.82 : { nodename: redis-test-2  ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.83 : { nodename: redis-test-3  ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.84 : { nodename: redis-test-4  ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.85 : { nodename: redis-ms-1    ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-        10.10.10.86 : { nodename: redis-ms-2    ,cpu: 1 ,mem: 2048   ,image: generic/rocky9 }
-
+        10.10.10.10 : { nodename: meta-1        ,cpu: 8 ,mem: 32768 }
+        10.10.10.11 : { nodename: meta-2        ,cpu: 8 ,mem: 32768 }
+        10.10.10.12 : { nodename: pg-v12-1      ,cpu: 2 ,mem: 4096  }
+        10.10.10.13 : { nodename: pg-v13-1      ,cpu: 2 ,mem: 4096  }
+        10.10.10.14 : { nodename: pg-v14-1      ,cpu: 2 ,mem: 4096  }
+        10.10.10.15 : { nodename: pg-v15-1      ,cpu: 2 ,mem: 4096  }
+        10.10.10.16 : { nodename: pg-v16-1      ,cpu: 2 ,mem: 4096  }
+        10.10.10.21 : { nodename: etcd-1        ,cpu: 2 ,mem: 4096  }
+        10.10.10.22 : { nodename: etcd-2        ,cpu: 2 ,mem: 4096  }
+        10.10.10.23 : { nodename: etcd-3        ,cpu: 2 ,mem: 4096  }
+        10.10.10.24 : { nodename: etcd-4        ,cpu: 2 ,mem: 4096  }
+        10.10.10.25 : { nodename: etcd-5        ,cpu: 2 ,mem: 4096  }
+        10.10.10.26 : { nodename: minio-1       ,cpu: 2 ,mem: 4096  }
+        10.10.10.27 : { nodename: minio-2       ,cpu: 2 ,mem: 4096  }
+        10.10.10.28 : { nodename: minio-3       ,cpu: 2 ,mem: 4096  }
+        10.10.10.29 : { nodename: proxy-1       ,cpu: 2 ,mem: 4096  }
+        10.10.10.30 : { nodename: proxy-2       ,cpu: 2 ,mem: 4096  }
+        10.10.10.41 : { nodename: pg-test-1     ,cpu: 1 ,mem: 2048  }
+        10.10.10.42 : { nodename: pg-test-2     ,cpu: 1 ,mem: 2048  }
+        10.10.10.43 : { nodename: pg-test-3     ,cpu: 1 ,mem: 2048  }
+        10.10.10.44 : { nodename: pg-test-4     ,cpu: 1 ,mem: 2048  }
+        10.10.10.45 : { nodename: pg-src-1      ,cpu: 1 ,mem: 2048  }
+        10.10.10.46 : { nodename: pg-src-2      ,cpu: 1 ,mem: 2048  }
+        10.10.10.47 : { nodename: pg-src-3      ,cpu: 1 ,mem: 2048  }
+        10.10.10.48 : { nodename: pg-dst-1      ,cpu: 1 ,mem: 2048  }
+        10.10.10.49 : { nodename: pg-dst-2      ,cpu: 1 ,mem: 2048  }
+        10.10.10.50 : { nodename: pg-citus0-1   ,cpu: 1 ,mem: 2048  }
+        10.10.10.51 : { nodename: pg-citus0-2   ,cpu: 1 ,mem: 2048  }
+        10.10.10.52 : { nodename: pg-citus1-1   ,cpu: 1 ,mem: 2048  }
+        10.10.10.53 : { nodename: pg-citus1-2   ,cpu: 1 ,mem: 2048  }
+        10.10.10.54 : { nodename: pg-citus2-1   ,cpu: 1 ,mem: 2048  }
+        10.10.10.55 : { nodename: pg-citus2-2   ,cpu: 1 ,mem: 2048  }
+        10.10.10.56 : { nodename: pg-citus3-1   ,cpu: 1 ,mem: 2048  }
+        10.10.10.57 : { nodename: pg-citus3-2   ,cpu: 1 ,mem: 2048  }
+        10.10.10.58 : { nodename: pg-citus4-1   ,cpu: 1 ,mem: 2048  }
+        10.10.10.59 : { nodename: pg-citus4-2   ,cpu: 1 ,mem: 2048  }
+        10.10.10.81 : { nodename: redis-test-1  ,cpu: 1 ,mem: 2048  }
+        10.10.10.82 : { nodename: redis-test-2  ,cpu: 1 ,mem: 2048  }
+        10.10.10.83 : { nodename: redis-test-3  ,cpu: 1 ,mem: 2048  }
+        10.10.10.84 : { nodename: redis-test-4  ,cpu: 1 ,mem: 2048  }
+        10.10.10.85 : { nodename: redis-ms-1    ,cpu: 1 ,mem: 2048  }
+        10.10.10.86 : { nodename: redis-ms-2    ,cpu: 1 ,mem: 2048  }
+        10.10.10.88 : { nodename: test          ,cpu: 4 ,mem: 8192  }
 
     #==========================================================#
     # pg-meta: reuse infra node as meta cmdb
@@ -96,41 +109,63 @@ all:
         pg_vip_address: 10.10.10.2/24
         pg_vip_interface: eth1
         pg_users:
-          - { name: dbuser_meta ,password: DBUser.Meta   ,pgbouncer: true ,roles: [ dbrole_admin ]    ,comment: pigsty admin user }
-          - { name: dbuser_view ,password: DBUser.Viewer ,pgbouncer: true ,roles: [ dbrole_readonly ] ,comment: read-only viewer for meta database }
+          - {name: dbuser_meta     ,password: DBUser.Meta     ,pgbouncer: true ,roles: [dbrole_admin]    ,comment: pigsty admin user }
+          - {name: dbuser_view     ,password: DBUser.Viewer   ,pgbouncer: true ,roles: [dbrole_readonly] ,comment: read-only viewer for meta database }
+          - {name: dbuser_grafana  ,password: DBUser.Grafana  ,pgbouncer: true ,roles: [dbrole_admin]    ,comment: admin user for grafana database    }
+          - {name: dbuser_bytebase ,password: DBUser.Bytebase ,pgbouncer: true ,roles: [dbrole_admin]    ,comment: admin user for bytebase database   }
+          - {name: dbuser_kong     ,password: DBUser.Kong     ,pgbouncer: true ,roles: [dbrole_admin]    ,comment: admin user for kong api gateway    }
+          - {name: dbuser_gitea    ,password: DBUser.Gitea    ,pgbouncer: true ,roles: [dbrole_admin]    ,comment: admin user for gitea service       }
+          - {name: dbuser_wiki     ,password: DBUser.Wiki     ,pgbouncer: true ,roles: [dbrole_admin]    ,comment: admin user for wiki.js service     }
+          - {name: dbuser_noco     ,password: DBUser.Noco     ,pgbouncer: true ,roles: [dbrole_admin]    ,comment: admin user for nocodb service      }
         pg_databases:
-          - { name: meta ,baseline: cmdb.sql ,comment: pigsty meta database ,schemas: [ pigsty ] ,extensions: [ { name: postgis, schema: public }, { name: timescaledb } ] }
+          - { name: meta ,baseline: cmdb.sql ,comment: pigsty meta database ,schemas: [pigsty] ,extensions: [{name: postgis, schema: public}, {name: timescaledb}]}
+          - { name: grafana  ,owner: dbuser_grafana  ,revokeconn: true ,comment: grafana primary database }
+          - { name: bytebase ,owner: dbuser_bytebase ,revokeconn: true ,comment: bytebase primary database }
+          - { name: kong     ,owner: dbuser_kong     ,revokeconn: true ,comment: kong the api gateway database }
+          - { name: gitea    ,owner: dbuser_gitea    ,revokeconn: true ,comment: gitea meta database }
+          - { name: wiki     ,owner: dbuser_wiki     ,revokeconn: true ,comment: wiki meta database }
+          - { name: noco     ,owner: dbuser_noco     ,revokeconn: true ,comment: nocodb database }
         pg_hba_rules:
           - { user: dbuser_view , db: all ,addr: infra ,auth: pwd ,title: 'allow grafana dashboard access cmdb from infra nodes' }
+        pg_extensions: # Global Installed Extensions
+          - postgis34_$v* timescaledb-2-postgresql-$v* pgvector_$v* # citus_$v* pglogical_$v* pg_cron_$v*
+          #[ GIS & Timeseries  ]# - timescaledb-2-postgresql-$v* postgis34_$v* pgrouting_$v* pointcloud_$v* h3-pg_$v* ip4r_$v* # geoip_$v*
+          #[ Vector Search RAG ]# - pgvector_$v* pg_vectorize_$v pg_tiktoken_$v pgml_$v pg_search_$v pg_bigm_$v* zhparser_$v*
+          #[ OLAP & Sharding   ]# - hydra_$v* duckdb_fdw_$v* parquet_s3_fdw_$v* pg_lakehouse_$v pg_analytics_$v pg_tier_$v pg_fkpart_$v* pg_partman_$v* # citus_$v* plproxy_$v* # pg_strom_$v*
+          #[ Featured & AM     ]# - apache-age_$v* pg_graphql_$v pg_jsonschema_$v jsquery_$v* pg_hint_plan_$v* hypopg_$v* pg_ivm_$v* pgmq_$v pgq_$v* pgtt_$v* temporal_tables_$v* e-maj_$v* periods_$v* table_version_$v* pg_statement_rollback_$v* hll_$v* rum_$v
+          #[ Function & Test   ]# - pgjwt_$v* pg_idkit_$v pg_uuidv7_$v* pg_later_$v pg_background_$v* pgsql_gzip_$v* pgsql_http_$v* pg_net_$v* pgsql_tweaks_$v* count_distinct_$v* extra_window_functions_$v* tdigest_$v* pg_extra_time_$v* topn_$v*
+          #[ FDW & Compatible  ]# - wrappers_$v mongo_fdw_$v* mysql_fdw_$v* ogr_fdw_$v* sqlite_fdw_$v* tds_fdw_$v* hdfs_fdw_$v* pgbouncer_fdw_$v* orafce_$v* pgmemcache_$v* pg_dbms_lock_$v* pg_dbms_metadata_$v* # pg_dbms_job_$v* mysqlcompat_$v* # multicorn2_$v* oracle_fdw_$v* db2_fdw_$v*
+          #[ Type, PL, Test    ]# - prefix_$v* timestamp9_$v* semver_$v* pgmp_$v* pguint_$v* pg_roaringbitmap_$v* md5hash_$v* pg_tle_$v* plv8_$v* pllua_$v* luapgsql plprql_$v pldebugger_$v* plpgsql_check_$v* plprofiler_$v* plsh_$v* # plr_$v* # postgresql_faker_$v* # dbt2-pg$v-extensions* # postgresql-unit_$v* pgtap_$v*
+          #[ Administration    ]# - pg_cron_$v* pg_repack_$v* pg_squeeze_$v* pg_dirtyread_$v* pgdd_$v pgfincore_$v* pgl_ddl_deploy_$v* pg_prioritize_$v* pg_readonly_$v* pgagent_$v* pg_checksums_$v* safeupdate_$v* ddlx_$v* pg_permissions_$v* pg_auto_failover_$v* pg_catcheck_$v* pgxnclient pg_filedump # pgpool-II-pg$v-extensions
+          #[ Monitor & Stat    ]# - pg_profile_$v* pg_show_plans_$v* pg_stat_kcache_$v* pg_stat_monitor_$v* pg_qualstats_$v* pg_statviz_extension_$v pg_store_plans_$v* pg_top_$v* pg_track_settings_$v* pg_wait_sampling_$v* system_stats_$v* bgw_replstatus_$v* powa-archivist_$v* powa_$v* pgmeminfo_$v* # pgexporter_ext_$v*
+          #[ Security & Audit  ]# - passwordcheck_cracklib_$v* pgsodium_$v* vault_$v* postgresql_anonymizer_$v* pg_tde_$v* pgsmcrypto_$v pgaudit_$v* pgauditlogtofile_$v* pg_auth_mon_$v* credcheck_$v* pgcryptokey_$v* pg_jobmon_$v* logerrors_$v* login_hook_$v* set_user_$v*
+          #[ ETL, CDC, REPL    ]# - pglogical_$v* postgres-decoderbufs_$v* wal2json_$v* pg_failover_slots_$v* pg_fact_loader_$v* pg_bulkload_$v* pg_comparator_$v* pgimportdoc_$v* pgexportdoc_$v* pgcopydb pgloader # repmgr_$v*
+
+        pg_libs: 'timescaledb, pg_stat_statements, auto_explain' # add timescaledb to shared_preload_libraries
         node_crontab:  # make a full backup on monday 1am, and an incremental backup during weekdays
           - '00 01 * * 1 postgres /pg/bin/pg-backup full'
           - '00 01 * * 2,3,4,5,6,7 postgres /pg/bin/pg-backup'
 
     #==========================================================#
-    # pg-v12 - v16
+    # pg-v12 - v16 (no longer supported in OSS ver since 2.6)
     #==========================================================#
     # ./pgsql.yml -l pg-v*
     pg-v12:
       hosts: { 10.10.10.12: { pg_seq: 1 ,pg_role: primary } }
       vars:
         pg_cluster: pg-v12
-        pg_version: 12
-        pg_libs: 'pg_stat_statements, auto_explain'
-        pg_packages: [ 'postgresql12* wal2json_12* pg_repack_12* passwordcheck_cracklib_12* pgbouncer pg_exporter pgbadger vip-manager patroni patroni-etcd pgbackrest' ]
+        #pg_version: 12
         pg_extensions: []
         pg_users: [ { name: test , password: test , pgbouncer: true , roles: [ dbrole_admin ] } ]
         pg_databases: [ { name: v12 } ]
         pg_service_provider: proxy       # use load balancer on group `proxy` with port 10012
         pg_default_services:  [{ name: primary ,port: 10012 ,dest: postgres  ,check: /primary   ,selector: "[]" }]
 
-
     pg-v13:
       hosts: { 10.10.10.13: { pg_seq: 1 ,pg_role: primary } }
       vars:
         pg_cluster: pg-v13
-        pg_version: 13
-        pg_libs: 'pg_stat_statements, auto_explain'
-        pg_packages: [ 'postgresql13* wal2json_13* pg_repack_13* passwordcheck_cracklib_13* pgbouncer pg_exporter pgbadger vip-manager patroni patroni-etcd pgbackrest' ]
+        #pg_version: 13
         pg_extensions: []
         pg_users: [ { name: test , password: test , pgbouncer: true , roles: [ dbrole_admin ] } ]
         pg_databases: [ { name: v13 } ]
@@ -141,7 +176,8 @@ all:
       hosts: { 10.10.10.14: { pg_seq: 1 ,pg_role: primary } }
       vars:
         pg_cluster: pg-v14
-        pg_version: 14
+        #pg_version: 14
+        pg_extensions: []
         pg_users: [ { name: test , password: test , pgbouncer: true , roles: [ dbrole_admin ] } ]
         pg_databases: [ { name: v14 } ]
         pg_service_provider: proxy       # use load balancer on group `proxy` with port 10014
@@ -151,20 +187,17 @@ all:
       hosts: { 10.10.10.15: { pg_seq: 1 ,pg_role: primary } }
       vars:
         pg_cluster: pg-v15
-        pg_version: 15
+        #pg_version: 15
         pg_users: [ { name: test , password: test , pgbouncer: true , roles: [ dbrole_admin ] } ]
         pg_databases: [ { name: v15 } ]
         pg_service_provider: proxy       # use load balancer on group `proxy` with port 10013
         pg_default_services:  [{ name: primary ,port: 10015 ,dest: postgres  ,check: /primary   ,selector: "[]" }]
 
-    pg-v16:
+    pg-v16: # beware that PostgreSQL 16 is not available on el7
       hosts: { 10.10.10.16: { pg_seq: 1 ,pg_role: primary } }
       vars:
         pg_cluster: pg-v16
-        pg_version: 16
-        pg_libs: 'pg_stat_statements, auto_explain'
-        pg_packages: [ postgresql16* pgbouncer pg_exporter pgbadger vip-manager patroni patroni-etcd pgbackrest ]
-        pg_extensions: [ ]
+        #pg_version: 16
         pg_users: [ { name: test , password: test , pgbouncer: true , roles: [ dbrole_admin ] } ]
         pg_databases: [ { name: v16 } ]
         pg_service_provider: proxy       # use load balancer on group `proxy` with port 10013
@@ -201,6 +234,12 @@ all:
         node_cluster: minio
         minio_data: '/data'                 # it should be a raw device for a multi-node deployment!
         minio_node: '${minio_cluster}-${minio_seq}.pigsty' # minio node name pattern
+
+        vip_enabled: true
+        vip_vrid: 127
+        vip_address: 10.10.10.100
+        vip_interface: eth1
+
         haproxy_services:                   # expose minio service via haproxy node port 9002
           - name: minio                     # [REQUIRED] service name, unique
             port: 9002                      # [REQUIRED] service port, unique
@@ -225,6 +264,10 @@ all:
         10.10.10.30: { nodename: proxy-2 }
       vars:
         node_cluster: proxy
+        vip_enabled: true
+        vip_vrid: 128
+        vip_address: 10.10.10.99
+        vip_interface: eth1
 
 
     #==========================================================#
@@ -247,7 +290,7 @@ all:
 
 
     #==========================================================#
-    # pg-src: dedicate 3 node testing cluster, version 14
+    # pg-src: dedicate 3 node testing cluster
     #==========================================================#
     # ./pgsql.yml -l pg-src
     pg-src:
@@ -257,11 +300,10 @@ all:
         10.10.10.47: { pg_seq: 3 ,pg_role: replica }
       vars:
         pg_cluster: pg-src
-        pg_version: 14
+        #pg_version: 14
         pg_vip_enabled: true
         pg_vip_address: 10.10.10.4/24
         pg_vip_interface: eth1
-        node_hugepage_ratio: 0.3
         pg_users:  [{ name: test , password: test , pgbouncer: true , roles: [ dbrole_admin ] }]
         pg_databases: [{ name: src }]
 
@@ -279,6 +321,7 @@ all:
         pg_vip_enabled: true
         pg_vip_address: 10.10.10.5/24
         pg_vip_interface: eth1
+        node_hugepage_ratio: 0.3
         pg_users: [ { name: test , password: test , pgbouncer: true , roles: [ dbrole_admin ] } ]
         pg_databases: [ { name: dst } ]
 
@@ -300,9 +343,10 @@ all:
         pg_vip_enabled: true
         pg_vip_address: 10.10.10.60/24
         pg_vip_interface: eth1
+        pg_extensions: [ 'citus_$v* postgis34_$v* timescaledb-2-postgresql-$v* pgvector_$v*' ]
         pg_libs: 'citus, timescaledb, pg_stat_statements, auto_explain' # citus will be added by patroni automatically
         pg_users: [{ name: test ,password: test ,pgbouncer: true ,roles: [ dbrole_admin ] }]
-        pg_databases:  [{ name: test ,owner: citus ,extensions: [{name: citus}, {name: postgis}, {name: timescaledb}] }]
+        pg_databases:  [{ name: test ,owner: citus ,extensions: [{name: citus}, {name: postgis}] }]
         pg_hba_rules:
           - { user: 'all' ,db: all  ,addr: 10.10.10.0/24 ,auth: trust ,title: 'trust citus cluster members'        }
           - { user: 'all' ,db: all  ,addr: 127.0.0.1/32  ,auth: ssl   ,title: 'all user ssl access from localhost' }
@@ -322,9 +366,10 @@ all:
         pg_vip_enabled: true
         pg_vip_address: 10.10.10.61/24
         pg_vip_interface: eth1
+        pg_extensions: [ 'citus_$v* postgis34_$v* timescaledb-2-postgresql-$v* pgvector_$v*' ]
         pg_libs: 'citus, timescaledb, pg_stat_statements, auto_explain' # citus will be added by patroni automatically
         pg_users: [{ name: test ,password: test ,pgbouncer: true ,roles: [ dbrole_admin ] }]
-        pg_databases:  [{ name: test ,owner: citus ,extensions: [{name: citus}, {name: postgis}, {name: timescaledb}] }]
+        pg_databases:  [{ name: test ,owner: citus ,extensions: [{name: citus}, {name: postgis}] }]
         pg_hba_rules:
           - { user: 'all' ,db: all  ,addr: 10.10.10.0/24 ,auth: trust ,title: 'trust citus cluster members'        }
           - { user: 'all' ,db: all  ,addr: 127.0.0.1/32  ,auth: ssl   ,title: 'all user ssl access from localhost' }
@@ -344,9 +389,10 @@ all:
         pg_vip_enabled: true
         pg_vip_address: 10.10.10.62/24
         pg_vip_interface: eth1
+        pg_extensions: [ 'citus_$v* postgis34_$v* timescaledb-2-postgresql-$v* pgvector_$v*' ]
         pg_libs: 'citus, timescaledb, pg_stat_statements, auto_explain' # citus will be added by patroni automatically
         pg_users: [{ name: test ,password: test ,pgbouncer: true ,roles: [ dbrole_admin ] }]
-        pg_databases:  [{ name: test ,owner: citus ,extensions: [{name: citus}, {name: postgis}, {name: timescaledb}] }]
+        pg_databases:  [{ name: test ,owner: citus ,extensions: [{name: citus}, {name: postgis}] }]
         pg_hba_rules:
           - { user: 'all' ,db: all  ,addr: 10.10.10.0/24 ,auth: trust ,title: 'trust citus cluster members'        }
           - { user: 'all' ,db: all  ,addr: 127.0.0.1/32  ,auth: ssl   ,title: 'all user ssl access from localhost' }
@@ -366,9 +412,10 @@ all:
         pg_vip_enabled: true
         pg_vip_address: 10.10.10.63/24
         pg_vip_interface: eth1
+        pg_extensions: [ 'citus_$v* postgis34_$v* timescaledb-2-postgresql-$v* pgvector_$v*' ]
         pg_libs: 'citus, timescaledb, pg_stat_statements, auto_explain' # citus will be added by patroni automatically
         pg_users: [{ name: test ,password: test ,pgbouncer: true ,roles: [ dbrole_admin ] }]
-        pg_databases:  [{ name: test ,owner: citus ,extensions: [{name: citus}, {name: postgis}, {name: timescaledb}] }]
+        pg_databases:  [{ name: test ,owner: citus ,extensions: [{name: citus}, {name: postgis}] }]
         pg_hba_rules:
           - { user: 'all' ,db: all  ,addr: 10.10.10.0/24 ,auth: trust ,title: 'trust citus cluster members'        }
           - { user: 'all' ,db: all  ,addr: 127.0.0.1/32  ,auth: ssl   ,title: 'all user ssl access from localhost' }
@@ -388,15 +435,14 @@ all:
         pg_vip_enabled: true
         pg_vip_address: 10.10.10.64/24
         pg_vip_interface: eth1
+        pg_extensions: [ 'citus_$v* postgis34_$v* timescaledb-2-postgresql-$v* pgvector_$v*' ]
         pg_libs: 'citus, timescaledb, pg_stat_statements, auto_explain' # citus will be added by patroni automatically
         pg_users: [{ name: test ,password: test ,pgbouncer: true ,roles: [ dbrole_admin ] }]
-        pg_databases:  [{ name: test ,owner: citus ,extensions: [{name: citus}, {name: postgis}, {name: timescaledb}] }]
+        pg_databases:  [{ name: test ,owner: citus ,extensions: [{name: citus}, {name: postgis}] }]
         pg_hba_rules:
           - { user: 'all' ,db: all  ,addr: 10.10.10.0/24 ,auth: trust ,title: 'trust citus cluster members'        }
           - { user: 'all' ,db: all  ,addr: 127.0.0.1/32  ,auth: ssl   ,title: 'all user ssl access from localhost' }
           - { user: 'all' ,db: all  ,addr: intra         ,auth: ssl   ,title: 'all user ssl access from intranet'  }
-
-
 
 
     #==========================================================#
@@ -405,16 +451,19 @@ all:
     # ./redis.yml -l redis-meta
     redis-meta:
       hosts:
-        10.10.10.21: { redis_node: 1 , redis_instances: { 6001: {} } }
-        10.10.10.22: { redis_node: 2 , redis_instances: { 6001: {} } }
-        10.10.10.23: { redis_node: 3 , redis_instances: { 6001: {} } }
-        10.10.10.24: { redis_node: 4 , redis_instances: { 6001: {} } }
-        10.10.10.25: { redis_node: 5 , redis_instances: { 6001: {} } }
+        10.10.10.21: { redis_node: 1 , redis_instances: { 26379: {} } }
+        10.10.10.22: { redis_node: 2 , redis_instances: { 26379: {} } }
+        10.10.10.23: { redis_node: 3 , redis_instances: { 26379: {} } }
+        10.10.10.24: { redis_node: 4 , redis_instances: { 26379: {} } }
+        10.10.10.25: { redis_node: 5 , redis_instances: { 26379: {} } }
       vars:
         redis_cluster: redis-meta
         redis_password: 'redis.meta'
         redis_mode: sentinel
         redis_max_memory: 256MB
+        redis_sentinel_monitor:  # primary list for redis sentinel, use cls as name, primary ip:port
+          - { name: redis-src, host: 10.10.10.45, port: 6379 ,password: redis.src, quorum: 1 }
+          - { name: redis-dst, host: 10.10.10.48, port: 6379 ,password: redis.dst, quorum: 1 }
 
 
     #==========================================================#
@@ -423,13 +472,13 @@ all:
     # ./redis.yml -l redis-src
     redis-src:
       hosts:
-        10.10.10.85: { redis_node: 1 , redis_instances: {6501: {  }                               }}
-        10.10.10.46: { redis_node: 2 , redis_instances: {6501: { replica_of: '10.10.10.45 6501' } }}
-        10.10.10.47: { redis_node: 3 , redis_instances: {6501: { replica_of: '10.10.10.45 6501' } }}
+        10.10.10.45: { redis_node: 1 , redis_instances: {6379: {  }                               }}
+        10.10.10.46: { redis_node: 2 , redis_instances: {6379: { replica_of: '10.10.10.45 6379' }, 6380: { replica_of: '10.10.10.46 6379' } }}
+        10.10.10.47: { redis_node: 3 , redis_instances: {6379: { replica_of: '10.10.10.45 6379' }, 6380: { replica_of: '10.10.10.47 6379' } }}
       vars:
         redis_cluster: redis-src
         redis_password: 'redis.src'
-        redis_max_memory: 128MB
+        redis_max_memory: 64MB
 
     #==========================================================#
     # redis-dst: reuse pg-dst 2 nodes for redis
@@ -437,12 +486,12 @@ all:
     # ./redis.yml -l redis-dst
     redis-dst:
       hosts:
-        10.10.10.48: { redis_node: 1 , redis_instances: {6501: {  }                               }}
-        10.10.10.49: { redis_node: 2 , redis_instances: {6501: { replica_of: '10.10.10.48 6501' } }}
+        10.10.10.48: { redis_node: 1 , redis_instances: {6379: {  }                               }}
+        10.10.10.49: { redis_node: 2 , redis_instances: {6379: { replica_of: '10.10.10.48 6379' } }}
       vars:
         redis_cluster: redis-dst
         redis_password: 'redis.dst'
-        redis_max_memory: 128MB
+        redis_max_memory: 64MB
 
     #==========================================================#
     # redis-test: redis native cluster in 6 nodes, 24 instances
@@ -450,18 +499,43 @@ all:
     # ./node.yml -l redis-test; ./redis.yml -l redis-test
     redis-test:
       hosts:
-        10.10.10.81: { redis_node: 1 ,redis_instances: { 6501: {} ,6502: {} ,6503: {} } }
-        10.10.10.82: { redis_node: 2 ,redis_instances: { 6501: {} ,6502: {} ,6503: {} } }
-        10.10.10.83: { redis_node: 3 ,redis_instances: { 6501: {} ,6502: {} ,6503: {} } }
-        10.10.10.84: { redis_node: 4 ,redis_instances: { 6501: {} ,6502: {} ,6503: {} } }
-        10.10.10.85: { redis_node: 5 ,redis_instances: { 6501: {} ,6502: {} ,6503: {} } }
-        10.10.10.86: { redis_node: 6 ,redis_instances: { 6501: {} ,6502: {} ,6503: {} } }
+        10.10.10.81: { redis_node: 1 ,redis_instances: { 6379: {} ,6380: {} ,6381: {} } }
+        10.10.10.82: { redis_node: 2 ,redis_instances: { 6379: {} ,6380: {} ,6381: {} } }
+        10.10.10.83: { redis_node: 3 ,redis_instances: { 6379: {} ,6380: {} ,6381: {} } }
+        10.10.10.84: { redis_node: 4 ,redis_instances: { 6379: {} ,6380: {} ,6381: {} } }
+        10.10.10.85: { redis_node: 5 ,redis_instances: { 6379: {} ,6380: {} ,6381: {} } }
+        10.10.10.86: { redis_node: 6 ,redis_instances: { 6379: {} ,6380: {} ,6381: {} } }
       vars:
         redis_cluster: redis-test
         redis_password: 'redis.test'
         redis_mode: cluster
         redis_max_memory: 512MB
         node_cluster: redis-test
+
+
+    #==========================================================#
+    # ferret: reuse pg-src as mongo (ferretdb)
+    #==========================================================#
+    # ./mongo.yml -l ferret
+    ferret:
+      hosts:
+        10.10.10.45: { mongo_seq: 1 }
+        10.10.10.46: { mongo_seq: 2 }
+        10.10.10.47: { mongo_seq: 3 }
+      vars:
+        mongo_cluster: ferret
+        mongo_pgurl: 'postgres://test:test@10.10.10.45:5432/src'
+        #mongo_pgurl: 'postgres://test:test@10.10.10.3:5436/test'
+
+
+    #==========================================================#
+    # test: running cli tools and test miscellaneous stuff
+    #==========================================================#
+    test:
+      hosts: { 10.10.10.88: { nodename: test } }
+      vars:
+        node_cluster: test
+        node_packages: [ 'etcd,logcli,mcli,redis' ]
 
 
   #============================================================#
@@ -472,7 +546,7 @@ all:
     #==========================================================#
     # INFRA
     #==========================================================#
-    version: v2.2.0                   # pigsty version string
+    version: v2.7.0                   # pigsty version string
     admin_ip: 10.10.10.11             # admin node ip address
     region: china                     # upstream mirror region: default|china|europe
     infra_portal:                     # domain names and upstream servers
@@ -483,6 +557,12 @@ all:
       blackbox     : { endpoint: "10.10.10.10:9115" }
       loki         : { endpoint: "10.10.10.10:3100" }
       minio        : { domain: sss.pigsty  ,endpoint: "10.10.10.26:9001" ,scheme: https ,websocket: true }
+      postgrest    : { domain: api.pigsty  ,endpoint: "127.0.0.1:8884" }
+      pgadmin      : { domain: adm.pigsty  ,endpoint: "127.0.0.1:8885" }
+      pgweb        : { domain: cli.pigsty  ,endpoint: "127.0.0.1:8886" }
+      bytebase     : { domain: ddl.pigsty  ,endpoint: "127.0.0.1:8887" }
+      jupyter      : { domain: lab.pigsty  ,endpoint: "127.0.0.1:8888", websocket: true }
+      supa         : { domain: supa.pigsty ,endpoint: "10.10.10.10:8000", websocket: true }
     nginx_navbar: []
     dns_records:                      # dynamic dns records resolved by dnsmasq
       - 10.10.10.1 h.pigsty a.pigsty p.pigsty g.pigsty
@@ -490,8 +570,7 @@ all:
     #==========================================================#
     # NODE
     #==========================================================#
-    node_conf: tiny # use rocky9 local repo as node default
-    node_repo_local_urls: ['http://10.10.10.11/pigsty.repo']
+    node_conf: tiny
     node_timezone: Asia/Hong_Kong     # use Asia/Hong_Kong Timezone
     node_dns_servers:                 # DNS servers in /etc/resolv.conf
       - 10.10.10.10
@@ -505,12 +584,15 @@ all:
     docker_registry_mirrors:          # docker mirror in mainland china
       - "https://hub-mirror.c.163.com"
       - "https://mirror.baidubce.com"
+    node_admin_ssh_exchange: false    # exchange admin ssh key among node cluster
+
 
     #==========================================================#
     # PGSQL
     #==========================================================#
     pg_conf: tiny.yml
     pgbackrest_method: minio          # USE THE HA MINIO THROUGH A LOAD BALANCER
+    pg_dbsu_ssh_exchange: false       # do not exchange dbsu ssh key among pgsql cluster
     pgbackrest_repo:                  # pgbackrest repo: https://pgbackrest.org/configuration.html#section-repository
       local:                          # default pgbackrest repo with local posix fs
         path: /pg/backup              # local backup directory, `/pg/backup` by default

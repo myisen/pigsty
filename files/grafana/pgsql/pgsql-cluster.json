@@ -141,7 +141,7 @@
             },
             "gridPos": {
                 "h": 3,
-                "w": 2,
+                "w": 3,
                 "x": 0,
                 "y": 1
             },
@@ -158,12 +158,14 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
-                    "valueSize": 14
+                    "valueSize": 16
                 },
-                "textMode": "name"
+                "textMode": "name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -231,7 +233,7 @@
             "gridPos": {
                 "h": 3,
                 "w": 6,
-                "x": 2,
+                "x": 3,
                 "y": 1
             },
             "id": 145,
@@ -247,12 +249,12 @@
                     "fields": "",
                     "values": false
                 },
-                "text": {
-                    "valueSize": 26
-                },
-                "textMode": "name"
+                "showPercentChange": false,
+                "text": {},
+                "textMode": "name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -847,8 +849,8 @@
             },
             "gridPos": {
                 "h": 6,
-                "w": 12,
-                "x": 8,
+                "w": 11,
+                "x": 9,
                 "y": 1
             },
             "id": 155,
@@ -876,7 +878,7 @@
                     }
                 ]
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -1225,6 +1227,10 @@
                             {
                                 "id": "custom.minWidth",
                                 "value": 80
+                            },
+                            {
+                                "id": "custom.width",
+                                "value": 80
                             }
                         ]
                     }
@@ -1255,7 +1261,7 @@
                     }
                 ]
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -1507,7 +1513,7 @@
             },
             "gridPos": {
                 "h": 7,
-                "w": 4,
+                "w": 3,
                 "x": 0,
                 "y": 4
             },
@@ -1524,13 +1530,15 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
-                    "titleSize": 16,
-                    "valueSize": 14
+                    "titleSize": 14,
+                    "valueSize": 12
                 },
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -1648,7 +1656,6 @@
                     "refId": "G"
                 }
             ],
-            "transformations": [],
             "type": "stat"
         },
         {
@@ -1713,6 +1720,15 @@
                                         }
                                     ]
                                 }
+                            },
+                            {
+                                "id": "links",
+                                "value": [
+                                    {
+                                        "title": "PGSQL Primary : ${primary}",
+                                        "url": "/d/pgsql-instance?var-ins=${primary}&${__url_time_range}"
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -1737,6 +1753,15 @@
                                         }
                                     ]
                                 }
+                            },
+                            {
+                                "id": "links",
+                                "value": [
+                                    {
+                                        "title": "PGSQL Pgbouncer : ${primary}",
+                                        "url": "/d/pgsql-pgbouncer?var-ins=${primary}&${__url_time_range}"
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -1761,6 +1786,15 @@
                                         }
                                     ]
                                 }
+                            },
+                            {
+                                "id": "links",
+                                "value": [
+                                    {
+                                        "title": "PGSQL Patroni : ${cls}",
+                                        "url": "/d/pgsql-patroni?var-cls=${cls}&${__url_time_range}"
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -1785,6 +1819,15 @@
                                         }
                                     ]
                                 }
+                            },
+                            {
+                                "id": "links",
+                                "value": [
+                                    {
+                                        "title": "PGSQL Exporter : ${primary}",
+                                        "url": "/d/pgsql-exporter?var-ins=${primary}&${__url_time_range}"
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -1809,6 +1852,15 @@
                                         }
                                     ]
                                 }
+                            },
+                            {
+                                "id": "links",
+                                "value": [
+                                    {
+                                        "title": "PGSQL Exporter : ${primary}",
+                                        "url": "/d/pgsql-exporter?var-ins=${primary}&${__url_time_range}"
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -1849,8 +1901,8 @@
             },
             "gridPos": {
                 "h": 7,
-                "w": 4,
-                "x": 4,
+                "w": 3,
+                "x": 3,
                 "y": 4
             },
             "id": 175,
@@ -1866,13 +1918,15 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 12,
                     "valueSize": 12
                 },
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -1941,7 +1995,7 @@
                     "hide": false,
                     "instant": true,
                     "interval": "",
-                    "legendFormat": "pgbouncer_exporter",
+                    "legendFormat": "pgb_exporter",
                     "refId": "E"
                 },
                 {
@@ -1966,6 +2020,164 @@
                 "type": "prometheus",
                 "uid": "ds-prometheus"
             },
+            "description": "Ping RT\n",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "links": [],
+                    "mappings": [
+                        {
+                            "options": {
+                                "match": "null+nan",
+                                "result": {
+                                    "color": "gray",
+                                    "index": 0,
+                                    "text": "\u2205"
+                                }
+                            },
+                            "type": "special"
+                        },
+                        {
+                            "options": {
+                                "from": 7,
+                                "result": {
+                                    "color": "text",
+                                    "index": 1,
+                                    "text": "\u221e"
+                                },
+                                "to": 9999999
+                            },
+                            "type": "range"
+                        }
+                    ],
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#3e668f",
+                                "value": null
+                            },
+                            {
+                                "color": "#346f36cc",
+                                "value": 0.0002
+                            },
+                            {
+                                "color": "#f5a673",
+                                "value": 0.001
+                            },
+                            {
+                                "color": "red",
+                                "value": 0.01
+                            },
+                            {
+                                "color": "text",
+                                "value": 7
+                            }
+                        ]
+                    },
+                    "unit": "s"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "A"
+                        },
+                        "properties": [
+                            {
+                                "id": "links",
+                                "value": [
+                                    {
+                                        "title": "Node Instance : ${__field.labels.ip}",
+                                        "url": "/d/node-instance?var-id=${__field.labels.ip}&${__url_time_range}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "B"
+                        },
+                        "properties": [
+                            {
+                                "id": "links",
+                                "value": [
+                                    {
+                                        "title": "Node VIP : ${__field.labels.vip}",
+                                        "url": "/d/node-vip?var-vip=${__field.labels.vip}&${__url_time_range}"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 3,
+                "x": 6,
+                "y": 4
+            },
+            "id": 178,
+            "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+            },
+            "pluginVersion": "10.4.2",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "avg by (job,vip) (probe_duration_seconds{ip=~\"$members\", job=~\".*vip\"})",
+                    "hide": false,
+                    "instant": true,
+                    "interval": "",
+                    "legendFormat": "{{ vip }} @ {{ job }}",
+                    "refId": "B"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "probe_duration_seconds{ip=~\"$members\", job=\"ping\"}",
+                    "hide": false,
+                    "instant": true,
+                    "interval": "",
+                    "legendFormat": "{{ ip }} : {{ ins }}",
+                    "refId": "A"
+                }
+            ],
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "ds-prometheus"
+            },
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -1973,6 +2185,12 @@
                     },
                     "custom": {
                         "fillOpacity": 60,
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
                         "lineWidth": 0,
                         "spanNulls": false
                     },
@@ -2012,8 +2230,8 @@
             },
             "gridPos": {
                 "h": 4,
-                "w": 16,
-                "x": 8,
+                "w": 15,
+                "x": 9,
                 "y": 7
             },
             "id": 169,
@@ -2135,10 +2353,12 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {},
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -2245,10 +2465,12 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {},
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -2345,10 +2567,12 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {},
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -2372,189 +2596,7 @@
                 "type": "prometheus",
                 "uid": "ds-prometheus"
             },
-            "description": "Registered service among this cluster.\n\nClick goes to PGSQL Service Dashboard",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "thresholds"
-                    },
-                    "links": [
-                        {
-                            "title": "PGSQL Service for ${__field.labels.proxy}",
-                            "url": "/d/pgsql-service?var-svc=${__field.labels.proxy}&${__url_time_range}"
-                        }
-                    ],
-                    "mappings": [
-                        {
-                            "options": {
-                                "match": "null+nan",
-                                "result": {
-                                    "color": "red",
-                                    "index": 0,
-                                    "text": "Unavailable"
-                                }
-                            },
-                            "type": "special"
-                        }
-                    ],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "#3e668f",
-                                "value": null
-                            },
-                            {
-                                "color": "#346f36cc",
-                                "value": 1
-                            },
-                            {
-                                "color": "#346f36cc",
-                                "value": 10
-                            },
-                            {
-                                "color": "#f5a673",
-                                "value": 1000
-                            },
-                            {
-                                "color": "red",
-                                "value": 3000
-                            },
-                            {
-                                "color": "#b783af",
-                                "value": 5000
-                            }
-                        ]
-                    },
-                    "unit": "c"
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 10,
-                "w": 4,
-                "x": 12,
-                "y": 11
-            },
-            "id": 112,
-            "options": {
-                "colorMode": "background",
-                "graphMode": "area",
-                "justifyMode": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                    "calcs": [
-                        "last"
-                    ],
-                    "fields": "",
-                    "values": false
-                },
-                "text": {},
-                "textMode": "value_and_name"
-            },
-            "pluginVersion": "10.0.3",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "ds-prometheus"
-                    },
-                    "editorMode": "code",
-                    "exemplar": false,
-                    "expr": "sort_desc(sum by (proxy) (haproxy_backend_current_sessions{proxy=~'$cls-.*'}))",
-                    "interval": "",
-                    "legendFormat": "{{ proxy }}",
-                    "range": true,
-                    "refId": "A"
-                }
-            ],
-            "title": "Service",
-            "type": "stat"
-        },
-        {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "ds-prometheus"
-            },
-            "description": "Business Database Connections \n\nClick goes to PGSQL Database Dashboard",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "thresholds"
-                    },
-                    "links": [
-                        {
-                            "title": "PGSQL Databases : ${__field.labels.datname}",
-                            "url": "/d/pgsql-databases?var-cls=${cls}&var-datname=${__field.labels.datname}&${__url_time_range}"
-                        }
-                    ],
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "#3e668f",
-                                "value": null
-                            },
-                            {
-                                "color": "#346f36cc",
-                                "value": 1
-                            },
-                            {
-                                "color": "#f5a673",
-                                "value": 1000
-                            }
-                        ]
-                    },
-                    "unit": "none"
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 10,
-                "w": 4,
-                "x": 16,
-                "y": 11
-            },
-            "id": 113,
-            "options": {
-                "colorMode": "background",
-                "graphMode": "area",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "reduceOptions": {
-                    "calcs": [
-                        "last"
-                    ],
-                    "fields": "",
-                    "values": false
-                },
-                "text": {},
-                "textMode": "value_and_name"
-            },
-            "pluginVersion": "10.0.3",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "ds-prometheus"
-                    },
-                    "exemplar": false,
-                    "expr": "sum by (datname) (pg_db_numbackends{cls=\"$cls\", datname!~\"wal|log|postgres|template\\\\d\"})",
-                    "interval": "",
-                    "legendFormat": "{{ proxy }}",
-                    "refId": "A"
-                }
-            ],
-            "title": "Database",
-            "type": "stat"
-        },
-        {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "ds-prometheus"
-            },
-            "description": "",
+            "description": "Load of different compoents.",
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -2679,13 +2721,30 @@
                                 ]
                             }
                         ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Exporter"
+                        },
+                        "properties": [
+                            {
+                                "id": "links",
+                                "value": [
+                                    {
+                                        "title": "PGSQL Exporter : ${primary}",
+                                        "url": "/d/pgsql-exporter?var-ins=${primary}&${__url_time_range}"
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
             },
             "gridPos": {
                 "h": 10,
                 "w": 4,
-                "x": 20,
+                "x": 12,
                 "y": 11
             },
             "id": 41,
@@ -2701,23 +2760,13 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {},
-                "textMode": "auto"
+                "textMode": "auto",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "ds-prometheus"
-                    },
-                    "exemplar": false,
-                    "expr": "pg:cls:cpu_usage{cls=\"$cls\"}",
-                    "hide": false,
-                    "interval": "",
-                    "legendFormat": "Node",
-                    "refId": "C"
-                },
                 {
                     "datasource": {
                         "type": "prometheus",
@@ -2752,15 +2801,249 @@
                     },
                     "editorMode": "code",
                     "exemplar": false,
-                    "expr": "avg by (cls) (haproxy:ins:usage{cls=\"$cls\"})",
+                    "expr": "sum(rate(process_cpu_seconds_total{cls=\"$cls\"}[1m]))",
+                    "hide": false,
+                    "interval": "",
+                    "legendFormat": "Exporter",
+                    "range": true,
+                    "refId": "E"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "avg by (cls) (haproxy:ins:usage{ip=~\"$members\"})",
                     "hide": false,
                     "interval": "",
                     "legendFormat": "Haproxy",
                     "range": true,
                     "refId": "D"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "exemplar": false,
+                    "expr": "pg:cls:cpu_usage{cls=\"$cls\"}",
+                    "hide": false,
+                    "interval": "",
+                    "legendFormat": "Node",
+                    "refId": "C"
                 }
             ],
             "title": "Component",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "ds-prometheus"
+            },
+            "description": "Registered service among this cluster.\n\nClick goes to PGSQL Service Dashboard",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "links": [
+                        {
+                            "title": "PGSQL Service for ${__field.labels.proxy}",
+                            "url": "/d/pgsql-service?var-svc=${__field.labels.proxy}&${__url_time_range}"
+                        }
+                    ],
+                    "mappings": [
+                        {
+                            "options": {
+                                "match": "null+nan",
+                                "result": {
+                                    "color": "red",
+                                    "index": 0,
+                                    "text": "Unavailable"
+                                }
+                            },
+                            "type": "special"
+                        }
+                    ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#3e668f",
+                                "value": null
+                            },
+                            {
+                                "color": "#346f36cc",
+                                "value": 1
+                            },
+                            {
+                                "color": "#346f36cc",
+                                "value": 10
+                            },
+                            {
+                                "color": "#f5a673",
+                                "value": 1000
+                            },
+                            {
+                                "color": "red",
+                                "value": 3000
+                            },
+                            {
+                                "color": "#b783af",
+                                "value": 5000
+                            }
+                        ]
+                    },
+                    "unit": "c"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 10,
+                "w": 4,
+                "x": 16,
+                "y": 11
+            },
+            "id": 112,
+            "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "last"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "text": {},
+                "textMode": "value_and_name",
+                "wideLayout": true
+            },
+            "pluginVersion": "10.4.2",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "sort_desc(sum by (proxy) (haproxy_backend_current_sessions{proxy=~'$cls-.*'}))",
+                    "interval": "",
+                    "legendFormat": "{{ proxy }}",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "Service",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "ds-prometheus"
+            },
+            "description": "TPS of each database",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "links": [
+                        {
+                            "title": "PGSQL Databases : ${__field.labels.datname}",
+                            "url": "/d/pgsql-databases?var-cls=${cls}&var-datname=${__field.labels.datname}&${__url_time_range}"
+                        }
+                    ],
+                    "mappings": [
+                        {
+                            "options": {
+                                "match": "null+nan",
+                                "result": {
+                                    "color": "#808080",
+                                    "index": 0,
+                                    "text": "No Database"
+                                }
+                            },
+                            "type": "special"
+                        }
+                    ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#3e668f",
+                                "value": null
+                            },
+                            {
+                                "color": "#346f36cc",
+                                "value": 10
+                            },
+                            {
+                                "color": "#f5a673",
+                                "value": 20000
+                            },
+                            {
+                                "color": "red",
+                                "value": 40000
+                            },
+                            {
+                                "color": "#b783af",
+                                "value": 80000
+                            }
+                        ]
+                    },
+                    "unit": "reqps"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 10,
+                "w": 4,
+                "x": 20,
+                "y": 11
+            },
+            "id": 181,
+            "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "last"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "text": {},
+                "textMode": "value_and_name",
+                "wideLayout": true
+            },
+            "pluginVersion": "10.4.2",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "sum by (datname) (rate(pg_db_xact_total{cls=\"$cls\", datname!~'template\\\\d'}[1m]))",
+                    "interval": "",
+                    "legendFormat": "{{ proxy }}",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "Database",
             "type": "stat"
         },
         {
@@ -3016,13 +3299,15 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 12,
                     "valueSize": 18
                 },
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -3145,13 +3430,15 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 12,
                     "valueSize": 18
                 },
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -3250,13 +3537,15 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 12,
                     "valueSize": 18
                 },
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -3355,13 +3644,15 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 12,
                     "valueSize": 18
                 },
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -3461,13 +3752,15 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 12,
                     "valueSize": 18
                 },
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -3566,13 +3859,15 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 12,
                     "valueSize": 18
                 },
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -3671,13 +3966,15 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 12,
                     "valueSize": 18
                 },
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -3778,13 +4075,15 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 12,
                     "valueSize": 18
                 },
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -3885,13 +4184,15 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 12,
                     "valueSize": 18
                 },
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -3921,6 +4222,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -3935,6 +4237,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineStyle": {
                             "fill": "solid"
@@ -4127,6 +4430,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -4143,6 +4447,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "stepBefore",
                         "lineWidth": 0,
                         "pointSize": 1,
@@ -4342,7 +4647,7 @@
             "type": "timeseries"
         },
         {
-            "collapsed": false,
+            "collapsed": true,
             "gridPos": {
                 "h": 1,
                 "w": 24,
@@ -4350,425 +4655,426 @@
                 "y": 30
             },
             "id": 159,
-            "panels": [],
+            "panels": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "description": "",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "thresholds"
+                            },
+                            "links": [
+                                {
+                                    "title": "PGSQL Cluster Replication : ${cls}",
+                                    "url": "/d/pgsql-replication?var-cls=${cls}&viewPanel=56&${__url_time_range}"
+                                }
+                            ],
+                            "mappings": [
+                                {
+                                    "options": {
+                                        "1": {
+                                            "color": "#3e668f",
+                                            "index": 0,
+                                            "text": "Leader"
+                                        }
+                                    },
+                                    "type": "value"
+                                },
+                                {
+                                    "options": {
+                                        "match": "null+nan",
+                                        "result": {
+                                            "color": "#cc4637d9",
+                                            "index": 1,
+                                            "text": "Loser"
+                                        }
+                                    },
+                                    "type": "special"
+                                }
+                            ],
+                            "max": 1,
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "#cc4637d9"
+                                    },
+                                    {
+                                        "color": "#346f36cc",
+                                        "value": 1
+                                    }
+                                ]
+                            },
+                            "unit": "none"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 5,
+                        "w": 6,
+                        "x": 0,
+                        "y": 31
+                    },
+                    "id": 123,
+                    "options": {
+                        "colorMode": "background",
+                        "graphMode": "area",
+                        "justifyMode": "auto",
+                        "orientation": "auto",
+                        "reduceOptions": {
+                            "calcs": [
+                                "last"
+                            ],
+                            "fields": "",
+                            "values": false
+                        },
+                        "text": {
+                            "valueSize": 16
+                        },
+                        "textMode": "auto"
+                    },
+                    "pluginVersion": "10.1.5",
+                    "targets": [
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "exemplar": false,
+                            "expr": "pg:cls:leader{cls=\"$cls\"}",
+                            "interval": "",
+                            "legendFormat": "{{ ins }}",
+                            "refId": "A"
+                        }
+                    ],
+                    "type": "stat"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "description": "Leadership shows who is in charge of this cluster ${cls}",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "palette-classic"
+                            },
+                            "custom": {
+                                "axisCenteredZero": false,
+                                "axisColorMode": "text",
+                                "axisLabel": "",
+                                "axisPlacement": "hidden",
+                                "axisSoftMin": 0,
+                                "barAlignment": 0,
+                                "drawStyle": "line",
+                                "fillOpacity": 57,
+                                "gradientMode": "none",
+                                "hideFrom": {
+                                    "graph": false,
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": false
+                                },
+                                "insertNulls": false,
+                                "lineInterpolation": "stepBefore",
+                                "lineWidth": 0,
+                                "pointSize": 1,
+                                "scaleDistribution": {
+                                    "type": "linear"
+                                },
+                                "showPoints": "auto",
+                                "spanNulls": false,
+                                "stacking": {
+                                    "group": "A",
+                                    "mode": "none"
+                                },
+                                "thresholdsStyle": {
+                                    "mode": "off"
+                                }
+                            },
+                            "links": [
+                                {
+                                    "title": "PGSQL Instance : ${__field.labels.ins}",
+                                    "url": "/d/pgsql-instance?var-ins=${__field.labels.ins}&${__url_time_range}"
+                                }
+                            ],
+                            "mappings": [],
+                            "max": 1,
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "#346f36cc"
+                                    }
+                                ]
+                            },
+                            "unit": "none"
+                        },
+                        "overrides": [
+                            {
+                                "matcher": {
+                                    "id": "byType",
+                                    "options": "time"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "custom.axisPlacement",
+                                        "value": "auto"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "gridPos": {
+                        "h": 5,
+                        "w": 6,
+                        "x": 6,
+                        "y": 31
+                    },
+                    "id": 158,
+                    "links": [
+                        {
+                            "title": "PGSQL Replication : ${cls} ${__url_time_range}",
+                            "url": "/d/pgsql-replication?var-cls=${cls}&${__url_time_range}"
+                        }
+                    ],
+                    "options": {
+                        "legend": {
+                            "calcs": [],
+                            "displayMode": "list",
+                            "placement": "right",
+                            "showLegend": true
+                        },
+                        "tooltip": {
+                            "mode": "multi",
+                            "sort": "none"
+                        }
+                    },
+                    "targets": [
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "(pg_in_recovery{cls=\"$cls\"} == 0) * 0 + 1",
+                            "interval": "",
+                            "legendFormat": "{{ ins }}",
+                            "range": true,
+                            "refId": "A"
+                        }
+                    ],
+                    "title": "Leadership",
+                    "type": "timeseries"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "palette-classic"
+                            },
+                            "custom": {
+                                "axisCenteredZero": false,
+                                "axisColorMode": "text",
+                                "axisLabel": "",
+                                "axisPlacement": "auto",
+                                "barAlignment": 0,
+                                "drawStyle": "line",
+                                "fillOpacity": 25,
+                                "gradientMode": "hue",
+                                "hideFrom": {
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": false
+                                },
+                                "insertNulls": false,
+                                "lineInterpolation": "stepBefore",
+                                "lineWidth": 1,
+                                "pointSize": 5,
+                                "scaleDistribution": {
+                                    "type": "linear"
+                                },
+                                "showPoints": "auto",
+                                "spanNulls": false,
+                                "stacking": {
+                                    "group": "A",
+                                    "mode": "none"
+                                },
+                                "thresholdsStyle": {
+                                    "mode": "off"
+                                }
+                            },
+                            "decimals": 0,
+                            "mappings": [],
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "#346f36cc"
+                                    }
+                                ]
+                            },
+                            "unit": "none"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 5,
+                        "w": 6,
+                        "x": 12,
+                        "y": 31
+                    },
+                    "id": 165,
+                    "options": {
+                        "legend": {
+                            "calcs": [
+                                "last"
+                            ],
+                            "displayMode": "table",
+                            "placement": "right",
+                            "showLegend": true
+                        },
+                        "tooltip": {
+                            "mode": "multi",
+                            "sort": "none"
+                        }
+                    },
+                    "targets": [
+                        {
+                            "exemplar": false,
+                            "expr": "pg_checkpoint_tli{cls=\"$cls\"}",
+                            "interval": "",
+                            "legendFormat": "{{ ins }}",
+                            "refId": "A"
+                        }
+                    ],
+                    "title": "Timeline",
+                    "type": "timeseries"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "description": "Haproxy will route $cls-primary traffic to which instance ?",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "palette-classic"
+                            },
+                            "custom": {
+                                "axisCenteredZero": false,
+                                "axisColorMode": "text",
+                                "axisLabel": "",
+                                "axisPlacement": "auto",
+                                "barAlignment": 0,
+                                "drawStyle": "bars",
+                                "fillOpacity": 64,
+                                "gradientMode": "none",
+                                "hideFrom": {
+                                    "graph": false,
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": false
+                                },
+                                "insertNulls": false,
+                                "lineInterpolation": "stepBefore",
+                                "lineWidth": 0,
+                                "pointSize": 5,
+                                "scaleDistribution": {
+                                    "type": "linear"
+                                },
+                                "showPoints": "never",
+                                "spanNulls": true,
+                                "stacking": {
+                                    "group": "A",
+                                    "mode": "normal"
+                                },
+                                "thresholdsStyle": {
+                                    "mode": "off"
+                                }
+                            },
+                            "decimals": 0,
+                            "links": [
+                                {
+                                    "title": "PGSQL Proxy for ${__field.labels.ins}",
+                                    "url": "/d/pgsql-proxy?var-ins=${__field.labels.ins}&${__url_time_range}"
+                                },
+                                {
+                                    "title": "PGSQL Instance for ${__field.labels.server}",
+                                    "url": "/d/pgsql-instance?var-ins=${__field.labels.server}&${__url_time_range}"
+                                }
+                            ],
+                            "mappings": [],
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "#346f36cc"
+                                    }
+                                ]
+                            },
+                            "unit": "none"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 5,
+                        "w": 6,
+                        "x": 18,
+                        "y": 31
+                    },
+                    "id": 161,
+                    "options": {
+                        "legend": {
+                            "calcs": [
+                                "lastNotNull"
+                            ],
+                            "displayMode": "table",
+                            "placement": "bottom",
+                            "showLegend": true
+                        },
+                        "tooltip": {
+                            "mode": "multi",
+                            "sort": "none"
+                        }
+                    },
+                    "pluginVersion": "8.0.0-beta2",
+                    "targets": [
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "sum by (server) (haproxy_server_current_sessions{proxy=\"$cls-primary\"})",
+                            "interval": "",
+                            "legendFormat": "$cls-primary \u2794 {{ server }}",
+                            "range": true,
+                            "refId": "A"
+                        }
+                    ],
+                    "title": "Traffic Routes (primary service instance)",
+                    "type": "timeseries"
+                }
+            ],
             "title": "Leadership",
             "type": "row"
-        },
-        {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "ds-prometheus"
-            },
-            "description": "",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "thresholds"
-                    },
-                    "links": [
-                        {
-                            "title": "PGSQL Cluster Replication : ${cls}",
-                            "url": "/d/pgsql-replication?var-cls=${cls}&viewPanel=56&${__url_time_range}"
-                        }
-                    ],
-                    "mappings": [
-                        {
-                            "options": {
-                                "1": {
-                                    "color": "#3e668f",
-                                    "index": 0,
-                                    "text": "Leader"
-                                }
-                            },
-                            "type": "value"
-                        },
-                        {
-                            "options": {
-                                "match": "null+nan",
-                                "result": {
-                                    "color": "#cc4637d9",
-                                    "index": 1,
-                                    "text": "Loser"
-                                }
-                            },
-                            "type": "special"
-                        }
-                    ],
-                    "max": 1,
-                    "min": 0,
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "#cc4637d9",
-                                "value": null
-                            },
-                            {
-                                "color": "#346f36cc",
-                                "value": 1
-                            }
-                        ]
-                    },
-                    "unit": "none"
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 5,
-                "w": 6,
-                "x": 0,
-                "y": 31
-            },
-            "id": 123,
-            "options": {
-                "colorMode": "background",
-                "graphMode": "area",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "reduceOptions": {
-                    "calcs": [
-                        "last"
-                    ],
-                    "fields": "",
-                    "values": false
-                },
-                "text": {
-                    "valueSize": 16
-                },
-                "textMode": "auto"
-            },
-            "pluginVersion": "10.0.3",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "ds-prometheus"
-                    },
-                    "exemplar": false,
-                    "expr": "pg:cls:leader{cls=\"$cls\"}",
-                    "interval": "",
-                    "legendFormat": "{{ ins }}",
-                    "refId": "A"
-                }
-            ],
-            "type": "stat"
-        },
-        {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "ds-prometheus"
-            },
-            "description": "Leadership shows who is in charge of this cluster ${cls}",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "custom": {
-                        "axisCenteredZero": false,
-                        "axisColorMode": "text",
-                        "axisLabel": "",
-                        "axisPlacement": "hidden",
-                        "axisSoftMin": 0,
-                        "barAlignment": 0,
-                        "drawStyle": "line",
-                        "fillOpacity": 57,
-                        "gradientMode": "none",
-                        "hideFrom": {
-                            "graph": false,
-                            "legend": false,
-                            "tooltip": false,
-                            "viz": false
-                        },
-                        "lineInterpolation": "stepBefore",
-                        "lineWidth": 0,
-                        "pointSize": 1,
-                        "scaleDistribution": {
-                            "type": "linear"
-                        },
-                        "showPoints": "auto",
-                        "spanNulls": false,
-                        "stacking": {
-                            "group": "A",
-                            "mode": "none"
-                        },
-                        "thresholdsStyle": {
-                            "mode": "off"
-                        }
-                    },
-                    "links": [
-                        {
-                            "title": "PGSQL Instance : ${__field.labels.ins}",
-                            "url": "/d/pgsql-instance?var-ins=${__field.labels.ins}"
-                        }
-                    ],
-                    "mappings": [],
-                    "max": 1,
-                    "min": 0,
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "#346f36cc",
-                                "value": null
-                            }
-                        ]
-                    },
-                    "unit": "none"
-                },
-                "overrides": [
-                    {
-                        "matcher": {
-                            "id": "byType",
-                            "options": "time"
-                        },
-                        "properties": [
-                            {
-                                "id": "custom.axisPlacement",
-                                "value": "auto"
-                            }
-                        ]
-                    }
-                ]
-            },
-            "gridPos": {
-                "h": 5,
-                "w": 6,
-                "x": 6,
-                "y": 31
-            },
-            "id": 158,
-            "links": [
-                {
-                    "title": "PGSQL Replication : ${cls} ${__url_time_range}",
-                    "url": "/d/pgsql-replication?var-cls=${cls}&${__url_time_range}"
-                }
-            ],
-            "options": {
-                "legend": {
-                    "calcs": [],
-                    "displayMode": "list",
-                    "placement": "right",
-                    "showLegend": true
-                },
-                "tooltip": {
-                    "mode": "multi",
-                    "sort": "none"
-                }
-            },
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "ds-prometheus"
-                    },
-                    "editorMode": "code",
-                    "exemplar": false,
-                    "expr": "(pg_in_recovery{cls=\"$cls\"} == 0) * 0 + 1",
-                    "interval": "",
-                    "legendFormat": "{{ ins }}",
-                    "range": true,
-                    "refId": "A"
-                }
-            ],
-            "title": "Leadership",
-            "type": "timeseries"
-        },
-        {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "ds-prometheus"
-            },
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "custom": {
-                        "axisCenteredZero": false,
-                        "axisColorMode": "text",
-                        "axisLabel": "",
-                        "axisPlacement": "auto",
-                        "barAlignment": 0,
-                        "drawStyle": "line",
-                        "fillOpacity": 25,
-                        "gradientMode": "hue",
-                        "hideFrom": {
-                            "legend": false,
-                            "tooltip": false,
-                            "viz": false
-                        },
-                        "lineInterpolation": "stepBefore",
-                        "lineWidth": 1,
-                        "pointSize": 5,
-                        "scaleDistribution": {
-                            "type": "linear"
-                        },
-                        "showPoints": "auto",
-                        "spanNulls": false,
-                        "stacking": {
-                            "group": "A",
-                            "mode": "none"
-                        },
-                        "thresholdsStyle": {
-                            "mode": "off"
-                        }
-                    },
-                    "decimals": 0,
-                    "mappings": [],
-                    "min": 0,
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "#346f36cc",
-                                "value": null
-                            }
-                        ]
-                    },
-                    "unit": "none"
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 5,
-                "w": 6,
-                "x": 12,
-                "y": 31
-            },
-            "id": 165,
-            "options": {
-                "legend": {
-                    "calcs": [
-                        "last"
-                    ],
-                    "displayMode": "table",
-                    "placement": "right",
-                    "showLegend": true
-                },
-                "tooltip": {
-                    "mode": "multi",
-                    "sort": "none"
-                }
-            },
-            "targets": [
-                {
-                    "exemplar": false,
-                    "expr": "pg_checkpoint_tli{cls=\"$cls\"}",
-                    "interval": "",
-                    "legendFormat": "{{ ins }}",
-                    "refId": "A"
-                }
-            ],
-            "title": "Timeline",
-            "type": "timeseries"
-        },
-        {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "ds-prometheus"
-            },
-            "description": "Haproxy will route $cls-primary traffic to which instance ?",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "custom": {
-                        "axisCenteredZero": false,
-                        "axisColorMode": "text",
-                        "axisLabel": "",
-                        "axisPlacement": "auto",
-                        "barAlignment": 0,
-                        "drawStyle": "bars",
-                        "fillOpacity": 64,
-                        "gradientMode": "none",
-                        "hideFrom": {
-                            "graph": false,
-                            "legend": false,
-                            "tooltip": false,
-                            "viz": false
-                        },
-                        "lineInterpolation": "stepBefore",
-                        "lineWidth": 0,
-                        "pointSize": 5,
-                        "scaleDistribution": {
-                            "type": "linear"
-                        },
-                        "showPoints": "never",
-                        "spanNulls": true,
-                        "stacking": {
-                            "group": "A",
-                            "mode": "normal"
-                        },
-                        "thresholdsStyle": {
-                            "mode": "off"
-                        }
-                    },
-                    "links": [
-                        {
-                            "title": "PGSQL Proxy for ${__field.labels.ins}",
-                            "url": "/d/pgsql-proxy?var-ins=${__field.labels.ins}&${__url_time_range}"
-                        },
-                        {
-                            "title": "PGSQL Instance for ${__field.labels.server}",
-                            "url": "/d/pgsql-instance?var-ins=${__field.labels.server}&${__url_time_range}"
-                        }
-                    ],
-                    "mappings": [],
-                    "min": 0,
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "#346f36cc",
-                                "value": null
-                            }
-                        ]
-                    },
-                    "unit": "none"
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 5,
-                "w": 6,
-                "x": 18,
-                "y": 31
-            },
-            "id": 161,
-            "options": {
-                "legend": {
-                    "calcs": [
-                        "lastNotNull"
-                    ],
-                    "displayMode": "table",
-                    "placement": "bottom",
-                    "showLegend": true
-                },
-                "tooltip": {
-                    "mode": "multi",
-                    "sort": "none"
-                }
-            },
-            "pluginVersion": "8.0.0-beta2",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "ds-prometheus"
-                    },
-                    "editorMode": "code",
-                    "exemplar": false,
-                    "expr": "sum by (server) (haproxy_server_current_sessions{proxy=\"$cls-primary\"})",
-                    "interval": "",
-                    "legendFormat": "$cls-primary \u2794 {{ server }}",
-                    "range": true,
-                    "refId": "A"
-                }
-            ],
-            "title": "Traffic Routes (primary service instance)",
-            "type": "timeseries"
         },
         {
             "collapsed": true,
@@ -4780,7 +5086,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 36
+                "y": 31
             },
             "id": 133,
             "panels": [
@@ -4809,8 +5115,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#e3e3e3e0",
-                                        "value": null
+                                        "color": "#e3e3e3e0"
                                     }
                                 ]
                             }
@@ -4881,8 +5186,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "super-light-blue",
-                                                    "value": null
+                                                    "color": "super-light-blue"
                                                 },
                                                 {
                                                     "color": "#3e668f",
@@ -4973,8 +5277,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -5036,8 +5339,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#b3b5b7",
-                                                    "value": null
+                                                    "color": "#b3b5b7"
                                                 },
                                                 {
                                                     "color": "super-light-blue",
@@ -5148,8 +5450,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -5204,8 +5505,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "super-light-blue",
-                                                    "value": null
+                                                    "color": "super-light-blue"
                                                 },
                                                 {
                                                     "color": "#3e668f",
@@ -5285,8 +5585,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -5376,7 +5675,7 @@
                                         "value": [
                                             {
                                                 "title": "Node Instance: ${__data.fields.Instance}",
-                                                "url": "/d/node-instance?var-id=${__data.fields.Instance}&${__url_time_range}"
+                                                "url": "/d/node-instance?var-ins=${__data.fields.Instance}&${__url_time_range}"
                                             }
                                         ]
                                     }
@@ -5402,8 +5701,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -5490,7 +5788,7 @@
                             {
                                 "matcher": {
                                     "id": "byName",
-                                    "options": "Up"
+                                    "options": "Alive"
                                 },
                                 "properties": [
                                     {
@@ -5505,26 +5803,15 @@
                                                     "0": {
                                                         "color": "#cc4637d9",
                                                         "index": 0,
-                                                        "text": "Dead"
+                                                        "text": "Down"
                                                     },
                                                     "1": {
                                                         "color": "#346f36cc",
                                                         "index": 1,
-                                                        "text": "Alive"
+                                                        "text": "UP"
                                                     }
                                                 },
                                                 "type": "value"
-                                            },
-                                            {
-                                                "options": {
-                                                    "match": "null+nan",
-                                                    "result": {
-                                                        "color": "#808080",
-                                                        "index": 2,
-                                                        "text": "Unknown"
-                                                    }
-                                                },
-                                                "type": "special"
                                             }
                                         ]
                                     },
@@ -5533,6 +5820,10 @@
                                         "value": {
                                             "type": "color-background"
                                         }
+                                    },
+                                    {
+                                        "id": "custom.width",
+                                        "value": 60
                                     }
                                 ]
                             }
@@ -5540,17 +5831,11 @@
                     },
                     "gridPos": {
                         "h": 6,
-                        "w": 24,
+                        "w": 19,
                         "x": 0,
                         "y": 37
                     },
-                    "id": 166,
-                    "links": [
-                        {
-                            "title": "Node Cluster : ${cls}",
-                            "url": "/d/node-cluster?var-cls=${cls}&${__url_time_range}"
-                        }
-                    ],
+                    "id": 179,
                     "options": {
                         "cellHeight": "sm",
                         "footer": {
@@ -5564,7 +5849,7 @@
                         "showHeader": true,
                         "sortBy": []
                     },
-                    "pluginVersion": "10.0.3",
+                    "pluginVersion": "10.1.5",
                     "targets": [
                         {
                             "datasource": {
@@ -5573,7 +5858,22 @@
                             },
                             "editorMode": "code",
                             "exemplar": false,
-                            "expr": "group by (nodename,release,ip,ins,cls) (node_uname_info{ip=~\"$members\"})",
+                            "expr": "node_up{ip=~\"$members\"}",
+                            "format": "table",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "",
+                            "refId": "L"
+                        },
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "group without(ins,cls,instance) (node_uname_info{ip=~\"$members\"})",
                             "format": "table",
                             "hide": false,
                             "instant": true,
@@ -5723,7 +6023,7 @@
                             },
                             "editorMode": "code",
                             "exemplar": false,
-                            "expr": "min by (ip) (node_up{cls='$cls'})",
+                            "expr": "min by (ip) (node_up{ip=~\"$members\"})",
                             "format": "table",
                             "hide": false,
                             "instant": true,
@@ -5732,7 +6032,6 @@
                             "refId": "K"
                         }
                     ],
-                    "title": "Nodes",
                     "transformations": [
                         {
                             "id": "seriesToColumns",
@@ -5759,13 +6058,14 @@
                                     "Value #A": true,
                                     "Value #B": false,
                                     "Value #J": false,
+                                    "Value #L": true,
                                     "__name__": true,
                                     "__name__ 1": true,
                                     "__name__ 2": true,
                                     "__name__ 3": true,
                                     "cls": true,
-                                    "cls 1": false,
-                                    "cls 2": true,
+                                    "cls 1": true,
+                                    "cls 2": false,
                                     "cls 3": true,
                                     "domainname": true,
                                     "instance": false,
@@ -5780,6 +6080,7 @@
                                     "job 3": true,
                                     "machine": true,
                                     "maxmemory_policy": true,
+                                    "nodename": false,
                                     "os": true,
                                     "process_id": true,
                                     "redis_build_id": true,
@@ -5790,34 +6091,44 @@
                                     "version": true
                                 },
                                 "indexByName": {
-                                    "Time 1": 17,
-                                    "Time 10": 26,
-                                    "Time 11": 27,
-                                    "Time 2": 18,
-                                    "Time 3": 19,
-                                    "Time 4": 20,
-                                    "Time 5": 21,
-                                    "Time 6": 22,
-                                    "Time 7": 23,
-                                    "Time 8": 24,
-                                    "Time 9": 25,
-                                    "Value #A": 6,
+                                    "Time 1": 16,
+                                    "Time 10": 25,
+                                    "Time 11": 26,
+                                    "Time 12": 30,
+                                    "Time 2": 17,
+                                    "Time 3": 18,
+                                    "Time 4": 19,
+                                    "Time 5": 20,
+                                    "Time 6": 21,
+                                    "Time 7": 22,
+                                    "Time 8": 23,
+                                    "Time 9": 24,
+                                    "Value #A": 36,
                                     "Value #B": 8,
                                     "Value #C": 10,
                                     "Value #D": 12,
                                     "Value #E": 7,
                                     "Value #F": 9,
                                     "Value #G": 11,
-                                    "Value #H": 5,
+                                    "Value #H": 6,
                                     "Value #I": 13,
-                                    "Value #J": 15,
+                                    "Value #J": 14,
                                     "Value #K": 0,
-                                    "cls": 1,
-                                    "ins": 2,
-                                    "instance": 14,
-                                    "ip": 3,
-                                    "nodename": 4,
-                                    "release": 16
+                                    "Value #L": 28,
+                                    "__name__": 27,
+                                    "cls": 2,
+                                    "domainname": 32,
+                                    "ins": 3,
+                                    "instance 1": 4,
+                                    "instance 2": 29,
+                                    "ip": 1,
+                                    "job 1": 31,
+                                    "job 2": 33,
+                                    "machine": 34,
+                                    "nodename": 5,
+                                    "release": 15,
+                                    "sysname": 35,
+                                    "version": 37
                                 },
                                 "renameByName": {
                                     "Time 4": "",
@@ -5831,12 +6142,14 @@
                                     "Value #H": "Targets",
                                     "Value #I": "Ping",
                                     "Value #J": "Conn",
-                                    "Value #K": "Up",
+                                    "Value #K": "Alive",
                                     "cls": "Cluster",
                                     "cls 1": "Cluster",
+                                    "cls 2": "Cluster",
                                     "ins": "Instance",
+                                    "ins 2": "Instance",
                                     "instance": "HAProxy",
-                                    "instance 1": "Address",
+                                    "instance 1": "HAProxy",
                                     "instance 3": "",
                                     "ip": "IP",
                                     "ip 1": "IP",
@@ -5851,6 +6164,817 @@
                         }
                     ],
                     "type": "table"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "description": "Blue  = PostgreSQL\n\nGreen = Pgbouncer\n\nYellow : Agent (Patroni / PG Exporters)",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "thresholds"
+                            },
+                            "links": [],
+                            "mappings": [
+                                {
+                                    "options": {
+                                        "0": {
+                                            "color": "text",
+                                            "index": 1,
+                                            "text": "Dead"
+                                        },
+                                        "1": {
+                                            "index": 2,
+                                            "text": "Up"
+                                        }
+                                    },
+                                    "type": "value"
+                                },
+                                {
+                                    "options": {
+                                        "match": "null+nan",
+                                        "result": {
+                                            "index": 0
+                                        }
+                                    },
+                                    "type": "special"
+                                }
+                            ],
+                            "max": 1.1,
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "#3e668f"
+                                    },
+                                    {
+                                        "color": "#aaaaaa",
+                                        "value": 1
+                                    }
+                                ]
+                            }
+                        },
+                        "overrides": [
+                            {
+                                "matcher": {
+                                    "id": "byFrameRefID",
+                                    "options": "A"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "thresholds",
+                                        "value": {
+                                            "mode": "absolute",
+                                            "steps": [
+                                                {
+                                                    "color": "text"
+                                                },
+                                                {
+                                                    "color": "#3e668f",
+                                                    "value": 1
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": "links",
+                                        "value": [
+                                            {
+                                                "title": "PGSQL Instance : ${__field.labels.ins}",
+                                                "url": "/d/pgsql-instance?var-ins=${__field.labels.ins}&${__url_time_range}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byFrameRefID",
+                                    "options": "B"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "thresholds",
+                                        "value": {
+                                            "mode": "absolute",
+                                            "steps": [
+                                                {
+                                                    "color": "text"
+                                                },
+                                                {
+                                                    "color": "#3d668fd6",
+                                                    "value": 1
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": "links",
+                                        "value": [
+                                            {
+                                                "title": "PGSQL Pgbouncer : ${__field.labels.ins}",
+                                                "url": "/d/pgsql-pgbouncer?var-ins=${__field.labels.ins}&${__url_time_range}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byFrameRefID",
+                                    "options": "C"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "thresholds",
+                                        "value": {
+                                            "mode": "absolute",
+                                            "steps": [
+                                                {
+                                                    "color": "text"
+                                                },
+                                                {
+                                                    "color": "#5b9cd5",
+                                                    "value": 1
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": "links",
+                                        "value": [
+                                            {
+                                                "title": "PGSQL Patroni : ${cls}",
+                                                "url": "/d/pgsql-patroni?var-cls=${cls}&${__url_time_range}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byFrameRefID",
+                                    "options": "D"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "thresholds",
+                                        "value": {
+                                            "mode": "absolute",
+                                            "steps": [
+                                                {
+                                                    "color": "text"
+                                                },
+                                                {
+                                                    "color": "#b783af",
+                                                    "value": 1
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": "links",
+                                        "value": [
+                                            {
+                                                "title": "PGSQL Exporter : ${__field.labels.ins}",
+                                                "url": "/d/pgsql-exporter?var-ins=${__field.labels.ins}&${__url_time_range}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byFrameRefID",
+                                    "options": "E"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "thresholds",
+                                        "value": {
+                                            "mode": "absolute",
+                                            "steps": [
+                                                {
+                                                    "color": "text"
+                                                },
+                                                {
+                                                    "color": "#7771a4",
+                                                    "value": 1
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": "links",
+                                        "value": [
+                                            {
+                                                "title": "PGSQL Exporter : ${__field.labels.ins}",
+                                                "url": "/d/pgsql-exporter?var-ins=${__field.labels.ins}&${__url_time_range}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byFrameRefID",
+                                    "options": "F"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "links",
+                                        "value": [
+                                            {
+                                                "title": "Node Instance : ${__field.labels.ins}",
+                                                "url": "/d/node-instance?var-ins=${__field.labels.ins}&${__url_time_range}"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "thresholds",
+                                        "value": {
+                                            "mode": "absolute",
+                                            "steps": [
+                                                {
+                                                    "color": "text"
+                                                },
+                                                {
+                                                    "color": "#e6b03ee6",
+                                                    "value": 1
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byFrameRefID",
+                                    "options": "G"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "links",
+                                        "value": [
+                                            {
+                                                "title": "Node HAProxy : ${__field.labels.ins}",
+                                                "url": "/d/node-haproxy?var-ins=${__field.labels.ins}&${__url_time_range}"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "thresholds",
+                                        "value": {
+                                            "mode": "absolute",
+                                            "steps": [
+                                                {
+                                                    "color": "text"
+                                                },
+                                                {
+                                                    "color": "#f5a673",
+                                                    "value": 1
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byFrameRefID",
+                                    "options": "H"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "thresholds",
+                                        "value": {
+                                            "mode": "absolute",
+                                            "steps": [
+                                                {
+                                                    "color": "text"
+                                                },
+                                                {
+                                                    "color": "#1b6eb6d1",
+                                                    "value": 1
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byFrameRefID",
+                                    "options": "I"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "links",
+                                        "value": [
+                                            {
+                                                "title": "Logs Instance : ${__field.labels.ins}",
+                                                "url": "/d/logs-instance?var-ins=${__field.labels.ins}&var-src=postgres&${__url_time_range}\ufeff"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "thresholds",
+                                        "value": {
+                                            "mode": "absolute",
+                                            "steps": [
+                                                {
+                                                    "color": "text"
+                                                },
+                                                {
+                                                    "color": "#cc4637d9",
+                                                    "value": 1
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byFrameRefID",
+                                    "options": "J"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "thresholds",
+                                        "value": {
+                                            "mode": "absolute",
+                                            "steps": [
+                                                {
+                                                    "color": "text"
+                                                },
+                                                {
+                                                    "color": "#346f36cc",
+                                                    "value": 1
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": "links",
+                                        "value": [
+                                            {
+                                                "title": "Infra Overview",
+                                                "url": "/d/infra-overview?${__url_time_range}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byFrameRefID",
+                                    "options": "K"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "thresholds",
+                                        "value": {
+                                            "mode": "absolute",
+                                            "steps": [
+                                                {
+                                                    "color": "text"
+                                                },
+                                                {
+                                                    "color": "#5b9cd5",
+                                                    "value": 1
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": "links",
+                                        "value": [
+                                            {
+                                                "title": "ETCD Overview",
+                                                "url": "/d/etcd-overview?${__url_time_range}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byFrameRefID",
+                                    "options": "L"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "thresholds",
+                                        "value": {
+                                            "mode": "absolute",
+                                            "steps": [
+                                                {
+                                                    "color": "text"
+                                                },
+                                                {
+                                                    "color": "#cc4637d9",
+                                                    "value": 1
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": "links",
+                                        "value": [
+                                            {
+                                                "title": "Redis Instance ${__field.labels.ins} @ ${__field.labels.instance}",
+                                                "url": "/d/redis-instance?var-ins=${__field.labels.ins}&${__url_time_range}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byFrameRefID",
+                                    "options": "M"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "thresholds",
+                                        "value": {
+                                            "mode": "absolute",
+                                            "steps": [
+                                                {
+                                                    "color": "text"
+                                                },
+                                                {
+                                                    "color": "#d0475799",
+                                                    "value": 1
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": "links",
+                                        "value": [
+                                            {
+                                                "title": "Minio Instance: ${__field.labels.ins}",
+                                                "url": "/d/minio-overview?var-ins=${__field.labels.ins}&${__url_time_range}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byFrameRefID",
+                                    "options": "N"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "thresholds",
+                                        "value": {
+                                            "mode": "absolute",
+                                            "steps": [
+                                                {
+                                                    "color": "text"
+                                                },
+                                                {
+                                                    "color": "#806c52",
+                                                    "value": 1
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": "links",
+                                        "value": [
+                                            {
+                                                "title": "Mongo Instance : ${__field.labels.ins}",
+                                                "url": "/d/mongo-overview?var-ins=${__field.labels.ins}&${__url_time_range}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byFrameRefID",
+                                    "options": "Y"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "thresholds",
+                                        "value": {
+                                            "mode": "absolute",
+                                            "steps": [
+                                                {
+                                                    "color": "text"
+                                                },
+                                                {
+                                                    "color": "#6a8d9d",
+                                                    "value": 1
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": "links",
+                                        "value": [
+                                            {
+                                                "title": "MySQL Instance : ${__field.labels.ins}",
+                                                "url": "/d/mysql-instance?var-ins=${__field.labels.ins}&${__url_time_range}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byFrameRefID",
+                                    "options": "P"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "thresholds",
+                                        "value": {
+                                            "mode": "absolute",
+                                            "steps": [
+                                                {
+                                                    "color": "text"
+                                                },
+                                                {
+                                                    "color": "#5a8da5",
+                                                    "value": 1
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": "links",
+                                        "value": [
+                                            {
+                                                "title": "MySQL Instance : ${__field.labels.ins}",
+                                                "url": "/d/mysql-instance?var-ins=${__field.labels.ins}&${__url_time_range}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "gridPos": {
+                        "h": 12,
+                        "w": 5,
+                        "x": 19,
+                        "y": 37
+                    },
+                    "id": 180,
+                    "options": {
+                        "colorMode": "background",
+                        "graphMode": "area",
+                        "justifyMode": "auto",
+                        "orientation": "auto",
+                        "reduceOptions": {
+                            "calcs": [
+                                "last"
+                            ],
+                            "fields": "",
+                            "values": false
+                        },
+                        "text": {
+                            "valueSize": 12
+                        },
+                        "textMode": "value_and_name"
+                    },
+                    "pluginVersion": "10.1.5",
+                    "targets": [
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "pg_up{ip=~\"$members\"}",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "postgres {{ ins }}",
+                            "refId": "A"
+                        },
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "pgbouncer_up{ip=~\"$members\"}",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "pgbouncer {{ ins }}",
+                            "refId": "B"
+                        },
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "patroni_up{ip=~\"$members\"}",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "patroni {{ ins }}",
+                            "refId": "C"
+                        },
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "pg_exporter_agent_up{ip=~\"$members\"}",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "pg_exporter {{ ins }}",
+                            "refId": "D"
+                        },
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "pgbouncer_exporter_agent_up{ip=~\"$members\"}",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "pgb_exporter {{ ins }}",
+                            "refId": "E"
+                        },
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "node_up{ip=~\"$members\"}",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "node {{ ins }}",
+                            "refId": "F"
+                        },
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "haproxy_up{ip=~\"$members\"}",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "haproxy {{ ins }}",
+                            "refId": "G"
+                        },
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "docker_up{ip=~\"$members\"}",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "docker {{ ins }}",
+                            "refId": "H"
+                        },
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "promtail_up{ip=~\"$members\"}",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "promtail {{ ins }}",
+                            "refId": "I"
+                        },
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "infra_up{ip=~\"$members\"}",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "{{ ins }}",
+                            "refId": "J"
+                        },
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "etcd_up{ip=~\"$members\"}",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "{{ ins }}",
+                            "refId": "K"
+                        },
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "redis_up{ip=~\"$members\"}",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "{{ ins }}",
+                            "refId": "L"
+                        },
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "minio_up{ip=~\"$members\"}",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "{{ ins }}",
+                            "refId": "M"
+                        },
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "mongo_up{ip=~\"$members\"}",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "{{ ins }}",
+                            "refId": "N"
+                        },
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "mysql_up{ip=~\"$members\"}",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "mysql {{ ins }}",
+                            "refId": "Y"
+                        },
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "mysql_exporter_up{ip=~\"$members\"}",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "mysql_exporter",
+                            "refId": "P"
+                        }
+                    ],
+                    "type": "stat"
                 },
                 {
                     "datasource": {
@@ -5885,8 +7009,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#346f36cc",
-                                        "value": null
+                                        "color": "#346f36cc"
                                     }
                                 ]
                             }
@@ -6086,7 +7209,7 @@
                             {
                                 "matcher": {
                                     "id": "byName",
-                                    "options": "Unlocked"
+                                    "options": "Lock"
                                 },
                                 "properties": [
                                     {
@@ -6108,10 +7231,10 @@
                                                     "0": {
                                                         "color": "#346f36cc",
                                                         "index": 0,
-                                                        "text": "Unlock"
+                                                        "text": "Unlocked"
                                                     },
                                                     "1": {
-                                                        "color": "#f5a673",
+                                                        "color": "#b783af",
                                                         "index": 1,
                                                         "text": "Locked"
                                                     }
@@ -6355,8 +7478,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#cc4637d9",
-                                                    "value": null
+                                                    "color": "#cc4637d9"
                                                 },
                                                 {
                                                     "color": "#f5a673",
@@ -6395,8 +7517,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#346f36cc",
-                                                    "value": null
+                                                    "color": "#346f36cc"
                                                 },
                                                 {
                                                     "color": "#f5a673",
@@ -6473,6 +7594,12 @@
                         "y": 43
                     },
                     "id": 152,
+                    "links": [
+                        {
+                            "title": "PGSQL Patroni : ${cls}",
+                            "url": "/d/pgsql-patroni?var-cls=${cls}&${__url_time_range}"
+                        }
+                    ],
                     "options": {
                         "cellHeight": "sm",
                         "footer": {
@@ -6486,7 +7613,7 @@
                         "showHeader": true,
                         "sortBy": []
                     },
-                    "pluginVersion": "10.0.3",
+                    "pluginVersion": "10.1.5",
                     "targets": [
                         {
                             "datasource": {
@@ -6694,7 +7821,7 @@
                                     "Time 7": true,
                                     "Time 8": true,
                                     "Time 9": true,
-                                    "Value #E": true,
+                                    "Value #E": false,
                                     "__name__ 1": false,
                                     "cls": true,
                                     "scope": false
@@ -6733,7 +7860,7 @@
                                     "Value #B": "Version",
                                     "Value #C": "PG Ver",
                                     "Value #D": "Paused",
-                                    "Value #E": "Unlocked",
+                                    "Value #E": "Lock",
                                     "Value #F": "Restart",
                                     "Value #G": "Failsafe",
                                     "Value #H": "WAL",
@@ -6749,219 +7876,6 @@
                         }
                     ],
                     "type": "table"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "ds-prometheus"
-                    },
-                    "description": "Blue  = PostgreSQL\n\nGreen = Pgbouncer\n\nYellow : Agent (Patroni / PG Exporters)",
-                    "fieldConfig": {
-                        "defaults": {
-                            "color": {
-                                "mode": "thresholds"
-                            },
-                            "links": [],
-                            "mappings": [
-                                {
-                                    "options": {
-                                        "match": "null+nan",
-                                        "result": {
-                                            "index": 0,
-                                            "text": "No Instances"
-                                        }
-                                    },
-                                    "type": "special"
-                                }
-                            ],
-                            "max": 1.1,
-                            "min": 0,
-                            "thresholds": {
-                                "mode": "absolute",
-                                "steps": [
-                                    {
-                                        "color": "#3e668f",
-                                        "value": null
-                                    },
-                                    {
-                                        "color": "#aaaaaa",
-                                        "value": 1
-                                    }
-                                ]
-                            }
-                        },
-                        "overrides": [
-                            {
-                                "matcher": {
-                                    "id": "byFrameRefID",
-                                    "options": "A"
-                                },
-                                "properties": [
-                                    {
-                                        "id": "thresholds",
-                                        "value": {
-                                            "mode": "absolute",
-                                            "steps": [
-                                                {
-                                                    "color": "text",
-                                                    "value": null
-                                                },
-                                                {
-                                                    "color": "#3e668f",
-                                                    "value": 1
-                                                }
-                                            ]
-                                        }
-                                    },
-                                    {
-                                        "id": "links",
-                                        "value": [
-                                            {
-                                                "title": "PGSQL Instance: ${__field.labels.ins}",
-                                                "url": "/d/pgsql-instance?var-ins=${__field.labels.ins}&${__url_time_range}"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "matcher": {
-                                    "id": "byFrameRefID",
-                                    "options": "B"
-                                },
-                                "properties": [
-                                    {
-                                        "id": "thresholds",
-                                        "value": {
-                                            "mode": "absolute",
-                                            "steps": [
-                                                {
-                                                    "color": "text",
-                                                    "value": null
-                                                },
-                                                {
-                                                    "color": "#346f36cc",
-                                                    "value": 1
-                                                }
-                                            ]
-                                        }
-                                    },
-                                    {
-                                        "id": "links",
-                                        "value": [
-                                            {
-                                                "title": "PGSQL Pgbouncer: ${__field.labels.ins}",
-                                                "url": "/d/pgsql-pgbouncer?var-ins=${__field.labels.ins}&${__url_time_range}"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "matcher": {
-                                    "id": "byFrameRefID",
-                                    "options": "C"
-                                },
-                                "properties": [
-                                    {
-                                        "id": "thresholds",
-                                        "value": {
-                                            "mode": "absolute",
-                                            "steps": [
-                                                {
-                                                    "color": "text",
-                                                    "value": null
-                                                },
-                                                {
-                                                    "color": "#5b9cd5",
-                                                    "value": 1
-                                                }
-                                            ]
-                                        }
-                                    },
-                                    {
-                                        "id": "links",
-                                        "value": [
-                                            {
-                                                "title": "PGSQL Agents: ${__field.labels.ins}",
-                                                "url": "/d/pgsql-instance?var-ins=${__field.labels.ins}&${__url_time_range}"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    "gridPos": {
-                        "h": 6,
-                        "w": 5,
-                        "x": 19,
-                        "y": 43
-                    },
-                    "id": 164,
-                    "options": {
-                        "colorMode": "background",
-                        "graphMode": "area",
-                        "justifyMode": "auto",
-                        "orientation": "auto",
-                        "reduceOptions": {
-                            "calcs": [
-                                "lastNotNull"
-                            ],
-                            "fields": "",
-                            "values": false
-                        },
-                        "text": {
-                            "valueSize": 12
-                        },
-                        "textMode": "name"
-                    },
-                    "pluginVersion": "10.0.3",
-                    "targets": [
-                        {
-                            "datasource": {
-                                "type": "prometheus",
-                                "uid": "ds-prometheus"
-                            },
-                            "editorMode": "code",
-                            "exemplar": false,
-                            "expr": " min by (ins) (pg_up{cls=\"$cls\"})",
-                            "hide": false,
-                            "instant": true,
-                            "interval": "",
-                            "legendFormat": "{{ ins }}",
-                            "refId": "A"
-                        },
-                        {
-                            "datasource": {
-                                "type": "prometheus",
-                                "uid": "ds-prometheus"
-                            },
-                            "editorMode": "code",
-                            "exemplar": false,
-                            "expr": " min by (ins) (pgbouncer_up{cls=\"$cls\"})",
-                            "hide": false,
-                            "instant": true,
-                            "interval": "",
-                            "legendFormat": "{{ ins }}",
-                            "refId": "B"
-                        },
-                        {
-                            "datasource": {
-                                "type": "prometheus",
-                                "uid": "ds-prometheus"
-                            },
-                            "editorMode": "code",
-                            "exemplar": false,
-                            "expr": " min by (ins) (up{cls=\"$cls\"})",
-                            "hide": false,
-                            "instant": true,
-                            "interval": "",
-                            "legendFormat": "{{ ins }}",
-                            "refId": "C"
-                        }
-                    ],
-                    "type": "stat"
                 },
                 {
                     "datasource": {
@@ -6988,8 +7902,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#e3e3e3e0",
-                                        "value": null
+                                        "color": "#e3e3e3e0"
                                     }
                                 ]
                             }
@@ -7051,12 +7964,12 @@
                                                     "0": {
                                                         "color": "#3e668f",
                                                         "index": 1,
-                                                        "text": "primary"
+                                                        "text": "Primary"
                                                     },
                                                     "1": {
                                                         "color": "#346f36cc",
                                                         "index": 0,
-                                                        "text": "replica"
+                                                        "text": "Replica"
                                                     }
                                                 },
                                                 "type": "value"
@@ -7065,8 +7978,9 @@
                                                 "options": {
                                                     "match": "null+nan",
                                                     "result": {
-                                                        "color": "transparent",
-                                                        "index": 2
+                                                        "color": "#7e7e7e",
+                                                        "index": 2,
+                                                        "text": "Unknown"
                                                     }
                                                 },
                                                 "type": "special"
@@ -7082,12 +7996,7 @@
                                     },
                                     {
                                         "id": "links",
-                                        "value": [
-                                            {
-                                                "title": "PGSQL Service for ${cls}-${__data.fields.Status}",
-                                                "url": "/d/pgsql-service?var-svc=${__data.fields.Cluster}-${__data.fields.Status}&${__url_time_range}"
-                                            }
-                                        ]
+                                        "value": []
                                     }
                                 ]
                             },
@@ -7124,8 +8033,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -7196,8 +8104,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -7265,8 +8172,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#e3e3e3e0",
-                                                    "value": null
+                                                    "color": "#e3e3e3e0"
                                                 },
                                                 {
                                                     "color": "#3275d9bf",
@@ -7315,8 +8221,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#3e668f",
@@ -7353,8 +8258,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#3e668f",
@@ -7391,8 +8295,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -7464,8 +8367,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#346f36cc",
-                                                    "value": null
+                                                    "color": "#346f36cc"
                                                 },
                                                 {
                                                     "color": "#fcdb72",
@@ -7514,8 +8416,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "red",
@@ -7544,8 +8445,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#346f36cc",
-                                                    "value": null
+                                                    "color": "#346f36cc"
                                                 },
                                                 {
                                                     "color": "red",
@@ -7607,8 +8507,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#346f36cc",
-                                                    "value": null
+                                                    "color": "#346f36cc"
                                                 },
                                                 {
                                                     "color": "red",
@@ -7641,8 +8540,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#346f36cc",
-                                                    "value": null
+                                                    "color": "#346f36cc"
                                                 },
                                                 {
                                                     "color": "#EAB839",
@@ -7744,7 +8642,7 @@
                             }
                         ]
                     },
-                    "pluginVersion": "10.0.3",
+                    "pluginVersion": "10.1.5",
                     "targets": [
                         {
                             "datasource": {
@@ -7759,6 +8657,21 @@
                             "interval": "",
                             "legendFormat": "",
                             "refId": "A"
+                        },
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "min by (ins,ip) (up{cls=\"$cls\", job=\"pgsql\"})",
+                            "format": "table",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "",
+                            "refId": "D"
                         },
                         {
                             "datasource": {
@@ -7871,21 +8784,6 @@
                             "interval": "",
                             "legendFormat": "",
                             "refId": "K"
-                        },
-                        {
-                            "datasource": {
-                                "type": "prometheus",
-                                "uid": "ds-prometheus"
-                            },
-                            "editorMode": "code",
-                            "exemplar": false,
-                            "expr": "min by (ins) (up{cls=\"$cls\", job=\"pgsql\"})",
-                            "format": "table",
-                            "hide": false,
-                            "instant": true,
-                            "interval": "",
-                            "legendFormat": "",
-                            "refId": "D"
                         }
                     ],
                     "title": "Postgres Instances",
@@ -7933,7 +8831,8 @@
                                     "instance 4": true,
                                     "instance 5": true,
                                     "instance 6": true,
-                                    "ip 2": true,
+                                    "ip 1": true,
+                                    "ip 2": false,
                                     "ip 3": true,
                                     "ip 4": true,
                                     "ip 5": true,
@@ -7955,27 +8854,25 @@
                                     "Time 4": 17,
                                     "Time 5": 19,
                                     "Time 6": 20,
+                                    "Time 7": 23,
                                     "Value #A": 1,
-                                    "Value #B": 4,
-                                    "Value #C": 5,
+                                    "Value #B": 5,
+                                    "Value #C": 6,
                                     "Value #D": 0,
-                                    "Value #E": 7,
-                                    "Value #G": 6,
+                                    "Value #E": 8,
+                                    "Value #G": 7,
+                                    "Value #K": 24,
                                     "__name__ 1": 11,
                                     "__name__ 2": 14,
-                                    "__name__ 3": 22,
                                     "cls 1": 18,
-                                    "cls 2": 8,
-                                    "cls 3": 23,
+                                    "cls 2": 9,
                                     "ins": 2,
-                                    "instance 1": 21,
-                                    "instance 2": 24,
-                                    "ip 1": 3,
-                                    "ip 2": 9,
-                                    "ip 3": 25,
+                                    "instance": 22,
+                                    "ip 1": 4,
+                                    "ip 2": 3,
+                                    "ip 3": 21,
                                     "job 1": 12,
-                                    "job 2": 15,
-                                    "job 3": 26
+                                    "job 2": 15
                                 },
                                 "renameByName": {
                                     "Time 4": "",
@@ -7994,7 +8891,8 @@
                                     "cls 2": "",
                                     "ins": "Instance",
                                     "ip": "IP",
-                                    "ip 1": "IP"
+                                    "ip 1": "",
+                                    "ip 2": "IP"
                                 }
                             }
                         }
@@ -8024,8 +8922,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#e3e3e3e0",
-                                        "value": null
+                                        "color": "#e3e3e3e0"
                                     }
                                 ]
                             },
@@ -8083,7 +8980,7 @@
                         },
                         "showHeader": false
                     },
-                    "pluginVersion": "10.0.3",
+                    "pluginVersion": "10.1.5",
                     "targets": [
                         {
                             "datasource": {
@@ -8203,8 +9100,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#e3e3e3e0",
-                                        "value": null
+                                        "color": "#e3e3e3e0"
                                     }
                                 ]
                             }
@@ -8285,8 +9181,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -8339,8 +9234,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -8407,8 +9301,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#346f36cc",
-                                                    "value": null
+                                                    "color": "#346f36cc"
                                                 },
                                                 {
                                                     "color": "#f5a673",
@@ -8507,8 +9400,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -8617,8 +9509,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -8671,8 +9562,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#346f36cc",
-                                                    "value": null
+                                                    "color": "#346f36cc"
                                                 },
                                                 {
                                                     "color": "#fcdb72",
@@ -8711,8 +9601,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -8765,8 +9654,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#346f36cc",
-                                                    "value": null
+                                                    "color": "#346f36cc"
                                                 },
                                                 {
                                                     "color": "#fcdb72",
@@ -8849,8 +9737,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -9076,8 +9963,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 }
                                             ]
                                         }
@@ -9111,7 +9997,7 @@
                             }
                         ]
                     },
-                    "pluginVersion": "10.0.3",
+                    "pluginVersion": "10.1.5",
                     "targets": [
                         {
                             "datasource": {
@@ -9441,8 +10327,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#e3e3e3e0",
-                                        "value": null
+                                        "color": "#e3e3e3e0"
                                     },
                                     {
                                         "color": "#e3e3e3e0",
@@ -9738,7 +10623,7 @@
                             }
                         ]
                     },
-                    "pluginVersion": "10.0.3",
+                    "pluginVersion": "10.1.5",
                     "targets": [
                         {
                             "datasource": {
@@ -9829,8 +10714,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#e3e3e3e0",
-                                        "value": null
+                                        "color": "#e3e3e3e0"
                                     }
                                 ]
                             }
@@ -9886,8 +10770,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -9947,8 +10830,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#e3e3e3e0",
-                                                    "value": null
+                                                    "color": "#e3e3e3e0"
                                                 },
                                                 {
                                                     "color": "#3275d9bf",
@@ -9997,8 +10879,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -10041,8 +10922,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "red",
-                                                    "value": null
+                                                    "color": "red"
                                                 },
                                                 {
                                                     "color": "#fcdb72",
@@ -10073,8 +10953,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -10119,8 +10998,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -10215,7 +11093,7 @@
                             }
                         ]
                     },
-                    "pluginVersion": "10.0.3",
+                    "pluginVersion": "10.1.5",
                     "targets": [
                         {
                             "datasource": {
@@ -10393,8 +11271,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#e3e3e3e0",
-                                        "value": null
+                                        "color": "#e3e3e3e0"
                                     }
                                 ]
                             }
@@ -10629,7 +11506,7 @@
                         "showHeader": true,
                         "sortBy": []
                     },
-                    "pluginVersion": "10.0.3",
+                    "pluginVersion": "10.1.5",
                     "targets": [
                         {
                             "datasource": {
@@ -10750,7 +11627,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 37
+                "y": 32
             },
             "id": 82,
             "panels": [
@@ -10899,7 +11776,7 @@
                         "h": 7,
                         "w": 12,
                         "x": 0,
-                        "y": 38
+                        "y": 75
                     },
                     "id": 98,
                     "options": {
@@ -11075,7 +11952,7 @@
                         "h": 7,
                         "w": 12,
                         "x": 12,
-                        "y": 38
+                        "y": 75
                     },
                     "id": 90,
                     "options": {
@@ -11205,7 +12082,7 @@
                         "h": 7,
                         "w": 12,
                         "x": 0,
-                        "y": 45
+                        "y": 82
                     },
                     "id": 88,
                     "options": {
@@ -11355,7 +12232,7 @@
                         "h": 7,
                         "w": 12,
                         "x": 12,
-                        "y": 45
+                        "y": 82
                     },
                     "id": 104,
                     "links": [
@@ -11548,7 +12425,7 @@
                         "h": 7,
                         "w": 12,
                         "x": 0,
-                        "y": 52
+                        "y": 89
                     },
                     "id": 100,
                     "options": {
@@ -11674,7 +12551,7 @@
                         "h": 7,
                         "w": 12,
                         "x": 12,
-                        "y": 52
+                        "y": 89
                     },
                     "id": 84,
                     "links": [
@@ -11779,7 +12656,7 @@
                         "h": 9,
                         "w": 17,
                         "x": 0,
-                        "y": 59
+                        "y": 96
                     },
                     "id": 86,
                     "links": [
@@ -11887,7 +12764,7 @@
                         "h": 9,
                         "w": 7,
                         "x": 17,
-                        "y": 59
+                        "y": 96
                     },
                     "id": 102,
                     "options": {
@@ -12016,7 +12893,7 @@
                         "h": 9,
                         "w": 17,
                         "x": 0,
-                        "y": 68
+                        "y": 105
                     },
                     "id": 107,
                     "options": {
@@ -12146,7 +13023,7 @@
                         "h": 9,
                         "w": 7,
                         "x": 17,
-                        "y": 68
+                        "y": 105
                     },
                     "id": 105,
                     "options": {
@@ -12191,7 +13068,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 38
+                "y": 33
             },
             "id": 170,
             "panels": [
@@ -12339,7 +13216,7 @@
                         },
                         "textMode": "auto"
                     },
-                    "pluginVersion": "10.0.3",
+                    "pluginVersion": "10.1.5",
                     "targets": [
                         {
                             "datasource": {
@@ -12389,7 +13266,7 @@
                             "refId": "D"
                         }
                     ],
-                    "title": "Logs 5m",
+                    "title": "Logs (5m)",
                     "type": "stat"
                 },
                 {
@@ -12418,6 +13295,7 @@
                                     "tooltip": false,
                                     "viz": false
                                 },
+                                "insertNulls": false,
                                 "lineInterpolation": "linear",
                                 "lineWidth": 1,
                                 "pointSize": 5,
@@ -12581,7 +13459,7 @@
                             "refId": "D"
                         }
                     ],
-                    "title": "Logs",
+                    "title": "Logs per $__interval",
                     "type": "timeseries"
                 },
                 {
@@ -12632,8 +13510,7 @@
     ],
     "refresh": "",
     "revision": 1,
-    "schemaVersion": 38,
-    "style": "light",
+    "schemaVersion": 39,
     "tags": [
         "Pigsty",
         "PGSQL",

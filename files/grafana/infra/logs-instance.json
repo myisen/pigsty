@@ -73,6 +73,7 @@
                         "mode": "fixed"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -87,6 +88,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -246,7 +248,7 @@
                     "refId": "A"
                 }
             ],
-            "title": "Logs",
+            "title": "Logs per $__interval",
             "type": "timeseries"
         },
         {
@@ -261,6 +263,7 @@
                         "mode": "fixed"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -275,6 +278,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -434,7 +438,7 @@
                     "refId": "A"
                 }
             ],
-            "title": "Searched Logs",
+            "title": "Searched Logs per $__interval",
             "type": "timeseries"
         },
         {
@@ -472,14 +476,14 @@
             "type": "logs"
         }
     ],
-    "refresh": "1m",
+    "refresh": "",
     "revision": 1,
-    "schemaVersion": 38,
-    "style": "light",
+    "schemaVersion": 39,
     "tags": [
         "Pigsty",
         "INFRA",
-        "Instance"
+        "Instance",
+        "NODE"
     ],
     "templating": {
         "list": [

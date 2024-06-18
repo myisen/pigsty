@@ -2,6 +2,9 @@
 
 > [Min.IO](https://min.io/docs/minio/linux/reference/minio-mc/mc-mb.html): S3-Compatible Open-Source Multi-Cloud Object Storage
 
+[Configuration](#configuration) | [Administration](#administration) | [Playbook](#playbook) | [Dashboard](#dashboard) | [Parameter](#parameter)
+
+
 MinIO is an S3-compatible object storage server. It's designed to be scalable, secure, and easy to use.
 It has native multi-node multi-driver HA support and can store documents, pictures, videos, and backups.
 
@@ -12,49 +15,21 @@ MinIO requires a trusted CA to work, so you have to install it in addition to [`
 
 
 
-
-----------------
-
-## Playbook
-
-There's a built-in playbook: [`minio.yml`](https://github.com/Vonng/pigsty/blob/master/minio.yml) for installing the MinIO cluster. But you have to [define](#configuration) it first.
-
-```bash
-./minio.yml -l minio   # install minio cluster on group 'minio'
-```
-
-- `minio-id`        : generate minio identity
-- `minio_os_user`   : create os user minio
-- `minio_install`   : install minio/mcli rpm
-- `minio_clean`     : remove minio data (not default)
-- `minio_dir`       : create minio directories
-- `minio_config`    : generate minio config
-  - `minio_conf`    : minio main config
-  - `minio_cert`    : minio ssl cert
-  - `minio_dns`     : write minio dns records
-- `minio_launch`    : launch minio service
-- `minio_register`  : register minio to prometheus
-- `minio_provision` : create minio aliases/buckets/users
-  - `minio_alias`   : create minio client alias
-  - `minio_bucket`  : create minio buckets
-  - `minio_user`    : create minio biz users
-
-Trusted ca file: `/etc/pki/ca.crt` should exist on all nodes already. which is generated in `role: ca` and loaded & trusted by default in `role: node`.
-
-You should install [`MINIO`](MINIO) module on Pigsty-managed nodes (i.e., Install [`NODE`](NODE) first)
-
-[![asciicast](https://asciinema.org/a/566415.svg)](https://asciinema.org/a/566415)
-
-
-
 ----------------
 
 ## Configuration
 
-You have to define a MinIO cluster before deploying it. There are some [parameters](#parameters) for MinIO.
+You have to define a MinIO cluster before deploying it. There are some [parameters](#parameter) for MinIO.
 
-And here are three typical deployment scenarios:
+- [Single-Node Single-Drive](#single-node-single-drive)
+- [Single-Node Multi-Drive](#single-node-multi-drive)
+- [Multi-Node Multi-Drive](#multi-node-single-drive)
+- [Expose Service](#expose-service)
+- [Access Service](#access-service)
+- [Expose Admin](#expose-admin)
 
+
+----------------
 
 ### Single-Node Single-Drive
 
@@ -72,7 +47,7 @@ The only required params are [`minio_seq`](PARAM#minio_seq) and [`minio_cluster`
 Single-Node Single-Driver mode is for development purposes, so you can use a common dir as the data dir, which is `/data/minio` by default.
 Beware that in multi-driver or multi-node mode, MinIO will refuse to start if using a common dir as the data dir rather than a mount point.
 
-
+----------------
 
 ### Single-Node Multi-Drive
 
@@ -84,7 +59,7 @@ To use multiple disks on a single node, you have to specify the [`minio_data`](P
 minio:
   hosts: { 10.10.10.10: { minio_seq: 1 } }
   vars:
-    minio_cluster: minio         # minio cluster name, minio by default
+    minio_cluster: minio         # minio cluster identifier, REQUIRED
     minio_data: '/data{1...4}'   # minio data dir(s), use {x...y} to specify multi drivers
 ```
 
@@ -95,7 +70,7 @@ mkfs.xfs /dev/sdb; mkdir /data1; mount -t xfs /dev/sdb /data1;   # mount 1st dri
 ```
 
 
-
+----------------
 
 ### Multi-Node Multi-Drive
 
@@ -117,13 +92,14 @@ minio:
 
 The `${minio_cluster}` and `${minio_seq}` will be replaced with the value of [`minio_cluster`](PARAM#minio_cluster) and [`minio_seq`](PARAM#minio_seq) respectively and used as MinIO nodename.
 
+----------------
 
 ### Expose Service
 
 MinIO will serve on port `9000` by default. If a multi-node MinIO cluster is deployed, you can access its service via any node.
-It would be better to expose MinIO service via a load balancer, such as the default `haproxy` on [`NODE`](NODE).
+It would be better to expose MinIO service via a load balancer, such as the default [`haproxy`](PARAM#haproxy) on [`NODE`](NODE), or use the L2 [vip](PARAM#node_vip).
 
-To do so, you have to define an extra service with [`haproxy_services`](PARAM#haproxy_services):
+To expose MinIO service with haproxy, you have to define an extra service with [`haproxy_services`](PARAM#haproxy_services):
 
 ```yaml
 minio:
@@ -150,6 +126,8 @@ minio:
           - { name: minio-3 ,ip: 10.10.10.12 ,port: 9000 ,options: 'check-ssl ca-file /etc/pki/ca.crt check port 9000' }
 ```
 
+----------------
+
 ### Access Service
 
 To use the [exposed service](#expose-service), you have to update/append the MinIO credential in the [`pgbackrest_repo`](PARAM#pgbackrest_repo) section: 
@@ -174,6 +152,7 @@ minio_ha:
   retention_full: 14
 ```
 
+----------------
 
 ### Expose Admin
 
@@ -193,13 +172,28 @@ Check the MinIO demo [config](https://github.com/Vonng/pigsty/blob/master/files/
 
 
 
+
 ----------------
 
 ## Administration
 
 Here are some common MinIO `mcli` commands for reference, check [MinIO Client](https://min.io/docs/minio/linux/reference/minio-mc.html) for more details.
 
-**Set Alias**
+----------------
+
+### Create Cluster
+
+To create a [defined](#configuration) minio cluster, run the [`minio.yml`](#minioyml) playbook on `minio` group:
+
+```bash
+./minio.yml -l minio   # install minio cluster on group 'minio'
+```
+
+----------------
+
+### Client Setup
+
+To access MinIO servers, you have to configure client `mcli` alias first:
 
 ```bash
 mcli alias ls  # list minio alias (there's a sss by default)
@@ -207,7 +201,7 @@ mcli alias set sss https://sss.pigsty:9000 minioadmin minioadmin              # 
 mcli alias set pgbackrest https://sss.pigsty:9000 pgbackrest S3User.Backup    # backup user
 ```
 
-**User Admin**
+You can manage business users with `mcli` as well:
 
 ```bash
 mcli admin user list sss     # list all users on sss
@@ -217,7 +211,11 @@ mcli admin user add sss pgbackrest S3User.Backup
 set -o history 
 ```
 
-**Bucket CRUD**
+----------------
+
+### CRUD
+
+You can CRUD minio bucket with `mcli`:
 
 ```bash
 mcli ls sss/          # list buckets of alias 'sss'
@@ -225,8 +223,7 @@ mcli mb --ignore-existing sss/hello  # create a bucket named 'hello'
 mcli rb --force sss/hello            # remove bucket 'hello' with force
 ```
 
-
-**Object CRUD**
+Or perform object CRUD:
 
 ```bash
 mcli cp -r /www/pigsty/*.rpm sss/infra/repo/         # upload files to bucket 'infra' with prefix 'repo'
@@ -235,22 +232,62 @@ mcli cp sss/infra/repo/pg_exporter-0.5.0.x86_64.rpm /tmp/  # download file from 
 
 
 
+
 ----------------
 
-## Dashboards
+## Playbook
+
+There's a built-in playbook: [`minio.yml`](#minioyml) for installing the MinIO cluster. But you have to [define](#configuration) it first.
+
+### `minio.yml`
+
+[`minio.yml`](https://github.com/Vonng/pigsty/blob/master/minio.yml)
+
+- `minio-id`        : generate minio identity
+- `minio_os_user`   : create os user minio
+- `minio_install`   : install minio/mcli rpm
+- `minio_clean`     : remove minio data (not default)
+- `minio_dir`       : create minio directories
+- `minio_config`    : generate minio config
+  - `minio_conf`    : minio main config
+  - `minio_cert`    : minio ssl cert
+  - `minio_dns`     : write minio dns records
+- `minio_launch`    : launch minio service
+- `minio_register`  : register minio to prometheus
+- `minio_provision` : create minio aliases/buckets/users
+  - `minio_alias`   : create minio client alias
+  - `minio_bucket`  : create minio buckets
+  - `minio_user`    : create minio biz users
+
+Trusted ca file: `/etc/pki/ca.crt` should exist on all nodes already. which is generated in `role: ca` and loaded & trusted by default in `role: node`.
+
+You should install [`MINIO`](MINIO) module on Pigsty-managed nodes (i.e., Install [`NODE`](NODE) first)
+
+[![asciicast](https://asciinema.org/a/566415.svg)](https://asciinema.org/a/566415)
+
+
+
+
+----------------
+
+## Dashboard
 
 There are two dashboards for [`MINIO`](MINIO) module.
 
-- [MinIO Overview](http://demo.pigsty.cc/d/minio-overview): Overview of a MinIO cluster
-- [MinIO Instance](http://demo.pigsty.cc/d/minio-instance): Detail information about a MinIO instance
+[MinIO Overview](https://demo.pigsty.cc/d/minio-overview): Overview of one single MinIO cluster
+
+[MinIO Instance](https://demo.pigsty.cc/d/minio-instance): Detail information about one single MinIO instance
+
+[![minio-overview.jpg](https://repo.pigsty.cc/img/minio-overview.jpg)](https://demo.pigsty.cc/d/minio-overview)
+
 
 
 
 ----------------
 
-## Parameters
+## Parameter
 
-There are 15 parameters in [`MINIO`](PARAM#MINIO) module.
+There are 15 parameters in [`MINIO`](PARAM#minio) module.
 
 
 | Parameter                                    |   Type   | Level | Comment                                                 |
@@ -270,3 +307,24 @@ There are 15 parameters in [`MINIO`](PARAM#MINIO) module.
 | [`minio_alias`](PARAM#minio_alias)           |  string  |   G   | alias name for local minio deployment                   |
 | [`minio_buckets`](PARAM#minio_buckets)       | bucket[] |   C   | list of minio bucket to be created                      |
 | [`minio_users`](PARAM#minio_users)           |  user[]  |   C   | list of minio user to be created                        |
+
+
+```yaml
+#minio_seq: 1                     # minio cluster identifier, REQUIRED
+#minio_cluster: minio             # minio cluster name, minio by default
+minio_clean: false                # cleanup minio during init?, false by default
+minio_user: minio                 # minio os user, `minio` by default
+minio_node: '${minio_cluster}-${minio_seq}.pigsty' # minio node name pattern
+minio_data: '/data/minio'         # minio data dir(s), use {x...y} to specify multi drivers
+minio_domain: sss.pigsty          # minio external domain name, `sss.pigsty` by default
+minio_port: 9000                  # minio service port, 9000 by default
+minio_admin_port: 9001            # minio console port, 9001 by default
+minio_access_key: minioadmin      # root access key, `minioadmin` by default
+minio_secret_key: minioadmin      # root secret key, `minioadmin` by default
+minio_extra_vars: ''              # extra environment variables
+minio_alias: sss                  # alias name for local minio deployment
+minio_buckets: [ { name: pgsql }, { name: infra },  { name: redis } ]
+minio_users:
+  - { access_key: dba , secret_key: S3User.DBA, policy: consoleAdmin }
+  - { access_key: pgbackrest , secret_key: S3User.Backup, policy: readwrite }
+```

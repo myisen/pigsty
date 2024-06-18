@@ -165,10 +165,12 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {},
-                "textMode": "auto"
+                "textMode": "auto",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -267,12 +269,14 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 12
                 },
-                "textMode": "auto"
+                "textMode": "auto",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -302,6 +306,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -318,6 +323,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "stepBefore",
                         "lineWidth": 0,
                         "pointSize": 1,
@@ -418,10 +424,12 @@
                         "type": "prometheus",
                         "uid": "ds-prometheus"
                     },
+                    "editorMode": "code",
                     "exemplar": false,
-                    "expr": "sum without (ins,instance,datname) (ALERTS{alertstate=\"firing\", job=\"node\"})",
+                    "expr": "sum without (ins,ip,instance,datname) (ALERTS{alertstate=\"firing\", job=\"node\"})",
                     "interval": "",
                     "legendFormat": "[{{ severity }}] {{alertname}}  @ {{ cls }}",
+                    "range": true,
                     "refId": "A"
                 },
                 {
@@ -453,12 +461,9 @@
             },
             "id": 80,
             "options": {
-                "alertInstanceLabelFilter": "",
                 "alertName": "",
                 "dashboardAlerts": false,
                 "dashboardTitle": "",
-                "groupBy": [],
-                "groupMode": "default",
                 "maxItems": 10,
                 "showOptions": "current",
                 "sortOrder": 1,
@@ -474,10 +479,9 @@
                     "paused": false,
                     "pending": false
                 },
-                "tags": [],
-                "viewMode": "list"
+                "tags": []
             },
-            "pluginVersion": "8.4.5",
+            "pluginVersion": "10.4.2",
             "title": "Alerts",
             "type": "alertlist"
         },
@@ -886,7 +890,7 @@
                     }
                 ]
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -960,6 +964,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -974,6 +979,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -1202,8 +1208,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#3e668f",
-                                        "value": null
+                                        "color": "#3e668f"
                                     },
                                     {
                                         "color": "green",
@@ -1354,8 +1359,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "purple",
-                                        "value": null
+                                        "color": "purple"
                                     },
                                     {
                                         "color": "red",
@@ -1494,8 +1498,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "green",
-                                        "value": null
+                                        "color": "green"
                                     },
                                     {
                                         "color": "orange",
@@ -1633,8 +1636,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#3e668f",
-                                        "value": null
+                                        "color": "#3e668f"
                                     },
                                     {
                                         "color": "green",
@@ -1780,8 +1782,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#3e668f",
-                                        "value": null
+                                        "color": "#3e668f"
                                     },
                                     {
                                         "color": "green",
@@ -1932,8 +1933,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "text",
-                                        "value": null
+                                        "color": "text"
                                     },
                                     {
                                         "color": "purple",
@@ -2050,8 +2050,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#3e668f",
-                                        "value": null
+                                        "color": "#3e668f"
                                     },
                                     {
                                         "color": "green",
@@ -2179,8 +2178,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#3e668f",
-                                        "value": null
+                                        "color": "#3e668f"
                                     },
                                     {
                                         "color": "green",
@@ -2331,8 +2329,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "green",
-                                        "value": null
+                                        "color": "green"
                                     },
                                     {
                                         "color": "orange",
@@ -2448,8 +2445,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#3e668f",
-                                        "value": null
+                                        "color": "#3e668f"
                                     },
                                     {
                                         "color": "green",
@@ -2557,6 +2553,7 @@
                                     "tooltip": false,
                                     "viz": false
                                 },
+                                "insertNulls": false,
                                 "lineInterpolation": "linear",
                                 "lineWidth": 1,
                                 "pointSize": 5,
@@ -2586,8 +2583,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "red",
-                                        "value": null
+                                        "color": "red"
                                     },
                                     {
                                         "color": "green",
@@ -2603,7 +2599,7 @@
                         "h": 7,
                         "w": 24,
                         "x": 0,
-                        "y": 9
+                        "y": 31
                     },
                     "id": 75,
                     "options": {
@@ -2613,7 +2609,9 @@
                             ],
                             "displayMode": "table",
                             "placement": "right",
-                            "showLegend": true
+                            "showLegend": true,
+                            "sortBy": "Min",
+                            "sortDesc": false
                         },
                         "tooltip": {
                             "mode": "single",
@@ -2626,14 +2624,16 @@
                                 "type": "prometheus",
                                 "uid": "ds-prometheus"
                             },
+                            "editorMode": "code",
                             "exemplar": false,
-                            "expr": "min without() (node_ntp_sanity or node_timex_sync_status)",
+                            "expr": "min without() (node_timex_sync_status)",
                             "interval": "",
                             "legendFormat": "{{ ip }}",
+                            "range": true,
                             "refId": "A"
                         }
                     ],
-                    "title": "NodeNtpSanity",
+                    "title": "NodeTimeSync",
                     "type": "timeseries"
                 },
                 {
@@ -2641,7 +2641,7 @@
                         "type": "prometheus",
                         "uid": "ds-prometheus"
                     },
-                    "description": "Clock time offset alert > 50ms",
+                    "description": "Clock time offset alert > 64ms",
                     "fieldConfig": {
                         "defaults": {
                             "color": {
@@ -2661,6 +2661,7 @@
                                     "tooltip": false,
                                     "viz": false
                                 },
+                                "insertNulls": false,
                                 "lineInterpolation": "linear",
                                 "lineWidth": 1,
                                 "pointSize": 5,
@@ -2689,8 +2690,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#3e668f",
-                                        "value": null
+                                        "color": "#3e668f"
                                     },
                                     {
                                         "color": "green",
@@ -2702,7 +2702,7 @@
                                     },
                                     {
                                         "color": "orange",
-                                        "value": 0.05
+                                        "value": 0.064
                                     },
                                     {
                                         "color": "red",
@@ -2726,7 +2726,7 @@
                         "h": 7,
                         "w": 24,
                         "x": 0,
-                        "y": 16
+                        "y": 38
                     },
                     "id": 74,
                     "options": {
@@ -2736,7 +2736,9 @@
                             ],
                             "displayMode": "table",
                             "placement": "right",
-                            "showLegend": true
+                            "showLegend": true,
+                            "sortBy": "Max",
+                            "sortDesc": true
                         },
                         "tooltip": {
                             "mode": "single",
@@ -2768,14 +2770,13 @@
                     "type": "timeseries"
                 }
             ],
-            "title": "Node: NTP",
+            "title": "Node: Time",
             "type": "row"
         }
     ],
-    "refresh": "5m",
+    "refresh": "",
     "revision": 1,
-    "schemaVersion": 38,
-    "style": "dark",
+    "schemaVersion": 39,
     "tags": [
         "Pigsty",
         "NODE",

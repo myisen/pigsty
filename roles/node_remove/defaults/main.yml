@@ -1,9 +1,17 @@
 ---
 #-----------------------------------------------------------------
+# PROMETHEUS (Reference)
+#-----------------------------------------------------------------
+prometheus_sd_dir: /etc/prometheus/targets # prometheus file service discovery directory
+#-----------------------------------------------------------------
 # PROMTAIL (Reference)
 #-----------------------------------------------------------------
 promtail_enabled: true            # enable promtail logging collector?
 promtail_positions: /var/log/positions.yaml   # position status for promtail
+#-----------------------------------------------------------------
+# NODE_VIP (Reference)
+#-----------------------------------------------------------------
+vip_enabled: false                # enable vip on this node cluster?
 #-----------------------------------------------------------------
 # NODE_EXPORTER (Reference)
 #-----------------------------------------------------------------

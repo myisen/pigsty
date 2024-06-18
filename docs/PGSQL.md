@@ -9,18 +9,21 @@
 
 > Overview of PostgreSQL in Pigsty
 
-* [Architecture](PGSQL-ARCH)
-* [Configuration](PGSQL-CONF)
-* [Database](PGSQL-DB)
-* [User](PGSQL-USER)
-* [Service](PGSQL-SVC)
-* [Authentication](PGSQL-HBA)
-* [Access Control](PGSQL-ACL)
-* [Administration](PGSQL-ADMIN)
-* [Backup & PITR](PGSQL-PITR)
-* [Monitor](PGSQL-MONITOR)
-* [Migration](PGSQL-MIGRATION)
+- [Architecture](PGSQL-ARCH)
+- [Configuration](PGSQL-CONF)
+- [Extensions](PGSQL-EXTENSION)
+- [Database](PGSQL-DB)
+- [User/Role](PGSQL-USER)
+- [Service/Access](PGSQL-SVC)
+- [Authentication](PGSQL-HBA)
+- [Access Control](PGSQL-ACL)
+- [Administration](PGSQL-ADMIN)
+- [Backup & PITR](PGSQL-PITR)
+- [Monitor](PGSQL-MONITOR)
+- [Migration](PGSQL-MIGRATION)
 
+
+----------------
 
 ## Configuration
 
@@ -35,51 +38,10 @@
 - [Standby Cluster](PGSQL-CONF#standby-cluster): Clone an existing cluster and follow it
 - [Delayed Cluster](PGSQL-CONF#delayed-cluster): Clone an existing cluster for emergency data recovery
 - [Citus Cluster](PGSQL-CONF#citus-cluster): Define a Citus distributed database cluster
+- [Major Version](PGSQL-CONF#major-version): Define a PostgreSQL cluster with specific major version
 
 
-
-## Playbooks
-
-> Materialize the cluster you described
-
-- [`pgsql.yml`](https://github.com/vonng/pigsty/blob/master/pgsql.yml)                     : Init HA PostgreSQL clusters or adding new replicas.
-- [`pgsql-rm.yml`](https://github.com/vonng/pigsty/blob/master/pgsql-rm.yml)               : Remove PostgreSQL cluster, or remove replicas
-- [`pgsql-user.yml`](https://github.com/vonng/pigsty/blob/master/pgsql-user.yml)           : Add new business user to existing PostgreSQL cluster
-- [`pgsql-db.yml`](https://github.com/vonng/pigsty/blob/master/pgsql-db.yml)               : Add new business database to existing PostgreSQL cluster
-- [`pgsql-monitor.yml`](https://github.com/vonng/pigsty/blob/master/pgsql-monitor.yml)     : Monitor remote postgres instance with local exporters
-- [`pgsql-migration.yml`](https://github.com/vonng/pigsty/blob/master/pgsql-migration.yml) : Generate Migration manual & scripts for existing PostgreSQL
-
-<details><summary>Example: Install PGSQL module</summary>
-
-[![asciicast](https://asciinema.org/a/566417.svg)](https://asciinema.org/a/566417)
-
-</details>
-
-
-<details><summary>Example: Remove PGSQL module</summary>
-
-[![asciicast](https://asciinema.org/a/566418.svg)](https://asciinema.org/a/566418)
-
-</details>
-
-
-
-
-## Dashboards
-
-There are 23 default grafana dashboards about PostgreSQL and categorized into 4 levels, check [PGSQL Monitor](PGSQL-MONITOR) for details.
-
-|                              Overview                               |                               Cluster                                |                         Instance                          |                         Database                          |
-|:-------------------------------------------------------------------:|:--------------------------------------------------------------------:|:---------------------------------------------------------:|:---------------------------------------------------------:|
-|      [PGSQL Overview](http://demo.pigsty.cc/d/pgsql-overview)       |        [PGSQL Cluster](http://demo.pigsty.cc/d/pgsql-cluster)        | [PGSQL Instance](http://demo.pigsty.cc/d/pgsql-instance)  | [PGSQL Database](http://demo.pigsty.cc/d/pgsql-database)  |
-|         [PGSQL Alert](http://demo.pigsty.cc/d/pgsql-alert)          | [PGSQL Cluster-remote](http://demo.pigsty.cc/d/pgsql-cluster-remote) | [PGCAT Instance](http://demo.pigsty.cc/d/pgcat-instance)  | [PGCAT Database](http://demo.pigsty.cc/d/pgcat-database)  |
-|         [PGSQL Shard](http://demo.pigsty.cc/d/pgsql-shard)          |       [PGSQL Activity](http://demo.pigsty.cc/d/pgsql-activity)       |  [PGSQL Persist](http://demo.pigsty.cc/d/pgsql-persist)   |   [PGSQL Tables](http://demo.pigsty.cc/d/pgsql-tables)    |
-|                                                                     |    [PGSQL Replication](http://demo.pigsty.cc/d/pgsql-replication)    |    [PGSQL Proxy](http://demo.pigsty.cc/d/pgsql-proxy)     |    [PGSQL Table](http://demo.pigsty.cc/d/pgsql-table)     |
-|                                                                     |        [PGSQL Service](http://demo.pigsty.cc/d/pgsql-service)        |  [PGSQL Queries](http://demo.pigsty.cc/d/pgsql-queries)   |    [PGCAT Table](http://demo.pigsty.cc/d/pgcat-table)     |
-|                                                                     |      [PGSQL Databases](http://demo.pigsty.cc/d/pgsql-databases)      |  [PGSQL Session](http://demo.pigsty.cc/d/pgsql-session)   |    [PGSQL Query](http://demo.pigsty.cc/d/pgsql-query)     |
-|                                                                     |                                                                      |    [PGSQL Xacts](http://demo.pigsty.cc/d/pgsql-xacts)     |    [PGCAT Query](http://demo.pigsty.cc/d/pgcat-query)     |
-
-
+----------------
 
 ## Administration
 
@@ -100,7 +62,58 @@ There are 23 default grafana dashboards about PostgreSQL and categorized into 4 
 - [`Restore Cluster`](PGSQL-ADMIN#restore-cluster)
 
 
-## Parameters
+
+----------------
+
+## Playbook
+
+> Materialize the cluster with idempotent [playbooks](PGSQL-PLAYBOOK)
+
+- [`pgsql.yml`](PGSQL-PLAYBOOK#pgsqlyml) : Init HA PostgreSQL clusters or add new replicas.
+- [`pgsql-rm.yml`](PGSQL-PLAYBOOK#pgsql-rmyml) : Remove PostgreSQL cluster, or remove replicas
+- [`pgsql-user.yml`](PGSQL-PLAYBOOK#pgsql-useryml) : Add new business user to existing PostgreSQL cluster
+- [`pgsql-db.yml`](PGSQL-PLAYBOOK#pgsql-dbyml) : Add new business database to existing PostgreSQL cluster
+- [`pgsql-monitor.yml`](PGSQL-PLAYBOOK#pgsql-monitoryml) : Monitor remote PostgreSQL instance with local exporters
+- [`pgsql-migration.yml`](PGSQL-PLAYBOOK#pgsql-migrationyml) : Generate Migration manual & scripts for existing PostgreSQL
+
+<details><summary>Example: Install PGSQL module</summary>
+
+[![asciicast](https://asciinema.org/a/566417.svg)](https://asciinema.org/a/566417)
+
+</details>
+
+
+<details><summary>Example: Remove PGSQL module</summary>
+
+[![asciicast](https://asciinema.org/a/566418.svg)](https://asciinema.org/a/566418)
+
+</details>
+
+
+
+----------------
+
+## Dashboard
+
+There are 26 default grafana dashboards about PostgreSQL and categorized into 4 levels. Check [Dashboards](PGSQL-DASHBOARD) for details.
+
+|                         Overview                          |                             Cluster                             |                          Instance                           |                         Database                          |
+|:---------------------------------------------------------:|:---------------------------------------------------------------:|:-----------------------------------------------------------:|:---------------------------------------------------------:|
+| [PGSQL Overview](https://demo.pigsty.cc/d/pgsql-overview) |     [PGSQL Cluster](https://demo.pigsty.cc/d/pgsql-cluster)     |  [PGSQL Instance](https://demo.pigsty.cc/d/pgsql-instance)  | [PGSQL Database](https://demo.pigsty.cc/d/pgsql-database) |
+|    [PGSQL Alert](https://demo.pigsty.cc/d/pgsql-alert)    |     [PGRDS Cluster](https://demo.pigsty.cc/d/pgrds-cluster)     |  [PGRDS Instance](https://demo.pigsty.cc/d/pgrds-instance)  | [PGCAT Database](https://demo.pigsty.cc/d/pgcat-database) |
+|    [PGSQL Shard](https://demo.pigsty.cc/d/pgsql-shard)    |    [PGSQL Activity](https://demo.pigsty.cc/d/pgsql-activity)    |  [PGCAT Instance](https://demo.pigsty.cc/d/pgcat-instance)  |   [PGSQL Tables](https://demo.pigsty.cc/d/pgsql-tables)   |
+|                                                           | [PGSQL Replication](https://demo.pigsty.cc/d/pgsql-replication) |   [PGSQL Persist](https://demo.pigsty.cc/d/pgsql-persist)   |    [PGSQL Table](https://demo.pigsty.cc/d/pgsql-table)    |
+|                                                           |     [PGSQL Service](https://demo.pigsty.cc/d/pgsql-service)     |     [PGSQL Proxy](https://demo.pigsty.cc/d/pgsql-proxy)     |    [PGCAT Table](https://demo.pigsty.cc/d/pgcat-table)    |
+|                                                           |   [PGSQL Databases](https://demo.pigsty.cc/d/pgsql-databases)   | [PGSQL Pgbouncer](https://demo.pigsty.cc/d/pgsql-pgbouncer) |    [PGSQL Query](https://demo.pigsty.cc/d/pgsql-query)    |
+|                                                           |     [PGSQL Patroni](https://demo.pigsty.cc/d/pgsql-patroni)     |   [PGSQL Session](https://demo.pigsty.cc/d/pgsql-session)   |    [PGCAT Query](https://demo.pigsty.cc/d/pgcat-query)    |
+|                                                           |                                                                 |     [PGSQL Xacts](https://demo.pigsty.cc/d/pgsql-xacts)     |    [PGCAT Locks](https://demo.pigsty.cc/d/pgcat-locks)    |
+|                                                           |                                                                 |  [PGSQL Exporter](https://demo.pigsty.cc/d/pgsql-exporter)  |   [PGCAT Schema](https://demo.pigsty.cc/d/pgcat-schema)   |
+
+
+
+----------------
+
+## Parameter
 
 > API Reference for [PGSQL](PARAM#pgsql) module:
 
@@ -146,7 +159,7 @@ There are 23 default grafana dashboards about PostgreSQL and categorized into 4 
 | [`pg_dbsu_sudo`](PARAM#pg_dbsu_sudo)                                 | [`PG_INSTALL`](PARAM#pg_install)     |    enum     |   C   | dbsu sudo privilege, none,limit,all,nopass. limit by default                  |
 | [`pg_dbsu_home`](PARAM#pg_dbsu_home)                                 | [`PG_INSTALL`](PARAM#pg_install)     |    path     |   C   | postgresql home directory, `/var/lib/pgsql` by default                        |
 | [`pg_dbsu_ssh_exchange`](PARAM#pg_dbsu_ssh_exchange)                 | [`PG_INSTALL`](PARAM#pg_install)     |    bool     |   C   | exchange postgres dbsu ssh key among same pgsql cluster                       |
-| [`pg_version`](PARAM#pg_version)                                     | [`PG_INSTALL`](PARAM#pg_install)     |    enum     |   C   | postgres major version to be installed, 15 by default                         |
+| [`pg_version`](PARAM#pg_version)                                     | [`PG_INSTALL`](PARAM#pg_install)     |    enum     |   C   | postgres major version to be installed, 16 by default                         |
 | [`pg_bin_dir`](PARAM#pg_bin_dir)                                     | [`PG_INSTALL`](PARAM#pg_install)     |    path     |   C   | postgres binary dir, `/usr/pgsql/bin` by default                              |
 | [`pg_log_dir`](PARAM#pg_log_dir)                                     | [`PG_INSTALL`](PARAM#pg_install)     |    path     |   C   | postgres log dir, `/pg/log/postgres` by default                               |
 | [`pg_packages`](PARAM#pg_packages)                                   | [`PG_INSTALL`](PARAM#pg_install)     |  string[]   |   C   | pg packages to be installed, `${pg_version}` will be replaced                 |
@@ -170,12 +183,13 @@ There are 23 default grafana dashboards about PostgreSQL and categorized into 4 
 | [`patroni_watchdog_mode`](PARAM#patroni_watchdog_mode)               | [`PG_BOOTSTRAP`](PARAM#pg_bootstrap) |    enum     |   C   | patroni watchdog mode: automatic,required,off. off by default                 |
 | [`patroni_username`](PARAM#patroni_username)                         | [`PG_BOOTSTRAP`](PARAM#pg_bootstrap) |  username   |   C   | patroni restapi username, `postgres` by default                               |
 | [`patroni_password`](PARAM#patroni_password)                         | [`PG_BOOTSTRAP`](PARAM#pg_bootstrap) |  password   |   C   | patroni restapi password, `Patroni.API` by default                            |
+| [`patroni_citus_db`](#patroni_citus_db)                              | [`PG_BOOTSTRAP`](#pg_bootstrap)      |   string    |   C   | citus database managed by patroni, postgres by default                        |
 | [`pg_conf`](PARAM#pg_conf)                                           | [`PG_BOOTSTRAP`](PARAM#pg_bootstrap) |    enum     |   C   | config template: oltp,olap,crit,tiny. `oltp.yml` by default                   |
 | [`pg_max_conn`](PARAM#pg_max_conn)                                   | [`PG_BOOTSTRAP`](PARAM#pg_bootstrap) |     int     |   C   | postgres max connections, `auto` will use recommended value                   |
 | [`pg_shared_buffer_ratio`](PARAM#pg_shared_buffer_ratio)             | [`PG_BOOTSTRAP`](PARAM#pg_bootstrap) |    float    |   C   | postgres shared buffer memory ratio, 0.25 by default, 0.1~0.4                 |
 | [`pg_rto`](PARAM#pg_rto)                                             | [`PG_BOOTSTRAP`](PARAM#pg_bootstrap) |     int     |   C   | recovery time objective in seconds, `30s` by default                          |
 | [`pg_rpo`](PARAM#pg_rpo)                                             | [`PG_BOOTSTRAP`](PARAM#pg_bootstrap) |     int     |   C   | recovery point objective in bytes, `1MiB` at most by default                  |
-| [`pg_libs`](PARAM#pg_libs)                                           | [`PG_BOOTSTRAP`](PARAM#pg_bootstrap) |   string    |   C   | preloaded libraries, `pg_stat_statements,auto_explain` by default             |
+| [`pg_libs`](PARAM#pg_libs)                                           | [`PG_BOOTSTRAP`](PARAM#pg_bootstrap) |   string    |   C   | preloaded libraries, `timescaledb,pg_stat_statements,auto_explain` by default |
 | [`pg_delay`](PARAM#pg_delay)                                         | [`PG_BOOTSTRAP`](PARAM#pg_bootstrap) |  interval   |   I   | replication apply delay for standby cluster leader                            |
 | [`pg_checksum`](PARAM#pg_checksum)                                   | [`PG_BOOTSTRAP`](PARAM#pg_bootstrap) |    bool     |   C   | enable data checksum for postgres cluster?                                    |
 | [`pg_pwd_enc`](PARAM#pg_pwd_enc)                                     | [`PG_BOOTSTRAP`](PARAM#pg_bootstrap) |    enum     |   C   | passwords encryption algorithm: md5,scram-sha-256                             |

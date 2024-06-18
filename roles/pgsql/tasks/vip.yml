@@ -4,16 +4,17 @@
 #--------------------------------------------------------------#
 - name: create vip-manager systemd service
   tags: pg_vip_config
-  copy: src=vip-manager.service dest=/usr/lib/systemd/system/vip-manager.service
+  copy: src=vip-manager.service dest={{ systemd_dir }}/vip-manager.service
+  vars: { systemd_dir: "{% if os_package is defined and os_package == 'deb' %}/lib/systemd/system/{% else %}/usr/lib/systemd/system{% endif %}" }
+
 
 # TODO: validate pg_vip_address, but ipaddr require extra python packages
 - name: render vip-manager config
   tags: pg_vip_config
   template: src=vip-manager.yml.j2 dest=/etc/default/vip-manager.yml
   vars:
-    vip_address:  "{{ pg_vip_address.split('/')[0] }}"
-    vip_cidrmask: "{{ pg_vip_address.split('/')[1] }}"
-    vip_interface: "{{ pg_vip_interface }}"
+    pg_vip_addr: "{{ pg_vip_address.split('/')[0] }}"
+    pg_vip_cidr: "{{ pg_vip_address.split('/')[1] }}"
 
 #--------------------------------------------------------------#
 #  Reload vip-manager                               [vip_launch]

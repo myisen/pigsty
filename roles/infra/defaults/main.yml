@@ -15,9 +15,9 @@ infra_portal:                     # infra services exposed via portal
 # INFRA_PACKAGE
 #-----------------------------------------------------------------
 infra_packages:                   # packages to be installed on infra nodes
-  - grafana,loki,logcli,promtail,prometheus2,alertmanager,karma,pushgateway
-  - node_exporter,blackbox_exporter,nginx_exporter,redis_exporter,pg_exporter
-  - nginx,dnsmasq,ansible,postgresql15,redis,mcli,python3-requests
+  - grafana,loki,logcli,promtail,prometheus2,alertmanager,pushgateway
+  - node_exporter,blackbox_exporter,nginx_exporter,pg_exporter
+  - nginx,dnsmasq,ansible,etcd,python3-requests,redis,mcli
 infra_packages_pip: ''            # pip installed packages for infra nodes
 
 #-----------------------------------------------------------------
@@ -51,6 +51,7 @@ dns_records:                      # dynamic dns records resolved by dnsmasq
 prometheus_enabled: true          # enable prometheus on this infra node?
 prometheus_clean: true            # clean prometheus data during init?
 prometheus_data: /data/prometheus # prometheus data dir, `/data/prometheus` by default
+prometheus_sd_dir: /etc/prometheus/targets # prometheus file service discovery directory
 prometheus_sd_interval: 5s        # prometheus target refresh interval, 5s by default
 prometheus_scrape_interval: 10s   # prometheus scrape & eval interval, 10s by default
 prometheus_scrape_timeout: 8s     # prometheus global scrape timeout, 8s by default
@@ -77,11 +78,15 @@ grafana_plugin_list:              # grafana plugins to be downloaded with grafan
   - volkovlabs-echarts-panel
   - volkovlabs-image-panel
   - volkovlabs-form-panel
+  - volkovlabs-variable-panel
   - volkovlabs-grapi-datasource
+  - marcusolsson-static-datasource
+  - marcusolsson-json-datasource
   - marcusolsson-dynamictext-panel
   - marcusolsson-treemap-panel
   - marcusolsson-calendar-panel
-  - marcusolsson-static-datasource
+  - marcusolsson-hourly-heatmap-panel
+  - knightss27-weathermap-panel
 loki_enabled: true                # enable loki on this infra node?
 loki_clean: false                 # whether remove existing loki data?
 loki_data: /data/loki             # loki data dir, `/data/loki` by default
@@ -92,6 +97,7 @@ loki_retention: 15d               # loki log retention period, 15d by default
 #-----------------------------------------------------------------
 node_exporter_port: 9100          # node exporter listen port, 9100 by default
 haproxy_exporter_port: 9101       # haproxy admin/exporter port, 9101 by default
+vip_exporter_port: 9650           # keepalived exporter listen port, 9650 by default
 promtail_port: 9080               # promtail listen port, 9080 by default
 pg_exporter_port: 9630            # pg_exporter listen port, 9630 by default
 pgbouncer_exporter_port: 9631     # pgbouncer_exporter listen port, 9631 by default
@@ -102,7 +108,7 @@ nginx_cert_exists: false
 #-----------------------------------------------------------------
 # META (Reference)
 #-----------------------------------------------------------------
-version: v2.2.0                   # pigsty version string
+version: v2.7.0                   # pigsty version string
 admin_ip: 10.10.10.10             # admin node ip address, overwritten by configure
 #-----------------------------------------------------------------
 # CA (Reference)
@@ -120,7 +126,7 @@ etcd_port: 2379                   # etcd client port, 2379 by default
 #-----------------------------------------------------------------
 # PG_INSTALL (Reference)
 #-----------------------------------------------------------------
-pg_version: 15                    # postgres major version to be installed, 15 by default
+pg_version: 16                    # postgres major version to be installed, 16 by default
 #-----------------------------------------------------------------
 # PG_BOOTSTRAP (Reference)
 #-----------------------------------------------------------------

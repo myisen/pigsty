@@ -97,6 +97,22 @@
     "liveNow": false,
     "panels": [
         {
+            "collapsed": false,
+            "datasource": {
+                "uid": "ds-prometheus"
+            },
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "id": 325,
+            "panels": [],
+            "title": "Overview",
+            "type": "row"
+        },
+        {
             "datasource": {
                 "type": "prometheus",
                 "uid": "ds-prometheus"
@@ -149,8 +165,8 @@
                                 "id": "links",
                                 "value": [
                                     {
-                                        "title": "Node Cluster : ${cls}",
-                                        "url": "/d/node-cluster?var-cls=${cls}&${__url_time_range}"
+                                        "title": "PGSQL Cluster : ${cls}",
+                                        "url": "/d/pgsql-cluster?var-cls=${cls}&${__url_time_range}"
                                     }
                                 ]
                             }
@@ -232,7 +248,7 @@
                 "h": 6,
                 "w": 6,
                 "x": 0,
-                "y": 0
+                "y": 1
             },
             "id": 392,
             "options": {
@@ -247,13 +263,15 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 20,
                     "valueSize": 16
                 },
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -301,7 +319,6 @@
                     "refId": "A"
                 }
             ],
-            "transformations": [],
             "type": "stat"
         },
         {
@@ -820,10 +837,9 @@
                 "h": 6,
                 "w": 13,
                 "x": 6,
-                "y": 0
+                "y": 1
             },
             "id": 394,
-            "links": [],
             "options": {
                 "cellHeight": "sm",
                 "footer": {
@@ -842,7 +858,7 @@
                     }
                 ]
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -1203,7 +1219,7 @@
                 "h": 6,
                 "w": 5,
                 "x": 19,
-                "y": 0
+                "y": 1
             },
             "id": 393,
             "options": {
@@ -1224,7 +1240,7 @@
                     }
                 ]
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -1336,33 +1352,18 @@
             "type": "table"
         },
         {
-            "collapsed": false,
-            "datasource": {
-                "uid": "ds-prometheus"
-            },
-            "gridPos": {
-                "h": 1,
-                "w": 24,
-                "x": 0,
-                "y": 6
-            },
-            "id": 325,
-            "panels": [],
-            "title": "Table",
-            "type": "row"
-        },
-        {
             "datasource": {
                 "type": "prometheus",
                 "uid": "ds-prometheus"
             },
+            "description": "`pg_class` and `pg_stat_user_tables` metrics",
             "fieldConfig": {
                 "defaults": {
                     "color": {
                         "mode": "thresholds"
                     },
                     "custom": {
-                        "align": "auto",
+                        "align": "center",
                         "cellOptions": {
                             "type": "auto"
                         },
@@ -1373,7 +1374,7 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
+                                "color": "#e3e3e3e0",
                                 "value": null
                             }
                         ]
@@ -1382,30 +1383,77 @@
                 "overrides": [
                     {
                         "matcher": {
-                            "id": "byName",
-                            "options": "Table"
+                            "id": "byType",
+                            "options": "number"
                         },
                         "properties": [
                             {
-                                "id": "links",
+                                "id": "mappings",
                                 "value": [
                                     {
-                                        "title": "${__data.fields.Table}",
-                                        "url": "/d/pgsql-table?var-ins=${ins}&var-cls=${cls}&var-datname=${datname}&var-relname=${__data.fields.Table}&${__url_time_range}"
+                                        "options": {
+                                            "0": {
+                                                "color": "#7b7b7be0",
+                                                "index": 1,
+                                                "text": "0"
+                                            }
+                                        },
+                                        "type": "value"
+                                    },
+                                    {
+                                        "options": {
+                                            "match": "null+nan",
+                                            "result": {
+                                                "index": 0,
+                                                "text": "-"
+                                            }
+                                        },
+                                        "type": "special"
                                     }
                                 ]
+                            },
+                            {
+                                "id": "custom.cellOptions",
+                                "value": {
+                                    "type": "color-text"
+                                }
                             }
                         ]
                     },
                     {
                         "matcher": {
                             "id": "byName",
-                            "options": "QPS"
+                            "options": "Relation"
+                        },
+                        "properties": [
+                            {
+                                "id": "links",
+                                "value": [
+                                    {
+                                        "title": "PGSQL Table : ${__data.fields.Relation}",
+                                        "url": "/d/pgsql-table?var-ins=${ins}&var-cls=${cls}&var-datname=${datname}&var-relname=${__data.fields.Relation}&${__url_time_range}"
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "custom.minWidth",
+                                "value": 200
+                            },
+                            {
+                                "id": "custom.align",
+                                "value": "auto"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byRegexp",
+                            "options": "/Scan.*/"
                         },
                         "properties": [
                             {
                                 "id": "custom.width",
-                                "value": 80
+                                "value": 90
                             },
                             {
                                 "id": "thresholds",
@@ -1452,9 +1500,19 @@
                                 "value": [
                                     {
                                         "options": {
+                                            "0": {
+                                                "color": "#8080807a",
+                                                "index": 1,
+                                                "text": "0"
+                                            }
+                                        },
+                                        "type": "value"
+                                    },
+                                    {
+                                        "options": {
                                             "match": "null+nan",
                                             "result": {
-                                                "color": "transparent",
+                                                "color": "gray",
                                                 "index": 0,
                                                 "text": "-"
                                             }
@@ -1468,12 +1526,12 @@
                     {
                         "matcher": {
                             "id": "byName",
-                            "options": "Rows"
+                            "options": "Row"
                         },
                         "properties": [
                             {
                                 "id": "custom.width",
-                                "value": 100
+                                "value": 110
                             },
                             {
                                 "id": "unit",
@@ -1505,7 +1563,7 @@
                                             "value": 100000000000
                                         },
                                         {
-                                            "color": "#cc4637d9",
+                                            "color": "red",
                                             "value": 1000000000000
                                         },
                                         {
@@ -1520,6 +1578,22 @@
                                 "value": {
                                     "type": "color-text"
                                 }
+                            },
+                            {
+                                "id": "mappings",
+                                "value": [
+                                    {
+                                        "options": {
+                                            "match": "null+nan",
+                                            "result": {
+                                                "color": "gray",
+                                                "index": 0,
+                                                "text": "N/A"
+                                            }
+                                        },
+                                        "type": "special"
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -1535,11 +1609,10 @@
                             },
                             {
                                 "id": "unit",
-                                "value": "decbytes"
+                                "value": "bytes"
                             },
                             {
-                                "id": "decimals",
-                                "value": 1
+                                "id": "decimals"
                             },
                             {
                                 "id": "custom.cellOptions",
@@ -1582,11 +1655,11 @@
                                         },
                                         {
                                             "color": "#b783af",
-                                            "value": 100000000000
+                                            "value": 30000000000
                                         },
                                         {
                                             "color": "text",
-                                            "value": 1000000000000
+                                            "value": 100000000000
                                         }
                                     ]
                                 }
@@ -1596,32 +1669,301 @@
                     {
                         "matcher": {
                             "id": "byName",
-                            "options": "Scan"
+                            "options": "Row(dead)"
                         },
                         "properties": [
                             {
-                                "id": "custom.align",
-                                "value": "right"
+                                "id": "custom.width",
+                                "value": 110
                             },
                             {
                                 "id": "unit",
                                 "value": "locale"
                             },
                             {
+                                "id": "thresholds",
+                                "value": {
+                                    "mode": "absolute",
+                                    "steps": [
+                                        {
+                                            "color": "#3e668f",
+                                            "value": null
+                                        },
+                                        {
+                                            "color": "#346f36cc",
+                                            "value": 1000
+                                        },
+                                        {
+                                            "color": "super-light-green",
+                                            "value": 1000000000
+                                        },
+                                        {
+                                            "color": "#fcdb72",
+                                            "value": 10000000000
+                                        },
+                                        {
+                                            "color": "#f5a673",
+                                            "value": 100000000000
+                                        },
+                                        {
+                                            "color": "red",
+                                            "value": 1000000000000
+                                        },
+                                        {
+                                            "color": "#b783af",
+                                            "value": 10000000000000
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "id": "custom.cellOptions",
+                                "value": {
+                                    "type": "color-text"
+                                }
+                            },
+                            {
+                                "id": "mappings",
+                                "value": [
+                                    {
+                                        "options": {
+                                            "match": "null+nan",
+                                            "result": {
+                                                "color": "gray",
+                                                "index": 0,
+                                                "text": "N/A"
+                                            }
+                                        },
+                                        "type": "special"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Scan(Seq)"
+                        },
+                        "properties": [
+                            {
+                                "id": "thresholds",
+                                "value": {
+                                    "mode": "absolute",
+                                    "steps": [
+                                        {
+                                            "color": "#3e668f",
+                                            "value": null
+                                        },
+                                        {
+                                            "color": "#346f36cc",
+                                            "value": 10
+                                        },
+                                        {
+                                            "color": "#EAB839",
+                                            "value": 100
+                                        },
+                                        {
+                                            "color": "#f5a673",
+                                            "value": 1000
+                                        },
+                                        {
+                                            "color": "red",
+                                            "value": 10000
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Row(r/s)"
+                        },
+                        "properties": [
+                            {
                                 "id": "custom.width",
-                                "value": 120
+                                "value": 80
+                            },
+                            {
+                                "id": "thresholds",
+                                "value": {
+                                    "mode": "absolute",
+                                    "steps": [
+                                        {
+                                            "color": "#807f7f",
+                                            "value": null
+                                        },
+                                        {
+                                            "color": "#3e668f",
+                                            "value": 1
+                                        },
+                                        {
+                                            "color": "#346f36cc",
+                                            "value": 10
+                                        },
+                                        {
+                                            "color": "#EAB839",
+                                            "value": 100
+                                        },
+                                        {
+                                            "color": "#f5a673",
+                                            "value": 1000
+                                        },
+                                        {
+                                            "color": "red",
+                                            "value": 10000
+                                        },
+                                        {
+                                            "color": "#b783af",
+                                            "value": 100000
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Row(w/s)"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 80
+                            },
+                            {
+                                "id": "thresholds",
+                                "value": {
+                                    "mode": "absolute",
+                                    "steps": [
+                                        {
+                                            "color": "#747574ba",
+                                            "value": null
+                                        },
+                                        {
+                                            "color": "#3e668f",
+                                            "value": 1
+                                        },
+                                        {
+                                            "color": "#346f36cc",
+                                            "value": 10
+                                        },
+                                        {
+                                            "color": "#fcdb72",
+                                            "value": 100
+                                        },
+                                        {
+                                            "color": "#f5a673",
+                                            "value": 1000
+                                        },
+                                        {
+                                            "color": "#E24D42",
+                                            "value": 10000
+                                        },
+                                        {
+                                            "color": "#b783af",
+                                            "value": 100000
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Dead%"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 80
+                            },
+                            {
+                                "id": "unit",
+                                "value": "percentunit"
+                            },
+                            {
+                                "id": "thresholds",
+                                "value": {
+                                    "mode": "absolute",
+                                    "steps": [
+                                        {
+                                            "color": "#3e668f",
+                                            "value": null
+                                        },
+                                        {
+                                            "color": "#346f36cc",
+                                            "value": 0.1
+                                        },
+                                        {
+                                            "color": "#EAB839",
+                                            "value": 0.3
+                                        },
+                                        {
+                                            "color": "#f5a673",
+                                            "value": 0.5
+                                        },
+                                        {
+                                            "color": "red",
+                                            "value": 0.7
+                                        },
+                                        {
+                                            "color": "#b783af",
+                                            "value": 0.99
+                                        },
+                                        {
+                                            "color": "text",
+                                            "value": 1
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "id": "decimals",
+                                "value": 1
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "OID"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 80
+                            },
+                            {
+                                "id": "links",
+                                "value": [
+                                    {
+                                        "title": "PGCAT Table : ${__data.fields.Relation}",
+                                        "url": "/d/pgcat-table?var-dsn=${ins}.${datname}&var-cls=${cls}&var-datname=${datname}&var-relname=${__data.fields.Relation}&${__url_time_range}"
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "custom.cellOptions",
+                                "value": {
+                                    "type": "auto"
+                                }
                             }
                         ]
                     }
                 ]
             },
             "gridPos": {
-                "h": 9,
-                "w": 12,
+                "h": 14,
+                "w": 14,
                 "x": 0,
                 "y": 7
             },
-            "id": 395,
+            "id": 396,
             "options": {
                 "cellHeight": "sm",
                 "footer": {
@@ -1636,23 +1978,24 @@
                 "sortBy": [
                     {
                         "desc": true,
-                        "displayName": "Scan"
+                        "displayName": "Row"
                     }
                 ]
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
                         "type": "prometheus",
                         "uid": "ds-prometheus"
                     },
+                    "editorMode": "code",
                     "exemplar": false,
-                    "expr": "sum by (relname) (pg:table:scan_rate1m{ins=\"$ins\", datname=\"$datname\"})",
+                    "expr": "max by (relname, relid) (pg_table_relid{ins=\"$ins\"})",
                     "format": "table",
                     "instant": true,
                     "interval": "",
-                    "legendFormat": "",
+                    "legendFormat": "OID",
                     "refId": "A"
                 },
                 {
@@ -1662,12 +2005,12 @@
                     },
                     "editorMode": "code",
                     "exemplar": false,
-                    "expr": "sum by (relname) (pg_table_n_live_tup{ins=\"$ins\", datname=\"$datname\"})",
+                    "expr": "max by (relname) (pg_table_size_bytes{ins=\"$ins\", datname=\"$datname\"})",
                     "format": "table",
                     "hide": false,
                     "instant": true,
                     "interval": "",
-                    "legendFormat": "",
+                    "legendFormat": "Table Size",
                     "refId": "B"
                 },
                 {
@@ -1677,12 +2020,12 @@
                     },
                     "editorMode": "code",
                     "exemplar": false,
-                    "expr": "sum by (relname) (pg_table_size_bytes{ins=\"$ins\", datname=\"$datname\"})",
+                    "expr": "sum by (relname) (pg:table:scan_rate1m{ins=\"$ins\", datname=\"$datname\"})",
                     "format": "table",
-                    "hide": true,
+                    "hide": false,
                     "instant": true,
                     "interval": "",
-                    "legendFormat": "",
+                    "legendFormat": "Table Scan",
                     "refId": "C"
                 },
                 {
@@ -1692,15 +2035,106 @@
                     },
                     "editorMode": "code",
                     "exemplar": false,
-                    "expr": "sum by (relname) (pg_table_idx_scan{ins=\"$ins\", datname=\"$datname\"}) \n+ sum by (relname) (pg_table_seq_scan{ins=\"$ins\", datname=\"$datname\"})",
+                    "expr": "sum by (relname) (pg:table:scan_rate1m{ins=\"$ins\", datname=\"$datname\"})",
+                    "format": "table",
+                    "hide": true,
+                    "instant": true,
+                    "interval": "",
+                    "legendFormat": "Primary Scan",
+                    "refId": "D"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "sum by (relname) (pg_table_seq_scan{ins=\"$ins\", datname=\"$datname\"})",
                     "format": "table",
                     "hide": false,
                     "instant": true,
                     "interval": "",
-                    "legendFormat": "",
-                    "refId": "D"
+                    "legendFormat": "Seq Scan",
+                    "refId": "E"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "sum by (relname) (rate(pg_table_tup_read{ins=\"$ins\", datname=\"$datname\"}[1m]))",
+                    "format": "table",
+                    "hide": false,
+                    "instant": true,
+                    "interval": "",
+                    "legendFormat": "Tup Read",
+                    "refId": "F"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "sum by (relname) (rate(pg_table_n_tup_mod{ins=\"$ins\", datname=\"$datname\"}[1m]))",
+                    "format": "table",
+                    "hide": false,
+                    "instant": true,
+                    "interval": "",
+                    "legendFormat": "Tup Mod",
+                    "refId": "G"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "max by (relname) (pg_table_n_live_tup{ins=\"$ins\", datname=\"$datname\"})",
+                    "format": "table",
+                    "hide": false,
+                    "instant": true,
+                    "interval": "",
+                    "legendFormat": "Tup Live",
+                    "refId": "H"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "max by (relname) (pg_table_n_dead_tup{ins=\"$ins\", datname=\"$datname\"})",
+                    "format": "table",
+                    "hide": false,
+                    "instant": true,
+                    "interval": "",
+                    "legendFormat": "Tup Dead",
+                    "refId": "I"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "max by (relname) (pg_table_n_dead_tup{ins=\"$ins\", datname=\"$datname\"} / \n(pg_table_n_live_tup{ins=\"$primary\", datname=\"$datname\"} + pg_table_n_dead_tup{ins=\"$primary\", datname=\"$datname\"}))",
+                    "format": "table",
+                    "hide": false,
+                    "instant": true,
+                    "interval": "",
+                    "legendFormat": "Dead%",
+                    "refId": "J"
                 }
             ],
+            "title": "Tables",
             "transformations": [
                 {
                     "id": "seriesToColumns",
@@ -1716,29 +2150,61 @@
                             "Time 1": true,
                             "Time 2": true,
                             "Time 3": true,
+                            "Time 4": true,
+                            "Time 5": true,
+                            "Time 6": true,
+                            "Time 7": true,
+                            "Time 8": true,
+                            "Time 9": true,
+                            "Value #B": false,
                             "__name__": true,
                             "cls": true,
                             "datname": true,
-                            "ins": true
+                            "ins": true,
+                            "instance": true,
+                            "ip": true,
+                            "job": true
                         },
                         "indexByName": {
-                            "Time 1": 5,
-                            "Time 2": 6,
-                            "Time 3": 7,
-                            "Time 4": 8,
+                            "Time 1": 10,
+                            "Time 10": 20,
+                            "Time 2": 11,
+                            "Time 3": 12,
+                            "Time 4": 13,
+                            "Time 5": 14,
+                            "Time 6": 15,
+                            "Time 7": 16,
+                            "Time 8": 17,
+                            "Time 9": 19,
                             "Value #A": 1,
-                            "Value #B": 3,
-                            "Value #C": 4,
-                            "Value #D": 2,
+                            "Value #B": 18,
+                            "Value #C": 3,
+                            "Value #D": 4,
+                            "Value #E": 5,
+                            "Value #F": 6,
+                            "Value #G": 7,
+                            "Value #H": 2,
+                            "Value #I": 8,
+                            "Value #J": 9,
                             "relname": 0
                         },
                         "renameByName": {
-                            "Value": "Scan",
-                            "Value #A": "QPS",
-                            "Value #B": "Rows",
-                            "Value #C": "Size",
-                            "Value #D": "Scan",
-                            "relname": "Table"
+                            "Time": "",
+                            "Time 2": "",
+                            "Time 4": "",
+                            "Value": "OID",
+                            "Value #A": "OID",
+                            "Value #B": "Size",
+                            "Value #C": "Scan",
+                            "Value #D": "Scan (P)",
+                            "Value #E": "Scan(Seq)",
+                            "Value #F": "Row(r/s)",
+                            "Value #G": "Row(w/s)",
+                            "Value #H": "Row",
+                            "Value #I": "Row(dead)",
+                            "Value #J": "Dead%",
+                            "Value #K": "Last Vacuum",
+                            "relname": "Relation"
                         }
                     }
                 }
@@ -1747,6 +2213,302 @@
         },
         {
             "datasource": {
+                "type": "prometheus",
+                "uid": "ds-prometheus"
+            },
+            "description": "Index Scan + Seq Scan on this table per second.\n\nSize by table size, Color by table scan rate.",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "links": [
+                        {
+                            "title": "PGSQL Table for ${__data.fields.relname}",
+                            "url": "/d/pgsql-table?var-ins=${ins}&var-cls=${cls}&var-datname=${datname}&var-relname=${__data.fields.relname}&${__url_time_range}"
+                        },
+                        {
+                            "title": "PGCAT Table : ${__data.fields.relname}",
+                            "url": "/d/pgcat-table?var-dsn=${ins}.${datname}&var-cls=${cls}&var-datname=${datname}&var-relname=${__data.fields.relname}&${__url_time_range}"
+                        }
+                    ],
+                    "mappings": [],
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#346f36cc",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "short"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Size"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "decbytes"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Scan"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "reqps"
+                            },
+                            {
+                                "id": "thresholds",
+                                "value": {
+                                    "mode": "absolute",
+                                    "steps": [
+                                        {
+                                            "color": "super-light-blue",
+                                            "value": null
+                                        },
+                                        {
+                                            "color": "super-light-green",
+                                            "value": 0.01
+                                        },
+                                        {
+                                            "color": "#346f36cc",
+                                            "value": 1
+                                        },
+                                        {
+                                            "color": "super-light-yellow",
+                                            "value": 10
+                                        },
+                                        {
+                                            "color": "super-light-orange",
+                                            "value": 100
+                                        },
+                                        {
+                                            "color": "super-light-red",
+                                            "value": 1000
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "id": "mappings",
+                                "value": [
+                                    {
+                                        "options": {
+                                            "match": "null+nan",
+                                            "result": {
+                                                "color": "#808080a3",
+                                                "index": 0,
+                                                "text": "inactive"
+                                            }
+                                        },
+                                        "type": "special"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 14,
+                "w": 10,
+                "x": 14,
+                "y": 7
+            },
+            "id": 397,
+            "options": {
+                "colorByField": "Value #B",
+                "labelFields": [
+                    "Value #A",
+                    "Value #B"
+                ],
+                "sizeField": "Value #A",
+                "textField": "relname",
+                "tiling": "treemapSquarify"
+            },
+            "pluginVersion": "8.0.1",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "exemplar": false,
+                    "expr": "max by (relname) (pg_table_size_bytes{cls=\"$cls\", datname=\"$datname\"})",
+                    "format": "table",
+                    "instant": true,
+                    "interval": "",
+                    "intervalFactor": 2,
+                    "legendFormat": "{{ relname }}",
+                    "refId": "A"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "exemplar": false,
+                    "expr": "sum by (relname) (\n    pg:table:scan_rate1m{cls=\"$cls\", datname=\"$datname\"}\n)",
+                    "format": "table",
+                    "hide": false,
+                    "instant": true,
+                    "interval": "",
+                    "intervalFactor": 2,
+                    "legendFormat": "{{ relname }}",
+                    "refId": "B"
+                }
+            ],
+            "title": "Table Size & Access",
+            "transformations": [
+                {
+                    "id": "seriesToColumns",
+                    "options": {
+                        "byField": "relname"
+                    }
+                },
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {
+                            "Time 1": true,
+                            "Time 2": true
+                        },
+                        "indexByName": {
+                            "Time 1": 3,
+                            "Time 2": 4,
+                            "Value #A": 1,
+                            "Value #B": 2,
+                            "relname 1": 0
+                        },
+                        "renameByName": {
+                            "Value #A": "Size",
+                            "Value #B": "Scan",
+                            "relname 1": "Relation"
+                        }
+                    }
+                }
+            ],
+            "type": "marcusolsson-treemap-panel"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "ds-prometheus"
+            },
+            "description": "Index Scan + Seq Scan on this table per second",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 2,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "links": [
+                        {
+                            "title": "PGSQL Table : ${ins}.${__field.labels.relname}",
+                            "url": "/d/pgsql-table?var-ins=${ins}&var-cls=${cls}&var-datname=${datname}&var-relname=${__field.labels.relname}&${__url_time_range}"
+                        }
+                    ],
+                    "mappings": [],
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#346f36cc",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 21
+            },
+            "id": 398,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "mean"
+                    ],
+                    "displayMode": "table",
+                    "placement": "right",
+                    "showLegend": true,
+                    "sortBy": "Mean",
+                    "sortDesc": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "8.0.1",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "exemplar": false,
+                    "expr": "sum by (relname) (\n    pg:table:scan_rate1m{cls=\"$cls\", datname=\"$datname\"}\n)",
+                    "interval": "",
+                    "intervalFactor": 2,
+                    "legendFormat": "{{ relname }}",
+                    "refId": "A"
+                }
+            ],
+            "title": "Table Scan (scan/s)",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
                 "uid": "ds-prometheus"
             },
             "fieldConfig": {
@@ -1755,75 +2517,98 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 2,
+                        "gradientMode": "none",
                         "hideFrom": {
                             "legend": false,
                             "tooltip": false,
                             "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
                         }
                     },
                     "links": [
                         {
-                            "title": "PGSQL Table for ${__field.labels.relname}",
+                            "title": "PGSQL Table : ${__field.labels.relname}",
                             "url": "/d/pgsql-table?var-ins=${ins}&var-cls=${cls}&var-datname=${datname}&var-relname=${__field.labels.relname}&${__url_time_range}"
                         }
                     ],
                     "mappings": [],
-                    "unit": "decbytes"
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#346f36cc",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "short"
                 },
                 "overrides": []
             },
             "gridPos": {
-                "h": 9,
+                "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 7
+                "y": 21
             },
-            "id": 338,
-            "links": [],
+            "id": 399,
             "options": {
-                "displayLabels": [],
                 "legend": {
-                    "calcs": [],
+                    "calcs": [
+                        "mean"
+                    ],
                     "displayMode": "table",
                     "placement": "right",
                     "showLegend": true,
-                    "values": [
-                        "value",
-                        "percent"
-                    ]
-                },
-                "pieType": "pie",
-                "reduceOptions": {
-                    "calcs": [
-                        "lastNotNull"
-                    ],
-                    "fields": "",
-                    "values": false
+                    "sortBy": "Mean",
+                    "sortDesc": true
                 },
                 "tooltip": {
                     "mode": "single",
                     "sort": "none"
                 }
             },
-            "pluginVersion": "7.2.0",
+            "pluginVersion": "8.0.1",
             "targets": [
                 {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
                     "exemplar": false,
-                    "expr": "sum(pg_table_size_bytes{ins=\"$ins\", datname=\"$datname\", relkind!='i'}) by (relname) ",
-                    "instant": true,
+                    "expr": "sum by (relname) (\n    rate(pg_table_tup_read{cls=\"$cls\", datname=\"$datname\"}[1m])\n)",
                     "interval": "",
+                    "intervalFactor": 2,
                     "legendFormat": "{{ relname }}",
                     "refId": "A"
                 }
             ],
-            "title": "Table Size",
-            "transformations": [
-                {
-                    "id": "organize",
-                    "options": {}
-                }
-            ],
-            "type": "piechart"
+            "title": "Tuple Read (rows/s)",
+            "type": "timeseries"
         },
         {
             "collapsed": false,
@@ -1834,7 +2619,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 16
+                "y": 28
             },
             "id": 327,
             "panels": [],
@@ -1851,6 +2636,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -1864,6 +2650,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -1905,7 +2692,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 17
+                "y": 29
             },
             "id": 329,
             "options": {
@@ -1945,6 +2732,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -1958,6 +2746,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -1999,7 +2788,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 17
+                "y": 29
             },
             "id": 330,
             "options": {
@@ -2039,6 +2828,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -2052,6 +2842,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -2093,7 +2884,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 25
+                "y": 37
             },
             "id": 333,
             "options": {
@@ -2134,6 +2925,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -2147,6 +2939,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -2188,7 +2981,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 25
+                "y": 37
             },
             "id": 332,
             "options": {
@@ -2227,6 +3020,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -2240,6 +3034,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "smooth",
                         "lineWidth": 1,
                         "pointSize": 2,
@@ -2268,12 +3063,12 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             }
                         ]
                     },
-                    "unit": "short"
+                    "unit": "short",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -2281,7 +3076,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 33
+                "y": 45
             },
             "id": 331,
             "options": {
@@ -2320,6 +3115,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -2333,6 +3129,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -2361,12 +3158,12 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             }
                         ]
                     },
-                    "unit": "short"
+                    "unit": "short",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -2374,7 +3171,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 33
+                "y": 45
             },
             "id": 334,
             "options": {
@@ -2412,7 +3209,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 41
+                "y": 53
             },
             "id": 336,
             "panels": [],
@@ -2429,6 +3226,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -2442,6 +3240,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -2470,12 +3269,12 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             }
                         ]
                     },
-                    "unit": "short"
+                    "unit": "short",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -2483,7 +3282,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 42
+                "y": 54
             },
             "id": 339,
             "options": {
@@ -2520,6 +3319,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -2533,6 +3333,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -2561,12 +3362,12 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             }
                         ]
                     },
-                    "unit": "short"
+                    "unit": "short",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -2574,7 +3375,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 42
+                "y": 54
             },
             "id": 340,
             "options": {
@@ -2611,6 +3412,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -2624,6 +3426,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -2652,12 +3455,12 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             }
                         ]
                     },
-                    "unit": "short"
+                    "unit": "short",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -2665,7 +3468,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 50
+                "y": 62
             },
             "id": 341,
             "options": {
@@ -2702,6 +3505,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -2715,6 +3519,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 2,
@@ -2743,12 +3548,12 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             }
                         ]
                     },
-                    "unit": "percentunit"
+                    "unit": "percentunit",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -2756,7 +3561,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 50
+                "y": 62
             },
             "id": 342,
             "options": {
@@ -2793,6 +3598,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -2806,6 +3612,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -2834,12 +3641,12 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             }
                         ]
                     },
-                    "unit": "short"
+                    "unit": "short",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -2847,7 +3654,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 58
+                "y": 70
             },
             "id": 343,
             "options": {
@@ -2884,6 +3691,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -2897,6 +3705,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -2925,12 +3734,12 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             }
                         ]
                     },
-                    "unit": "short"
+                    "unit": "short",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -2938,7 +3747,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 58
+                "y": 70
             },
             "id": 344,
             "options": {
@@ -2974,7 +3783,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 66
+                "y": 78
             },
             "id": 346,
             "panels": [],
@@ -2991,6 +3800,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -3004,6 +3814,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -3032,12 +3843,12 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             }
                         ]
                     },
-                    "unit": "short"
+                    "unit": "short",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -3045,7 +3856,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 67
+                "y": 79
             },
             "id": 348,
             "options": {
@@ -3084,6 +3895,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -3097,6 +3909,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -3125,12 +3938,12 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             }
                         ]
                     },
-                    "unit": "short"
+                    "unit": "short",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -3138,7 +3951,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 67
+                "y": 79
             },
             "id": 349,
             "options": {
@@ -3177,6 +3990,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -3190,6 +4004,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "smooth",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -3212,12 +4027,12 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             }
                         ]
                     },
-                    "unit": "short"
+                    "unit": "short",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -3225,7 +4040,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 75
+                "y": 87
             },
             "id": 350,
             "options": {
@@ -3265,6 +4080,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -3278,6 +4094,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -3300,8 +4117,7 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             },
                             {
                                 "color": "red",
@@ -3309,7 +4125,8 @@
                             }
                         ]
                     },
-                    "unit": "short"
+                    "unit": "short",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -3317,7 +4134,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 75
+                "y": 87
             },
             "id": 351,
             "options": {
@@ -3355,7 +4172,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 83
+                "y": 95
             },
             "id": 353,
             "panels": [],
@@ -3372,6 +4189,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -3385,6 +4203,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -3413,12 +4232,12 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             }
                         ]
                     },
-                    "unit": "short"
+                    "unit": "short",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -3426,7 +4245,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 84
+                "y": 96
             },
             "id": 354,
             "options": {
@@ -3464,6 +4283,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -3477,6 +4297,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 2,
@@ -3505,12 +4326,12 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             }
                         ]
                     },
-                    "unit": "percentunit"
+                    "unit": "percentunit",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -3518,7 +4339,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 84
+                "y": 96
             },
             "id": 357,
             "options": {
@@ -3556,6 +4377,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -3569,6 +4391,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -3597,12 +4420,12 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             }
                         ]
                     },
-                    "unit": "short"
+                    "unit": "short",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -3610,7 +4433,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 92
+                "y": 104
             },
             "id": 355,
             "options": {
@@ -3648,6 +4471,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -3661,6 +4485,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -3689,12 +4514,12 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             }
                         ]
                     },
-                    "unit": "short"
+                    "unit": "short",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -3702,7 +4527,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 92
+                "y": 104
             },
             "id": 356,
             "options": {
@@ -3740,6 +4565,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -3753,6 +4579,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -3775,8 +4602,7 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             },
                             {
                                 "color": "red",
@@ -3784,7 +4610,8 @@
                             }
                         ]
                     },
-                    "unit": "short"
+                    "unit": "short",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -3792,7 +4619,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 100
+                "y": 112
             },
             "id": 358,
             "options": {
@@ -3830,6 +4657,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -3843,6 +4671,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -3865,8 +4694,7 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             },
                             {
                                 "color": "red",
@@ -3874,7 +4702,8 @@
                             }
                         ]
                     },
-                    "unit": "short"
+                    "unit": "short",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -3882,7 +4711,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 100
+                "y": 112
             },
             "id": 359,
             "options": {
@@ -3919,7 +4748,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 108
+                "y": 120
             },
             "id": 361,
             "panels": [],
@@ -3936,6 +4765,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -3949,6 +4779,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -3971,8 +4802,7 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             },
                             {
                                 "color": "red",
@@ -3980,7 +4810,8 @@
                             }
                         ]
                     },
-                    "unit": "short"
+                    "unit": "short",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -3988,7 +4819,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 109
+                "y": 121
             },
             "id": 362,
             "options": {
@@ -4026,6 +4857,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -4039,6 +4871,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "stepBefore",
                         "lineWidth": 0,
                         "pointSize": 5,
@@ -4061,8 +4894,7 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             },
                             {
                                 "color": "red",
@@ -4070,7 +4902,8 @@
                             }
                         ]
                     },
-                    "unit": "ms"
+                    "unit": "ms",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -4078,7 +4911,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 109
+                "y": 121
             },
             "id": 366,
             "options": {
@@ -4115,6 +4948,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -4128,6 +4962,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "smooth",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -4150,8 +4985,7 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             },
                             {
                                 "color": "red",
@@ -4159,7 +4993,8 @@
                             }
                         ]
                     },
-                    "unit": "ms"
+                    "unit": "ms",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -4167,7 +5002,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 117
+                "y": 129
             },
             "id": 364,
             "options": {
@@ -4204,6 +5039,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -4217,6 +5053,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "smooth",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -4239,8 +5076,7 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc",
-                                "value": null
+                                "color": "#346f36cc"
                             },
                             {
                                 "color": "red",
@@ -4248,7 +5084,8 @@
                             }
                         ]
                     },
-                    "unit": "ms"
+                    "unit": "ms",
+                    "unitScale": true
                 },
                 "overrides": []
             },
@@ -4256,7 +5093,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 117
+                "y": 129
             },
             "id": 363,
             "options": {
@@ -4292,7 +5129,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 125
+                "y": 137
             },
             "id": 368,
             "panels": [
@@ -4319,6 +5156,7 @@
                                     "tooltip": false,
                                     "viz": false
                                 },
+                                "insertNulls": false,
                                 "lineInterpolation": "stepBefore",
                                 "lineWidth": 0,
                                 "pointSize": 5,
@@ -4347,8 +5185,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#346f36cc",
-                                        "value": null
+                                        "color": "#346f36cc"
                                     }
                                 ]
                             },
@@ -4360,7 +5197,7 @@
                         "h": 8,
                         "w": 24,
                         "x": 0,
-                        "y": 126
+                        "y": 138
                     },
                     "id": 370,
                     "options": {
@@ -4411,6 +5248,7 @@
                                     "tooltip": false,
                                     "viz": false
                                 },
+                                "insertNulls": false,
                                 "lineInterpolation": "stepBefore",
                                 "lineWidth": 0,
                                 "pointSize": 5,
@@ -4439,8 +5277,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#346f36cc",
-                                        "value": null
+                                        "color": "#346f36cc"
                                     }
                                 ]
                             },
@@ -4452,7 +5289,7 @@
                         "h": 8,
                         "w": 24,
                         "x": 0,
-                        "y": 134
+                        "y": 146
                     },
                     "id": 371,
                     "options": {
@@ -4484,10 +5321,9 @@
             "type": "row"
         }
     ],
-    "refresh": "1m",
+    "refresh": "",
     "revision": 1,
-    "schemaVersion": 38,
-    "style": "dark",
+    "schemaVersion": 39,
     "tags": [
         "Pigsty",
         "PGSQL",

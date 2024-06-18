@@ -3,32 +3,32 @@
 > Modular Architecture and Declarative Interface!
 
 * Pigsty deployment is described by config inventory and materialized with ansible playbooks.
-
-* Pigsty works on common nodes (x86_64 EL7/8/9), i.e., bare metals or virtual machines.
+* Pigsty works on [Linux](INSTALL#requirement) x86_64 common nodes, i.e., bare metals or virtual machines.
 * Pigsty uses a modular design that can be freely composed for different scenarios.
 * The config controls **where** & **how** to install modules with **parameters**
 * The playbooks will adjust nodes into the desired status in an idempotent manner.
 
 
+----------------
 
 ## Modules
 
 Pigsty uses a modular design, and there are six default modules: [`PGSQL`](PGSQL), [`INFRA`](INFRA), [`NODE`](NODE), [`ETCD`](ETCD), [`REDIS`](REDIS), and [`MINIO`](MINIO).
 
 * [`PGSQL`](PGSQL): Autonomous ha Postgres cluster powered by Patroni, Pgbouncer, HAproxy, PgBackrest, etc...
-* [`INFRA`](INFRA): Local yum repo, Prometheus, Grafana, Loki, AlertManager, PushGateway, Blackbox Exporter...
-* [`NODE`](NODE): Tune node into the desired state, name, timezone, NTP, ssh, sudo, haproxy, docker, promtail...
+* [`INFRA`](INFRA): Local yum/apt repo, Prometheus, Grafana, Loki, AlertManager, PushGateway, Blackbox Exporter...
+* [`NODE`](NODE): Tune node to desired state, name, timezone, NTP, ssh, sudo, haproxy, docker, promtail, keepalived
 * [`ETCD`](ETCD): Distributed key-value store will be used as DCS for high-available Postgres clusters.
 * [`REDIS`](REDIS): Redis servers in standalone master-replica, sentinel, cluster mode with Redis exporter.
 * [`MINIO`](MINIO): S3 compatible simple object storage server, can be used as an optional backup center for Postgres.
 
 You can compose them freely in a declarative manner. If you want host monitoring, [`INFRA`](INFRA) & [`NODE`](NODE) will suffice. Add additional [`ETCD`](ETCD) and [`PGSQL`](PGSQL) are used for HA PG Clusters. Deploying them on multiple nodes will form a ha cluster. You can reuse pigsty infra and develop your modules, considering optional [`REDIS`](REDIS) and [`MINIO`](MINIO) as examples.
 
+[![pigsty-sandbox.jpg](https://repo.pigsty.cc/img/pigsty-sandbox.jpg)](PROVISION)
 
 
-![pigsty-sandbox](https://user-images.githubusercontent.com/8587410/218279650-5d5e8b09-8907-42bf-a48c-4c28bcc73ddd.jpg)
 
-
+----------------
 
 ## Singleton Meta
 
@@ -36,23 +36,23 @@ Pigsty will install on a single **node** (BareMetal / VirtualMachine) by default
 
 This node now has a self-monitoring system, visualization toolsets, and a  Postgres database with autoconfigured PITR. You can use this node for devbox, testing, running demos, and doing data visualization & analysis. Or, furthermore, adding more nodes to it!
 
-![pigsty-infra](https://user-images.githubusercontent.com/8587410/206972543-664ae71b-7ed1-4e82-90bd-5aa44c73bca4.gif)
+[![pigsty-arch.jpg](https://repo.pigsty.cc/img/pigsty-arch.jpg)](INFRA)
 
 
 
-
+----------------
 
 ## Monitoring
 
 The installed [Singleton Meta](#singleton-meta) can be use as an **admin node** and **monitoring center**, to take more nodes & Database servers under it's surveillance & control. 
 
-If you want to install the Prometheus / Grafana observability stack, Pigsty just deliver the best practice for you! It has fine-grained dashboards for [Nodes](http://demo.pigsty.cc/d/node-overview) & [PostgreSQL](http://demo.pigsty.cc/d/pgsql-overview), no matter these nodes or PostgreSQL servers are managed by Pigsty or not, you can have a production-grade monitoring & alerting immediately with simple configuration.
+If you want to install the Prometheus / Grafana observability stack, Pigsty just deliver the best practice for you! It has fine-grained dashboards for [Nodes](https://demo.pigsty.cc/d/node-overview) & [PostgreSQL](https://demo.pigsty.cc/d/pgsql-overview), no matter these nodes or PostgreSQL servers are managed by Pigsty or not, you can have a production-grade monitoring & alerting immediately with simple configuration.
 
-![DASHBOARD](https://user-images.githubusercontent.com/8587410/198838834-1bd30b7e-47c9-4e35-90cb-5a75a2e6f6c6.jpg)
-
-
+[![pigsty-dashboard.jpg](https://repo.pigsty.cc/img/pigsty-dashboard.jpg)](PGSQL-DASHBOARD)
 
 
+
+----------------
 
 ## HA PG Cluster
 
@@ -73,7 +73,9 @@ pg-test:
 $ bin/pgsql-add pg-test  # init cluster 'pg-test'
 ```
 
-Which will gives you a following cluster with monitoring , replica, backup all set.![pigsty-ha](https://user-images.githubusercontent.com/8587410/206971583-74293d7b-d29a-4ca2-8728-75d50421c371.gif)
+Which will gives you a following cluster with monitoring , replica, backup all set.
+
+[![pgsql-ha.jpg](https://repo.pigsty.cc/img/pgsql-ha.jpg)](PGSQL-ARCH)
 
 Hardware failures are covered by self-healing HA architecture powered by `patroni`, `etcd`, and `haproxy`, which will perform auto failover in case of leader failure under 30 seconds.  With the self-healing traffic control powered by haproxy, the client may not even notice there's a failure at all, in case of a switchover or replica failure.
 
@@ -81,13 +83,15 @@ Software Failures, human errors, and DC Failure are covered by `pgbackrest`, and
 
 
 
-
+----------------
 
 ## Database as Code
 
-Pigsty follows IaC & GitOPS philosophy: Pigsty deployment is described by declarative [Config Inventory](Config#Inventory) and materialized with idempotent playbooks.
+Pigsty follows IaC & GitOPS philosophy: Pigsty deployment is described by declarative [Config Inventory](config#inventory) and materialized with idempotent playbooks.
 
 The user describes the desired status with [Parameters](PARAM) in a declarative manner, and the playbooks tune target nodes into that status in an idempotent manner. It's like Kubernetes CRD & Operator but works on Bare Metals & Virtual Machines.
+
+[![pigsty-iac.jpg](https://repo.pigsty.cc/img/pigsty-iac.jpg)](CONFIG)
 
 Take the default config snippet as an example, which describes a node `10.10.10.10` with modules [`INFRA`](INFRA), [`NODE`](NODE), [`ETCD`](ETCD), and [`PGSQL`](PGSQL) installed.
 
@@ -131,9 +135,4 @@ $ bin/pgsql-add  pg-test 10.10.10.13
 
 You can even manage many PostgreSQL Entities using this approach: User/Role, Database, Service, HBA Rules, Extensions, Schemas, etc...
 
-
-
-
-
-
-
+Check [PGSQL Conf](pgsql-conf) for details.

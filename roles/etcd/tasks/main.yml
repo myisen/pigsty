@@ -93,6 +93,7 @@
         rm -rf "{{ etcd_data }}"
         rm -f /etc/profile.d/etcd.sh
         exit 0
+      args: { executable: /bin/bash }
 
     - name: remove etcd register from prometheus target
       tags: [ etcd_deregister ]
@@ -100,7 +101,7 @@
       delegate_to: '{{ item }}'
       with_items: '{{ groups["infra"] }}'
       file:
-        path: /etc/prometheus/targets/etcd/{{ etcd_cluster }}-{{ etcd_seq }}.yml
+        path: "{{ prometheus_sd_dir }}/etcd/{{ etcd_cluster }}-{{ etcd_seq }}.yml"
         state: absent
 
 
@@ -153,7 +154,7 @@
   delegate_to: '{{ item }}'
   with_items: '{{ groups["infra"] }}'
   copy:
-    dest: /etc/prometheus/targets/etcd/{{ etcd_cluster }}-{{ etcd_seq }}.yml
+    dest: "{{ prometheus_sd_dir }}/etcd/{{ etcd_cluster }}-{{ etcd_seq }}.yml"
     owner: prometheus
     content: |
       # {{ etcd_cluster }}-{{ etcd_seq }} @ {{ inventory_hostname }}

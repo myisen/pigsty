@@ -4,6 +4,7 @@
 #--------------------------------------------------------------#
 - name: setup node dns
   tags: node_hosts
+  when: node_write_etc_hosts|bool
   block:
 
     # NOTE: dns records suffixed with "# pigsty meta" will be treated as meta node dns record and been wiped
@@ -42,6 +43,7 @@
     - name: get existing etc resolv
       when: node_dns_method == 'add'
       shell: grep -E '^nameserver' /etc/resolv.conf  | grep -Eo '[0-9\.]+' | head -n3
+      args: { executable: /bin/bash }
       register: old_nameservers
 
     - name: generate etc resolv conf
@@ -63,5 +65,4 @@
           {% endif %}
           {% endfor %}
           {% endif %}
-...
 ...

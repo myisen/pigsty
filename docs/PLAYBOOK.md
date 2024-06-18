@@ -1,11 +1,13 @@
 # Playbook
 
-> Pigsty use ansible playbook to install modules on nodes.
+> Run idempotent playbooks to install modules on nodes.
 
-Playbooks are used in Pigsty to install [modules](ARCH#modules) on nodes.To run playbooks, just treat them as executables.
+Playbooks are used in Pigsty to install [modules](ARCH#modules) on nodes.
 
-e.g. run with `./install.yml`.
+To run playbooks, just treat them as executables. e.g. run with `./install.yml`.
 
+
+----------------
 
 ## Playbooks
 
@@ -30,6 +32,7 @@ Here are default playbooks included in Pigsty.
 | [`minio.yml`](https://github.com/vonng/pigsty/blob/master/minio.yml)                     | Init minio cluster (optional for pgbackrest repo)           |
 | [`cert.yml`](https://github.com/vonng/pigsty/blob/master/cert.yml)                       | Issue cert with pigsty self-signed CA (e.g. for pg clients) |
 | [`docker.yml`](https://github.com/vonng/pigsty/blob/master/docker.yml)                   | Install docker on nodes                                     |
+| [`mongo.yml`](https://github.com/vonng/pigsty/blob/master/mongo.yml)                     | Install Mongo/FerretDB                                      |
 
 
 **One-Pass Install**
@@ -50,18 +53,19 @@ Note that there's a circular dependency between [`NODE`](NODE) and [`INFRA`](INF
 to register a NODE to INFRA, the INFRA should already exist, while the INFRA module relies on NODE to work.
 
 The solution is that `INFRA` playbook will also install [`NODE`](NODE) module in addition to [`INFRA`](INFRA) on infra nodes.
-Make sure that infra nodes are init first.  
+Make sure that infra nodes are init first. If you really want to init all nodes including infra in one-pass, `install.yml` is the way to go.
 
 
 
+----------------
 
 ## Ansible
 
-Playbooks require `ansible-playbook` executable to run, playbooks which is included in `ansible` package.
+Playbooks require `ansible-playbook` executable to run, playbooks which is included in `ansible` rpm / deb package.
 
-Pigsty will install ansible on admin node during [bootstrap](INSTALL#bootstrap).
+Pigsty will try it's best to install ansible on admin node during [bootstrap](INSTALL#bootstrap).
 
-You can install it by yourself with `yum install ansible` or `brew install ansible`, it is included in default OS repo.
+You can install it by yourself with `yum|apt|brew` `install ansible`, it is included in default OS repo.
 
 Knowledge about ansible is good but not required. Only three parameters needs your attention:
 
@@ -69,6 +73,8 @@ Knowledge about ansible is good but not required. Only three parameters needs yo
 * `-t|--tags <tags>`: Only run tasks with specific tags (What)     
 * `-e|--extra-vars <vars>`: Extra command line arguments (How) 
 
+
+----------------
 
 ## Limit Host
 
@@ -88,6 +94,8 @@ Here are some examples of host limit:
 ./pgsql.yml -l pg-test      # Execute the pgsql playbook against the hosts in the pg-test cluster
 ```
 
+
+----------------
 
 ## Limit Tags
 
@@ -124,6 +132,7 @@ Here are some examples of task limit:
 ```
 
 
+----------------
 
 ## Extra Vars
 
@@ -137,8 +146,8 @@ Here are some examples of extra vars
 ./node.yml -e ansible_user=admin -k -K   # run playbook as another user (with admin sudo password)
 ./pgsql.yml -e pg_clean=true             # force purging existing postgres when init a pgsql instance
 ./pgsql-rm.yml -e pg_uninstall=true      # explicitly uninstall rpm after postgres instance is removed
-./redis.yml -l 10.10.10.11 -e redis_port=6501 -t redis  # init a specific redis instance: 10.10.10.11:6501
-./redis-rm.yml -l 10.10.10.13 -e redis_port=6501        # remove a specific redis instance: 10.10.10.11:6501
+./redis.yml -l 10.10.10.10 -e redis_port=6379 -t redis  # init a specific redis instance: 10.10.10.11:6379
+./redis-rm.yml -l 10.10.10.13 -e redis_port=6379        # remove a specific redis instance: 10.10.10.11:6379
 ```
 
 

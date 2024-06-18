@@ -7,7 +7,9 @@
   become: no
   delegate_to: '{{ item }}'
   shell: mcli alias set {{ minio_alias }} https://{{ minio_domain }}:{{ minio_port }} {{ minio_access_key }} {{ minio_secret_key }}
+  args: { executable: /bin/bash }
   with_items: '{{ groups["infra"] }}'
+  no_log: true
 
 
 #--------------------------------------------------------------#
@@ -19,13 +21,14 @@
   become: no
   delegate_to: '{{ admin_ip }}'
   shell: mcli mb --ignore-existing {{ minio_alias }}/{{ item.name }}
+  args: { executable: /bin/bash }
   with_items: '{{ minio_buckets }}'
 
 
 #--------------------------------------------------------------#
 # Create Minio Users                                [minio_user]
 #--------------------------------------------------------------#
-- name: create minio buckets
+- name: create minio users
   tags: minio_user
   when: minio_users|length > 0
   become: no
@@ -35,6 +38,7 @@
     mcli admin user add {{ minio_alias }} {{ item.access_key }} {{ item.secret_key }};
     mcli admin policy attach {{ minio_alias }} {{ item.policy|default('readwrite') }} --user={{ item.access_key }}
     set -o history
+  args: { executable: /bin/bash }
   with_items: '{{ minio_users }}'
-
+  no_log: true
 ...

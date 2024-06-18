@@ -76,7 +76,6 @@
                 "y": 1
             },
             "id": 129,
-            "links": [],
             "maxDataPoints": 100,
             "options": {
                 "colorMode": "background",
@@ -90,13 +89,15 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 18,
                     "valueSize": 32
                 },
-                "textMode": "auto"
+                "textMode": "auto",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -210,9 +211,11 @@
                     "fields": "",
                     "values": false
                 },
-                "textMode": "value_and_name"
+                "showPercentChange": false,
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -461,7 +464,7 @@
                     }
                 ]
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -524,7 +527,7 @@
                     "refId": "D"
                 }
             ],
-            "title": "Members",
+            "title": "ETCD Member List",
             "transformations": [
                 {
                     "id": "seriesToColumns",
@@ -779,7 +782,6 @@
                 "y": 8
             },
             "id": 134,
-            "links": [],
             "maxDataPoints": 100,
             "options": {
                 "colorMode": "background",
@@ -793,12 +795,14 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "valueSize": 32
                 },
-                "textMode": "auto"
+                "textMode": "auto",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -891,7 +895,6 @@
                 "y": 8
             },
             "id": 87,
-            "links": [],
             "maxDataPoints": 100,
             "options": {
                 "colorMode": "background",
@@ -905,12 +908,14 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "valueSize": 32
                 },
-                "textMode": "auto"
+                "textMode": "auto",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -943,6 +948,12 @@
                     },
                     "custom": {
                         "fillOpacity": 70,
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
                         "lineWidth": 0,
                         "spanNulls": false
                     },
@@ -967,7 +978,7 @@
                     {
                         "matcher": {
                             "id": "byName",
-                            "options": "ETCD Has Leader?"
+                            "options": "ETCD Cluster Healthy"
                         },
                         "properties": [
                             {
@@ -996,11 +1007,11 @@
                                     "mode": "absolute",
                                     "steps": [
                                         {
-                                            "color": "#3e668f",
+                                            "color": "#cc4637d9",
                                             "value": null
                                         },
                                         {
-                                            "color": "#fcdb72",
+                                            "color": "#3e668f",
                                             "value": 1
                                         }
                                     ]
@@ -1039,46 +1050,22 @@
                         "uid": "ds-prometheus"
                     },
                     "editorMode": "code",
+                    "expr": "min(etcd_server_has_leader{job=\"etcd\", cls=\"$cls\"}) or on() vector(0)",
+                    "hide": false,
+                    "legendFormat": "ETCD Cluster Healthy",
+                    "range": true,
+                    "refId": "D"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "editorMode": "code",
                     "expr": "up{job=\"etcd\", cls=\"$cls\"}",
                     "legendFormat": "{{ ins }} @ {{ ip }}",
                     "range": true,
                     "refId": "A"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "ds-prometheus"
-                    },
-                    "editorMode": "code",
-                    "expr": "count(etcd_up{job=\"etcd\", cls=\"$cls\"})",
-                    "hide": true,
-                    "legendFormat": "etcd size",
-                    "range": true,
-                    "refId": "B"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "ds-prometheus"
-                    },
-                    "editorMode": "code",
-                    "expr": "ceil(count(etcd_up{job=\"etcd\", cls=\"$cls\"})/ 2 + 0.1)",
-                    "hide": true,
-                    "legendFormat": "etcd quorum",
-                    "range": true,
-                    "refId": "C"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "ds-prometheus"
-                    },
-                    "editorMode": "code",
-                    "expr": "min(etcd_server_has_leader{job=\"etcd\", cls=\"$cls\"}) or on() vector(0)",
-                    "hide": false,
-                    "legendFormat": "ETCD Has Leader?",
-                    "range": true,
-                    "refId": "D"
                 }
             ],
             "title": "ETCD Aliveness",
@@ -1095,6 +1082,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -1109,6 +1097,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "stepBefore",
                         "lineWidth": 0,
                         "pointSize": 5,
@@ -1187,6 +1176,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -1203,6 +1193,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "stepBefore",
                         "lineWidth": 0,
                         "pointSize": 1,
@@ -1429,6 +1420,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -1443,6 +1435,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -1532,6 +1525,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -1545,6 +1539,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "stepAfter",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -1595,7 +1590,6 @@
                 "y": 19
             },
             "id": 99,
-            "links": [],
             "options": {
                 "legend": {
                     "calcs": [
@@ -1657,6 +1651,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -1670,6 +1665,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -1707,7 +1703,6 @@
                 "y": 25
             },
             "id": 89,
-            "links": [],
             "options": {
                 "legend": {
                     "calcs": [
@@ -1757,6 +1752,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -1770,6 +1766,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -1807,7 +1804,6 @@
                 "y": 25
             },
             "id": 108,
-            "links": [],
             "options": {
                 "legend": {
                     "calcs": [
@@ -1857,6 +1853,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -1870,6 +1867,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "smooth",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -1891,7 +1889,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             }
                         ]
                     },
@@ -1985,6 +1984,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -1998,6 +1998,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "smooth",
                         "lineWidth": 1,
                         "pointSize": 5,
@@ -2019,7 +2020,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc"
+                                "color": "#346f36cc",
+                                "value": null
                             }
                         ]
                     },
@@ -2112,6 +2114,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -2125,6 +2128,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 2,
                         "pointSize": 5,
@@ -2146,7 +2150,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc"
+                                "color": "#346f36cc",
+                                "value": null
                             },
                             {
                                 "color": "red",
@@ -2165,7 +2170,6 @@
                 "y": 39
             },
             "id": 103,
-            "links": [],
             "options": {
                 "legend": {
                     "calcs": [],
@@ -2209,6 +2213,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -2222,6 +2227,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "linear",
                         "lineWidth": 2,
                         "pointSize": 5,
@@ -2243,7 +2249,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "#346f36cc"
+                                "color": "#346f36cc",
+                                "value": null
                             },
                             {
                                 "color": "red",
@@ -2262,7 +2269,6 @@
                 "y": 39
             },
             "id": 101,
-            "links": [],
             "options": {
                 "legend": {
                     "calcs": [],
@@ -2315,11 +2321,109 @@
                 "type": "loki",
                 "uid": "ds-loki"
             },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "fixedColor": "#346f36cc",
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "bars",
+                        "fillOpacity": 100,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "graph": false,
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": true,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "normal"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "decimals": 0,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#346f36cc"
+                            }
+                        ]
+                    },
+                    "unit": "none",
+                    "unitScale": true
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 47
+            },
+            "id": 136,
+            "interval": "1s",
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "sum"
+                    ],
+                    "displayMode": "table",
+                    "placement": "right",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "8.0.0-beta2",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "loki",
+                        "uid": "ds-loki"
+                    },
+                    "editorMode": "code",
+                    "expr": "sum by (ins,src) (count_over_time(({cls=\"$cls\", src=\"syslog\"} |~ \"etcd\")[$__interval]))",
+                    "legendFormat": "{{ ins }}",
+                    "queryType": "range",
+                    "refId": "A"
+                }
+            ],
+            "title": "ETCD Logs per $__interval",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "loki",
+                "uid": "ds-loki"
+            },
             "gridPos": {
                 "h": 18,
                 "w": 24,
                 "x": 0,
-                "y": 47
+                "y": 54
             },
             "id": 122,
             "options": {
@@ -2340,7 +2444,7 @@
                         "uid": "ds-loki"
                     },
                     "editorMode": "code",
-                    "expr": "{src=\"syslog\"} |~ \"etcd\"",
+                    "expr": "{cls=\"$cls\", src=\"syslog\"} |~ \"etcd\"",
                     "instant": false,
                     "legendFormat": "{{ ins }}",
                     "queryType": "range",
@@ -2354,8 +2458,7 @@
     ],
     "refresh": "",
     "revision": 1,
-    "schemaVersion": 38,
-    "style": "dark",
+    "schemaVersion": 39,
     "tags": [
         "Pigsty",
         "ETCD",

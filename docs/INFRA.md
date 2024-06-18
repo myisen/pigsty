@@ -2,6 +2,8 @@
 
 > Pigsty has a battery-included, production-ready INFRA module, to provide ultimate observability.
 
+[Configuration](#configuration) | [Administration](#administration) | [Playbook](#playbook) | [Dashboard](#dashboard) | [Parameter](#parameter)
+
 
 ----------------
 
@@ -9,19 +11,19 @@
 
 Each Pigsty deployment requires a set of infrastructure components to work properly. which including:
 
-|    Component     | Port |   Domain   | Description                                |
-|:----------------:|:----:|:----------:|--------------------------------------------|
-|      Nginx       |  80  | `h.pigsty` | Web Service Portal (Also used as Yum Repo) |
-|   AlertManager   | 9093 | `a.pigsty` | Alert Aggregation and delivery             |
-|    Prometheus    | 9090 | `p.pigsty` | Monitoring Time Series Database            |
-|     Grafana      | 3000 | `g.pigsty` | Visualization Platform                     |
-|       Loki       | 3100 |     -      | Logging Collection Server                  |
-|   PushGateway    | 9091 |     -      | Logging Collection Server                  |
-| BlackboxExporter | 9115 |     -      | Logging Collection Server                  |
-|     Dnsmasq      |  53  |     -      | DNS Server                                 |
-|     Chronyd      | 123  |     -      | NTP Time Server                            |
-|    PostgreSQL    | 5432 |     -      | Pigsty CMDB & default database             |
-|     Ansible      |  -   |     -      | Run playbooks                              |
+|    Component     | Port |   Domain   | Description                       |
+|:----------------:|:----:|:----------:|-----------------------------------|
+|      Nginx       |  80  | `h.pigsty` | Web Service Portal (YUM/APT Repo) |
+|   AlertManager   | 9093 | `a.pigsty` | Alert Aggregation and delivery    |
+|    Prometheus    | 9090 | `p.pigsty` | Monitoring Time Series Database   |
+|     Grafana      | 3000 | `g.pigsty` | Visualization Platform            |
+|       Loki       | 3100 |     -      | Logging Collection Server         |
+|   PushGateway    | 9091 |     -      | Collect One-Time Job Metrics      |
+| BlackboxExporter | 9115 |     -      | Blackbox Probing                  |
+|     Dnsmasq      |  53  |     -      | DNS Server                        |
+|     Chronyd      | 123  |     -      | NTP Time Server                   |
+|    PostgreSQL    | 5432 |     -      | Pigsty CMDB & default database    |
+|     Ansible      |  -   |     -      | Run playbooks                     |
 
 Pigsty will set up these components for you on infra nodes. You can expose them to the outside world by configuring the [`infra_portal`](PARAM#infra_portal) parameter.
 
@@ -36,46 +38,305 @@ infra_portal:  # domain names and upstream servers
   #minio        : { domain: sss.pigsty  ,endpoint: "${admin_ip}:9001" ,scheme: https ,websocket: true }
 ```
 
-![pigsty-infra](https://user-images.githubusercontent.com/8587410/206972543-664ae71b-7ed1-4e82-90bd-5aa44c73bca4.gif)
+[![pigsty-arch.jpg](https://repo.pigsty.cc/img/pigsty-arch.jpg)](INFRA)
+
+
+
+----------------
+
+## Configuration
+
+To define an `infra` cluster, use the hard-coded group name `infra` in your inventory file.
+
+You can use multiple nodes to deploy INFRA module, but at least one is required. You have to assign a unique [`infra_seq`](PARAM#infra_seq) to each node.
+
+```yaml
+# Single infra node
+infra: { hosts: { 10.10.10.10: { infra_seq: 1 } }}
+
+# Two INFRA node
+infra:
+  hosts:
+    10.10.10.10: { infra_seq: 1 }
+    10.10.10.11: { infra_seq: 2 }
+```
+
+Then you can init INFRA module with [`infra.yml`](#infrayml) playbook.
+
+
+
+----------------
+
+## Administration
+
+Here are some administration tasks related to INFRA module:
+
+----------------
+
+### Install/Remove Infra Module
+
+```bash
+./infra.yml     # install infra/node module on `infra` group
+./infra-rm.yml  # remove infra module from `infra` group
+```
+
+----------------
+
+### Manage Local Software Repo
+
+```bash
+./infra.yml -t repo             # setup local yum/apt repo
+
+./infra.yml -t repo_dir         # create repo directory
+./infra.yml -t repo_check       # check repo exists
+./infra.yml -t repo_prepare     # use existing repo if exists
+./infra.yml -t repo_build       # build repo from upstream if not exists
+./infra.yml   -t repo_upstream  # handle upstream repo files in /etc/yum.repos.d or /etc/apt/sources.list.d
+./infra.yml   -t repo_url_pkg   # download packages from internet defined by repo_url_packages
+./infra.yml   -t repo_cache     # make upstream yum/apt cache
+./infra.yml   -t repo_boot_pkg  # install bootstrap pkg such as createrepo_c,yum-utils,... (or dpkg-dev in debian/ubuntu)
+./infra.yml   -t repo_pkg       # download packages & dependencies from upstream repo
+./infra.yml   -t repo_create    # create a local yum repo with createrepo_c & modifyrepo_c
+./infra.yml   -t repo_use       # add newly built repo
+./infra.yml -t repo_nginx       # launch a nginx for repo if no nginx is serving
+```
+
+----------------
+
+### Manage Infra Component
+
+您可以使用以下剧本子任务，管理 Infra节点 上的各个基础设施组件
+
+```bash
+./infra.yml -t infra_env      : env_dir, env_pg, env_var
+./infra.yml -t infra_pkg      : infra_pkg, infra_pkg_pip
+./infra.yml -t infra_user     : setup infra os user group
+./infra.yml -t infra_cert     : issue cert for infra components
+./infra.yml -t dns            : dns_config, dns_record, dns_launch
+./infra.yml -t nginx          : nginx_config, nginx_cert, nginx_static, nginx_launch, nginx_exporter
+./infra.yml -t prometheus     : prometheus_clean, prometheus_dir, prometheus_config, prometheus_launch, prometheus_reload
+./infra.yml -t alertmanager   : alertmanager_config, alertmanager_launch
+./infra.yml -t pushgateway    : pushgateway_config, pushgateway_launch
+./infra.yml -t blackbox       : blackbox_config, blackbox_launch
+./infra.yml -t grafana        : grafana_clean, grafana_config, grafana_plugin, grafana_launch, grafana_provision
+./infra.yml -t loki           : loki clean, loki_dir, loki_config, loki_launch
+./infra.yml -t infra_register : register infra components to prometheus
+```
+
+```bash
+./infra.yml -t nginx_index                        # render Nginx homepage
+./infra.yml -t nginx_config,nginx_reload          # render Nginx upstream server config
+./infra.yml -t prometheus_conf,prometheus_reload  # render Prometheus main config and reload
+./infra.yml -t prometheus_rule,prometheus_reload  # copy Prometheus rules & alert definition and reload
+./infra.yml -t grafana_plugin                     # download Grafana plugins from the Internet
+```
 
 
 
 
 ----------------
 
-## Playbooks
+## Playbook
 
-- [`install.yml`](https://github.com/vonng/pigsty/blob/master/install.yml)   : Install Pigsty on current node in one-pass
+- [`install.yml`](https://github.com/vonng/pigsty/blob/master/install.yml)   : Install Pigsty on all nodes in one-pass
 - [`infra.yml`](https://github.com/vonng/pigsty/blob/master/infra.yml)       : Init pigsty infrastructure on infra nodes
 - [`infra-rm.yml`](https://github.com/vonng/pigsty/blob/master/infra-rm.yml) : Remove infrastructure components from infra nodes
+
+[![asciicast](https://asciinema.org/a/566412.svg)](https://asciinema.org/a/566412)
+
+----------------
+
+### `infra.yml`
+
+The playbook [`infra.yml`](https://github.com/vonng/pigsty/blob/master/infra.yml) will init pigsty infrastructure on infra nodes.
+
+It will also install [NODE](NODE) module on infra nodes too.
+
+Here are available subtasks:
+
+```
+# ca            : create self-signed CA on localhost files/pki
+#   - ca_dir        : create CA directory
+#   - ca_private    : generate ca private key: files/pki/ca/ca.key
+#   - ca_cert       : signing ca cert: files/pki/ca/ca.crt
+#
+# id            : generate node identity
+#
+# repo          : bootstrap a local yum repo from internet or offline packages
+#   - repo_dir      : create repo directory
+#   - repo_check    : check repo exists
+#   - repo_prepare  : use existing repo if exists
+#   - repo_build    : build repo from upstream if not exists
+#     - repo_upstream    : handle upstream repo files in /etc/yum.repos.d
+#       - repo_remove    : remove existing repo file if repo_remove == true
+#       - repo_add       : add upstream repo files to /etc/yum.repos.d
+#     - repo_url_pkg     : download packages from internet defined by repo_url_packages
+#     - repo_cache       : make upstream yum cache with yum makecache
+#     - repo_boot_pkg    : install bootstrap pkg such as createrepo_c,yum-utils,...
+#     - repo_pkg         : download packages & dependencies from upstream repo
+#     - repo_create      : create a local yum repo with createrepo_c & modifyrepo_c
+#     - repo_use         : add newly built repo into /etc/yum.repos.d
+#   - repo_nginx    : launch a nginx for repo if no nginx is serving
+#
+# node/haproxy/docker/monitor : setup infra node as a common node (check node.yml)
+#   - node_name, node_hosts, node_resolv, node_firewall, node_ca, node_repo, node_pkg
+#   - node_feature, node_kernel, node_tune, node_sysctl, node_profile, node_ulimit
+#   - node_data, node_admin, node_timezone, node_ntp, node_crontab, node_vip
+#   - haproxy_install, haproxy_config, haproxy_launch, haproxy_reload
+#   - docker_install, docker_admin, docker_config, docker_launch, docker_image
+#   - haproxy_register, node_exporter, node_register, promtail
+#
+# infra         : setup infra components
+#   - infra_env      : env_dir, env_pg, env_var
+#   - infra_pkg      : infra_pkg, infra_pkg_pip
+#   - infra_user     : setup infra os user group
+#   - infra_cert     : issue cert for infra components
+#   - dns            : dns_config, dns_record, dns_launch
+#   - nginx          : nginx_config, nginx_cert, nginx_static, nginx_launch, nginx_exporter
+#   - prometheus     : prometheus_clean, prometheus_dir, prometheus_config, prometheus_launch, prometheus_reload
+#   - alertmanager   : alertmanager_config, alertmanager_launch
+#   - pushgateway    : pushgateway_config, pushgateway_launch
+#   - blackbox       : blackbox_config, blackbox_launch
+#   - grafana        : grafana_clean, grafana_config, grafana_plugin, grafana_launch, grafana_provision
+#   - loki           : loki clean, loki_dir, loki_config, loki_launch
+#   - infra_register : register infra components to prometheus
+```
 
 [![asciicast](https://asciinema.org/a/566412.svg)](https://asciinema.org/a/566412)
 
 
 ----------------
 
-## Dashboards
+### `infra-rm.yml`
 
-- [INFRA Overview](http://demo.pigsty.cc/d/infra-overview) : Overview of all infra components
-- [Nginx Overview](http://demo.pigsty.cc/d/nginx-overview) : Nginx metrics & logs
-- [Grafana Overview](http://demo.pigsty.cc/d/grafana-overview): Grafana metrics & logs
-- [Prometheus Overview](http://demo.pigsty.cc/d/prometheus-overview): Prometheus metrics & logs
-- [Loki Overview](http://demo.pigsty.cc/d/loki-overview): Loki metrics & logs
-- [Logs Instance](http://demo.pigsty.cc/d/logs-instance): Logs for a single instance
-- [CMDB Overview](http://demo.pigsty.cc/d/cmdb-overview): CMDB visualization
-- [ETCD Overview](http://demo.pigsty.cc/d/etcd-overview): etcd metrics & logs
+The playbook [`infra-rm.yml`](https://github.com/vonng/pigsty/blob/master/infra-rm.yml) will remove infrastructure components from infra nodes
+
+```bash
+./infra-rm.yml               # remove INFRA module
+./infra-rm.yml -t service    # stop INFRA services
+./infra-rm.yml -t data       # remove INFRA data
+./infra-rm.yml -t package    # uninstall INFRA packages
+```
 
 
 ----------------
 
-## Parameters
+### `install.yml`
 
-API Reference for [`INFRA`](PARAM#INFRA) module:
+The playbook [`install.yml`](https://github.com/vonng/pigsty/blob/master/install.yml) will install Pigsty on all node in one-pass.
+
+Check [Playbook: One-Pass Install](PLAYBOOK#one-pass-install) for details.
+
+
+
+
+----------------
+
+## Dashboard
+
+
+[Pigsty Home](https://demo.pigsty.cc/d/pigsty) : Home dashboard for pigsty's grafana
+
+<details><summary>Pigsty Home Dashboard</summary>
+
+[![pigsty.jpg](https://repo.pigsty.cc/img/pigsty.jpg)](https://demo.pigsty.cc/d/pigsty/)
+
+</details>
+
+
+[INFRA Overview](https://demo.pigsty.cc/d/infra-overview) : Overview of all infra components
+
+<details><summary>INFRA Overview Dashboard</summary>
+
+[![infra-overview.jpg](https://repo.pigsty.cc/img/infra-overview.jpg)](https://demo.pigsty.cc/d/infra-overview/)
+
+</details>
+
+
+[Nginx Overview](https://demo.pigsty.cc/d/nginx-overview) : Nginx metrics & logs
+
+<details><summary>Nginx Overview Dashboard</summary>
+
+[![nginx-overview.jpg](https://repo.pigsty.cc/img/nginx-overview.jpg)](https://demo.pigsty.cc/d/nginx-overview)
+
+</details>
+
+
+[Grafana Overview](https://demo.pigsty.cc/d/grafana-overview): Grafana metrics & logs
+
+<details><summary>Grafana Overview Dashboard</summary>
+
+[![grafana-overview.jpg](https://repo.pigsty.cc/img/grafana-overview.jpg)](https://demo.pigsty.cc/d/grafana-overview)
+
+</details>
+
+
+[Prometheus Overview](https://demo.pigsty.cc/d/prometheus-overview): Prometheus metrics & logs
+
+<details><summary>Prometheus Overview Dashboard</summary>
+
+[![prometheus-overview.jpg](https://repo.pigsty.cc/img/prometheus-overview.jpg)](https://demo.pigsty.cc/d/prometheus-overview)
+
+</details>
+
+
+[Loki Overview](https://demo.pigsty.cc/d/loki-overview): Loki metrics & logs
+
+<details><summary>Loki Overview Dashboard</summary>
+
+[![loki-overview.jpg](https://repo.pigsty.cc/img/loki-overview.jpg)](https://demo.pigsty.cc/d/loki-overview)
+
+</details>
+
+
+[Logs Instance](https://demo.pigsty.cc/d/logs-instance): Logs for a single instance
+
+<details><summary>Logs Instance Dashboard</summary>
+
+[![logs-instance.jpg](https://repo.pigsty.cc/img/logs-instance.jpg)](https://demo.pigsty.cc/d/logs-instance)
+
+</details>
+
+
+[Logs Overview](https://demo.pigsty.cc/d/logs-overview): Overview of all logs
+
+<details><summary>Logs Overview Dashboard</summary>
+
+[![logs-overview.jpg](https://repo.pigsty.cc/img/logs-overview.jpg)](https://demo.pigsty.cc/d/logs-overview)
+
+</details>
+
+
+[CMDB Overview](https://demo.pigsty.cc/d/cmdb-overview): CMDB visualization
+
+<details><summary>CMDB Overview Dashboard</summary>
+
+[![cmdb-overview.jpg](https://repo.pigsty.cc/img/cmdb-overview.jpg)](https://demo.pigsty.cc/d/cmdb-overview)
+
+</details>
+
+
+[ETCD Overview](https://demo.pigsty.cc/d/etcd-overview): etcd metrics & logs
+
+<details><summary>ETCD Overview Dashboard</summary>
+
+[![etcd-overview.jpg](https://repo.pigsty.cc/img/etcd-overview.jpg)](https://demo.pigsty.cc/d/etcd-overview)
+
+</details>
+
+
+
+
+----------------
+
+## Parameter
+
+API Reference for [`INFRA`](PARAM#infra) module:
 
 - [`META`](PARAM#meta): infra meta data
 - [`CA`](PARAM#ca): self-signed CA
 - [`INFRA_ID`](PARAM#infra_id) : Portals and identity
-- [`REPO`](PARAM#repo): local yum repo
+- [`REPO`](PARAM#repo): local yum/atp repo
 - [`INFRA_PACKAGE`](PARAM#infra_package) : packages to be installed
 - [`NGINX`](PARAM#nginx) : nginx web server
 - [`DNS`](PARAM#dns): dnsmasq nameserver
@@ -97,7 +358,7 @@ API Reference for [`INFRA`](PARAM#INFRA) module:
 | [`cert_validity`](PARAM#cert_validity)                           | [`CA`](PARAM#ca)                       |  interval  |   G   | cert validity, 20 years by default                 |
 | [`infra_seq`](PARAM#infra_seq)                                   | [`INFRA_ID`](PARAM#infra_id)           |    int     |   I   | infra node identity, REQUIRED                      |
 | [`infra_portal`](PARAM#infra_portal)                             | [`INFRA_ID`](PARAM#infra_id)           |    dict    |   G   | infra services exposed via portal                  |
-| [`repo_enabled`](PARAM#repo_enabled)                             | [`REPO`](PARAM#repo)                   |    bool    |  G/I  | create a yum repo on this infra node?              |
+| [`repo_enabled`](PARAM#repo_enabled)                             | [`REPO`](PARAM#repo)                   |    bool    |  G/I  | create a yum/apt repo on this infra node?          |
 | [`repo_home`](PARAM#repo_home)                                   | [`REPO`](PARAM#repo)                   |    path    |   G   | repo home dir, `/www` by default                   |
 | [`repo_name`](PARAM#repo_name)                                   | [`REPO`](PARAM#repo)                   |   string   |   G   | repo name, pigsty by default                       |
 | [`repo_endpoint`](PARAM#repo_endpoint)                           | [`REPO`](PARAM#repo)                   |    url     |   G   | access point to this repo by domain or ip:port     |
@@ -121,6 +382,7 @@ API Reference for [`INFRA`](PARAM#INFRA) module:
 | [`prometheus_enabled`](PARAM#prometheus_enabled)                 | [`PROMETHEUS`](PARAM#prometheus)       |    bool    |  G/I  | enable prometheus on this infra node?              |
 | [`prometheus_clean`](PARAM#prometheus_clean)                     | [`PROMETHEUS`](PARAM#prometheus)       |    bool    |  G/A  | clean prometheus data during init?                 |
 | [`prometheus_data`](PARAM#prometheus_data)                       | [`PROMETHEUS`](PARAM#prometheus)       |    path    |   G   | prometheus data dir, `/data/prometheus` by default |
+| [`prometheus_sd_dir`](PARAM#prometheus_sd_dir)                   | [`PROMETHEUS`](PARAM#prometheus)       |    path    |   G   | prometheus file service discovery directory        |
 | [`prometheus_sd_interval`](PARAM#prometheus_sd_interval)         | [`PROMETHEUS`](PARAM#prometheus)       |  interval  |   G   | prometheus target refresh interval, 5s by default  |
 | [`prometheus_scrape_interval`](PARAM#prometheus_scrape_interval) | [`PROMETHEUS`](PARAM#prometheus)       |  interval  |   G   | prometheus scrape & eval interval, 10s by default  |
 | [`prometheus_scrape_timeout`](PARAM#prometheus_scrape_timeout)   | [`PROMETHEUS`](PARAM#prometheus)       |  interval  |   G   | prometheus global scrape timeout, 8s by default    |

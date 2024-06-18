@@ -109,10 +109,12 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {},
-                "textMode": "name"
+                "textMode": "name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -216,13 +218,15 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 16,
                     "valueSize": 14
                 },
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -280,7 +284,6 @@
                     "refId": "D"
                 }
             ],
-            "transformations": [],
             "type": "stat"
         },
         {
@@ -370,13 +373,15 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 12,
                     "valueSize": 18
                 },
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -479,13 +484,15 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 12,
                     "valueSize": 18
                 },
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -587,13 +594,15 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 12,
                     "valueSize": 18
                 },
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -698,13 +707,15 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 12,
                     "valueSize": 18
                 },
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -816,10 +827,12 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {},
-                "textMode": "value_and_name"
+                "textMode": "value_and_name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -841,7 +854,7 @@
                 "type": "prometheus",
                 "uid": "ds-prometheus"
             },
-            "description": "Yellow : Node\n\nGreen: HAProxy\n\nRed: Promtail Logging Agent\n\nGreen: Docker\n",
+            "description": "Yellow : Node\n\nGreen: HAProxy\n\nRed: Promtail Logging Agent\n\nGreen: Docker\n\nPurple: Keepalived",
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -999,6 +1012,39 @@
                                 }
                             }
                         ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byFrameRefID",
+                            "options": "K"
+                        },
+                        "properties": [
+                            {
+                                "id": "links",
+                                "value": [
+                                    {
+                                        "title": "NODE VIP : ${__field.labels.vip}",
+                                        "url": "/d/node-vip?var-vip=${__field.labels.vip}&${__url_time_range}"
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "thresholds",
+                                "value": {
+                                    "mode": "absolute",
+                                    "steps": [
+                                        {
+                                            "color": "#1f171e",
+                                            "value": null
+                                        },
+                                        {
+                                            "color": "#f5a673",
+                                            "value": 1
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
                     }
                 ]
             },
@@ -1021,10 +1067,12 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {},
-                "textMode": "name"
+                "textMode": "name",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -1081,6 +1129,20 @@
                     "interval": "",
                     "legendFormat": "{{ ins }}",
                     "refId": "D"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "min by (job,cls,vip) (probe_success{job=\"node-vip\"})",
+                    "hide": false,
+                    "instant": true,
+                    "interval": "",
+                    "legendFormat": "{{ vip }}",
+                    "refId": "K"
                 }
             ],
             "type": "stat"
@@ -1186,10 +1248,12 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {},
-                "textMode": "auto"
+                "textMode": "auto",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -1288,12 +1352,14 @@
                     "fields": "",
                     "values": false
                 },
+                "showPercentChange": false,
                 "text": {
                     "titleSize": 12
                 },
-                "textMode": "auto"
+                "textMode": "auto",
+                "wideLayout": true
             },
-            "pluginVersion": "10.0.3",
+            "pluginVersion": "10.4.2",
             "targets": [
                 {
                     "datasource": {
@@ -1323,6 +1389,7 @@
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisBorderShow": false,
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
                         "axisLabel": "",
@@ -1339,6 +1406,7 @@
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
                         "lineInterpolation": "stepBefore",
                         "lineWidth": 0,
                         "pointSize": 1,
@@ -1467,7 +1535,7 @@
                         "type": "prometheus",
                         "uid": "ds-prometheus"
                     },
-                    "description": "All nodes among cluster ${cls}",
+                    "description": "",
                     "fieldConfig": {
                         "defaults": {
                             "color": {
@@ -1487,11 +1555,11 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#e3e3e3e0",
-                                        "value": null
+                                        "color": "#e3e3e3e0"
                                     }
                                 ]
-                            }
+                            },
+                            "unitScale": true
                         },
                         "overrides": [
                             {
@@ -1533,6 +1601,10 @@
                                                 "url": "/d/node-instance?var-id=${__data.fields.IP}&${__url_time_range}"
                                             }
                                         ]
+                                    },
+                                    {
+                                        "id": "custom.align",
+                                        "value": "center"
                                     }
                                 ]
                             },
@@ -1559,8 +1631,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "super-light-blue",
-                                                    "value": null
+                                                    "color": "super-light-blue"
                                                 },
                                                 {
                                                     "color": "#3e668f",
@@ -1651,8 +1722,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -1714,8 +1784,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#b3b5b7",
-                                                    "value": null
+                                                    "color": "#b3b5b7"
                                                 },
                                                 {
                                                     "color": "super-light-blue",
@@ -1826,8 +1895,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -1882,8 +1950,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "super-light-blue",
-                                                    "value": null
+                                                    "color": "super-light-blue"
                                                 },
                                                 {
                                                     "color": "#3e668f",
@@ -1963,8 +2030,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -2022,7 +2088,7 @@
                                 "properties": [
                                     {
                                         "id": "custom.width",
-                                        "value": 70
+                                        "value": 66
                                     }
                                 ]
                             },
@@ -2040,10 +2106,6 @@
                                                 "url": "/d/node-cluster?var-cls=${__data.fields.Cluster}&${__url_time_range}"
                                             }
                                         ]
-                                    },
-                                    {
-                                        "id": "custom.filterable",
-                                        "value": true
                                     }
                                 ]
                             },
@@ -2058,7 +2120,7 @@
                                         "value": [
                                             {
                                                 "title": "Node Instance: ${__data.fields.Instance}",
-                                                "url": "/d/node-instance?var-id=${__data.fields.Instance}&${__url_time_range}"
+                                                "url": "/d/node-instance?var-ins=${__data.fields.Instance}&${__url_time_range}"
                                             }
                                         ]
                                     }
@@ -2084,8 +2146,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -2172,7 +2233,7 @@
                             {
                                 "matcher": {
                                     "id": "byName",
-                                    "options": "Up"
+                                    "options": "Alive"
                                 },
                                 "properties": [
                                     {
@@ -2187,12 +2248,12 @@
                                                     "0": {
                                                         "color": "#cc4637d9",
                                                         "index": 0,
-                                                        "text": "Dead"
+                                                        "text": "Down"
                                                     },
                                                     "1": {
                                                         "color": "#346f36cc",
                                                         "index": 1,
-                                                        "text": "Alive"
+                                                        "text": "UP"
                                                     }
                                                 },
                                                 "type": "value"
@@ -2206,20 +2267,58 @@
                                         }
                                     },
                                     {
-                                        "id": "custom.filterable",
-                                        "value": true
+                                        "id": "custom.width",
+                                        "value": 60
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byName",
+                                    "options": "TimeX"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "custom.width",
+                                        "value": 70
+                                    },
+                                    {
+                                        "id": "mappings",
+                                        "value": [
+                                            {
+                                                "options": {
+                                                    "0": {
+                                                        "color": "#cc4637d9",
+                                                        "index": 1,
+                                                        "text": "Failed"
+                                                    },
+                                                    "1": {
+                                                        "color": "#346f36cc",
+                                                        "index": 0,
+                                                        "text": "Synced"
+                                                    }
+                                                },
+                                                "type": "value"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "custom.cellOptions",
+                                        "value": {
+                                            "type": "color-background"
+                                        }
                                     }
                                 ]
                             }
                         ]
                     },
                     "gridPos": {
-                        "h": 13,
+                        "h": 16,
                         "w": 24,
                         "x": 0,
                         "y": 27
                     },
-                    "id": 140,
+                    "id": 142,
                     "options": {
                         "cellHeight": "sm",
                         "footer": {
@@ -2233,7 +2332,7 @@
                         "showHeader": true,
                         "sortBy": []
                     },
-                    "pluginVersion": "10.0.3",
+                    "pluginVersion": "10.3.3",
                     "targets": [
                         {
                             "datasource": {
@@ -2242,7 +2341,22 @@
                             },
                             "editorMode": "code",
                             "exemplar": false,
-                            "expr": "group by (nodename,release,ip,ins,cls) (node_uname_info{})",
+                            "expr": "node_up{}",
+                            "format": "table",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "",
+                            "refId": "L"
+                        },
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "group without(ins,cls,instance) (node_uname_info{})",
                             "format": "table",
                             "hide": false,
                             "instant": true,
@@ -2347,7 +2461,7 @@
                             },
                             "editorMode": "code",
                             "exemplar": false,
-                            "expr": "count by (ip) (up{ip!=\"\"})",
+                            "expr": "count by (ip) (up{ip!=''})",
                             "format": "table",
                             "hide": false,
                             "instant": true,
@@ -2399,9 +2513,24 @@
                             "interval": "",
                             "legendFormat": "",
                             "refId": "K"
+                        },
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "min by (ip) (node_timex_sync_status{})",
+                            "format": "table",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "",
+                            "refId": "M"
                         }
                     ],
-                    "title": "Nodes",
+                    "title": "All Nodes",
                     "transformations": [
                         {
                             "id": "seriesToColumns",
@@ -2417,6 +2546,7 @@
                                     "Time 1": true,
                                     "Time 10": true,
                                     "Time 11": true,
+                                    "Time 13": true,
                                     "Time 2": true,
                                     "Time 3": true,
                                     "Time 4": true,
@@ -2428,13 +2558,14 @@
                                     "Value #A": true,
                                     "Value #B": false,
                                     "Value #J": false,
+                                    "Value #L": true,
                                     "__name__": true,
                                     "__name__ 1": true,
                                     "__name__ 2": true,
                                     "__name__ 3": true,
                                     "cls": false,
-                                    "cls 1": false,
-                                    "cls 2": true,
+                                    "cls 1": true,
+                                    "cls 2": false,
                                     "cls 3": true,
                                     "domainname": true,
                                     "instance": false,
@@ -2449,6 +2580,7 @@
                                     "job 3": true,
                                     "machine": true,
                                     "maxmemory_policy": true,
+                                    "nodename": false,
                                     "os": true,
                                     "process_id": true,
                                     "redis_build_id": true,
@@ -2459,34 +2591,46 @@
                                     "version": true
                                 },
                                 "indexByName": {
-                                    "Time 1": 17,
-                                    "Time 10": 26,
-                                    "Time 11": 27,
-                                    "Time 2": 18,
-                                    "Time 3": 19,
-                                    "Time 4": 20,
-                                    "Time 5": 21,
-                                    "Time 6": 22,
-                                    "Time 7": 23,
-                                    "Time 8": 24,
-                                    "Time 9": 25,
-                                    "Value #A": 6,
-                                    "Value #B": 8,
-                                    "Value #C": 10,
-                                    "Value #D": 12,
-                                    "Value #E": 7,
-                                    "Value #F": 9,
-                                    "Value #G": 11,
-                                    "Value #H": 5,
-                                    "Value #I": 13,
+                                    "Time 1": 18,
+                                    "Time 10": 27,
+                                    "Time 11": 28,
+                                    "Time 12": 32,
+                                    "Time 13": 39,
+                                    "Time 2": 19,
+                                    "Time 3": 20,
+                                    "Time 4": 21,
+                                    "Time 5": 22,
+                                    "Time 6": 23,
+                                    "Time 7": 24,
+                                    "Time 8": 25,
+                                    "Time 9": 26,
+                                    "Value #A": 7,
+                                    "Value #B": 9,
+                                    "Value #C": 11,
+                                    "Value #D": 13,
+                                    "Value #E": 8,
+                                    "Value #F": 10,
+                                    "Value #G": 12,
+                                    "Value #H": 6,
+                                    "Value #I": 14,
                                     "Value #J": 15,
                                     "Value #K": 0,
-                                    "cls": 1,
-                                    "ins": 2,
-                                    "instance": 14,
-                                    "ip": 3,
-                                    "nodename": 4,
-                                    "release": 16
+                                    "Value #L": 30,
+                                    "Value #M": 16,
+                                    "__name__": 29,
+                                    "cls": 2,
+                                    "domainname": 34,
+                                    "ins": 3,
+                                    "instance 1": 4,
+                                    "instance 2": 31,
+                                    "ip": 1,
+                                    "job 1": 33,
+                                    "job 2": 35,
+                                    "machine": 36,
+                                    "nodename": 5,
+                                    "release": 17,
+                                    "sysname": 37,
+                                    "version": 38
                                 },
                                 "renameByName": {
                                     "Time 4": "",
@@ -2500,12 +2644,15 @@
                                     "Value #H": "Targets",
                                     "Value #I": "Ping",
                                     "Value #J": "Conn",
-                                    "Value #K": "Up",
+                                    "Value #K": "Alive",
+                                    "Value #M": "TimeX",
                                     "cls": "Cluster",
                                     "cls 1": "Cluster",
+                                    "cls 2": "Cluster",
                                     "ins": "Instance",
+                                    "ins 2": "Instance",
                                     "instance": "HAProxy",
-                                    "instance 1": "Address",
+                                    "instance 1": "HAProxy",
                                     "instance 3": "",
                                     "ip": "IP",
                                     "ip 1": "IP",
@@ -2550,6 +2697,7 @@
                                 "mode": "palette-classic"
                             },
                             "custom": {
+                                "axisBorderShow": false,
                                 "axisCenteredZero": false,
                                 "axisColorMode": "text",
                                 "axisLabel": "",
@@ -2563,6 +2711,7 @@
                                     "tooltip": false,
                                     "viz": false
                                 },
+                                "insertNulls": false,
                                 "lineInterpolation": "linear",
                                 "lineWidth": 1,
                                 "pointSize": 5,
@@ -2613,8 +2762,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#3e668f",
-                                        "value": null
+                                        "color": "#3e668f"
                                     },
                                     {
                                         "color": "green",
@@ -2642,7 +2790,8 @@
                                     }
                                 ]
                             },
-                            "unit": "percentunit"
+                            "unit": "percentunit",
+                            "unitScale": true
                         },
                         "overrides": []
                     },
@@ -2650,7 +2799,7 @@
                         "h": 9,
                         "w": 12,
                         "x": 0,
-                        "y": 28
+                        "y": 44
                     },
                     "id": 110,
                     "options": {
@@ -2700,6 +2849,7 @@
                                 "mode": "palette-classic"
                             },
                             "custom": {
+                                "axisBorderShow": false,
                                 "axisCenteredZero": false,
                                 "axisColorMode": "text",
                                 "axisLabel": "",
@@ -2713,6 +2863,7 @@
                                     "tooltip": false,
                                     "viz": false
                                 },
+                                "insertNulls": false,
                                 "lineInterpolation": "smooth",
                                 "lineWidth": 1,
                                 "pointSize": 5,
@@ -2763,8 +2914,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#3e668f",
-                                        "value": null
+                                        "color": "#3e668f"
                                     },
                                     {
                                         "color": "green",
@@ -2792,7 +2942,8 @@
                                     }
                                 ]
                             },
-                            "unit": "percentunit"
+                            "unit": "percentunit",
+                            "unitScale": true
                         },
                         "overrides": []
                     },
@@ -2800,7 +2951,7 @@
                         "h": 9,
                         "w": 12,
                         "x": 12,
-                        "y": 28
+                        "y": 44
                     },
                     "id": 116,
                     "options": {
@@ -2850,6 +3001,7 @@
                                 "mode": "palette-classic"
                             },
                             "custom": {
+                                "axisBorderShow": false,
                                 "axisCenteredZero": false,
                                 "axisColorMode": "text",
                                 "axisLabel": "",
@@ -2865,6 +3017,7 @@
                                     "tooltip": false,
                                     "viz": false
                                 },
+                                "insertNulls": false,
                                 "lineInterpolation": "linear",
                                 "lineWidth": 1,
                                 "pointSize": 5,
@@ -2914,8 +3067,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#3e668f",
-                                        "value": null
+                                        "color": "#3e668f"
                                     },
                                     {
                                         "color": "green",
@@ -2943,7 +3095,8 @@
                                     }
                                 ]
                             },
-                            "unit": "percentunit"
+                            "unit": "percentunit",
+                            "unitScale": true
                         },
                         "overrides": []
                     },
@@ -2951,7 +3104,7 @@
                         "h": 9,
                         "w": 12,
                         "x": 0,
-                        "y": 37
+                        "y": 53
                     },
                     "id": 133,
                     "options": {
@@ -2994,33 +3147,35 @@
                         "type": "prometheus",
                         "uid": "ds-prometheus"
                     },
+                    "description": "Disk Read/Write Time Total / Disk IOPS in last minute",
                     "fieldConfig": {
                         "defaults": {
                             "color": {
                                 "mode": "palette-classic"
                             },
                             "custom": {
-                                "axisCenteredZero": true,
+                                "axisBorderShow": false,
+                                "axisCenteredZero": false,
                                 "axisColorMode": "text",
                                 "axisLabel": "",
                                 "axisPlacement": "auto",
                                 "barAlignment": 0,
-                                "drawStyle": "line",
-                                "fillOpacity": 0,
+                                "drawStyle": "points",
+                                "fillOpacity": 10,
                                 "gradientMode": "opacity",
                                 "hideFrom": {
-                                    "graph": false,
                                     "legend": false,
                                     "tooltip": false,
                                     "viz": false
                                 },
-                                "lineInterpolation": "smooth",
+                                "insertNulls": false,
+                                "lineInterpolation": "linear",
                                 "lineWidth": 1,
-                                "pointSize": 5,
+                                "pointSize": 2,
                                 "scaleDistribution": {
                                     "type": "linear"
                                 },
-                                "showPoints": "never",
+                                "showPoints": "auto",
                                 "spanNulls": false,
                                 "stacking": {
                                     "group": "A",
@@ -3032,8 +3187,8 @@
                             },
                             "links": [
                                 {
-                                    "title": "Node NTP: ${__field.labels.ins} @ ${__field.labels.ip}",
-                                    "url": "/d/node-instance?var-ip=${__field.labels.ip}&var-id=${__field.labels.ip}&viewPanel=83&${__url_time_range}"
+                                    "title": "Node Disk : ${__field.labels.ins}",
+                                    "url": "/d/node-instance?var-id=${__field.labels.ins}&viewPanel=29&${__url_time_range}"
                                 }
                             ],
                             "mappings": [],
@@ -3041,12 +3196,12 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#346f36cc",
-                                        "value": null
+                                        "color": "#346f36cc"
                                     }
                                 ]
                             },
-                            "unit": "s"
+                            "unit": "s",
+                            "unitScale": true
                         },
                         "overrides": []
                     },
@@ -3054,24 +3209,26 @@
                         "h": 9,
                         "w": 12,
                         "x": 12,
-                        "y": 37
+                        "y": 53
                     },
-                    "id": 121,
+                    "id": 143,
                     "options": {
                         "legend": {
                             "calcs": [
-                                "last"
+                                "mean"
                             ],
                             "displayMode": "table",
                             "placement": "right",
-                            "showLegend": true
+                            "showLegend": true,
+                            "sortBy": "Mean",
+                            "sortDesc": true
                         },
                         "tooltip": {
                             "mode": "single",
                             "sort": "none"
                         }
                     },
-                    "pluginVersion": "8.0.0-beta2",
+                    "pluginVersion": "8.0.0",
                     "targets": [
                         {
                             "datasource": {
@@ -3079,29 +3236,15 @@
                                 "uid": "ds-prometheus"
                             },
                             "editorMode": "code",
-                            "exemplar": false,
-                            "expr": "node_ntp_offset_seconds{job=\"$job\"}",
-                            "hide": false,
+                            "exemplar": true,
+                            "expr": "node:dev:disk_io_rt_1m{}",
                             "interval": "",
-                            "intervalFactor": 2,
-                            "legendFormat": "{{ ins }}",
+                            "legendFormat": "{{ ins }}-{{ device }}",
                             "range": true,
                             "refId": "A"
-                        },
-                        {
-                            "datasource": {
-                                "type": "prometheus",
-                                "uid": "ds-prometheus"
-                            },
-                            "exemplar": false,
-                            "expr": "node_timex_offset_seconds{ip=\"$ip\"}",
-                            "hide": true,
-                            "interval": "",
-                            "legendFormat": "Drift",
-                            "refId": "B"
                         }
                     ],
-                    "title": "NTP Drift",
+                    "title": "Disk I/O RT (1m)",
                     "type": "timeseries"
                 },
                 {
@@ -3116,6 +3259,7 @@
                                 "mode": "palette-classic"
                             },
                             "custom": {
+                                "axisBorderShow": false,
                                 "axisCenteredZero": false,
                                 "axisColorMode": "text",
                                 "axisLabel": "",
@@ -3129,6 +3273,7 @@
                                     "tooltip": false,
                                     "viz": false
                                 },
+                                "insertNulls": false,
                                 "lineInterpolation": "stepBefore",
                                 "lineWidth": 1,
                                 "pointSize": 5,
@@ -3156,12 +3301,12 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#346f36cc",
-                                        "value": null
+                                        "color": "#346f36cc"
                                     }
                                 ]
                             },
-                            "unit": "Bps"
+                            "unit": "Bps",
+                            "unitScale": true
                         },
                         "overrides": []
                     },
@@ -3169,7 +3314,7 @@
                         "h": 9,
                         "w": 12,
                         "x": 0,
-                        "y": 46
+                        "y": 62
                     },
                     "id": 119,
                     "options": {
@@ -3217,6 +3362,7 @@
                                 "mode": "palette-classic"
                             },
                             "custom": {
+                                "axisBorderShow": false,
                                 "axisCenteredZero": false,
                                 "axisColorMode": "text",
                                 "axisLabel": "",
@@ -3230,6 +3376,7 @@
                                     "tooltip": false,
                                     "viz": false
                                 },
+                                "insertNulls": false,
                                 "lineInterpolation": "stepBefore",
                                 "lineWidth": 1,
                                 "pointSize": 5,
@@ -3258,12 +3405,12 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#346f36cc",
-                                        "value": null
+                                        "color": "#346f36cc"
                                     }
                                 ]
                             },
-                            "unit": "Bps"
+                            "unit": "Bps",
+                            "unitScale": true
                         },
                         "overrides": []
                     },
@@ -3271,7 +3418,7 @@
                         "h": 9,
                         "w": 12,
                         "x": 12,
-                        "y": 46
+                        "y": 62
                     },
                     "id": 134,
                     "options": {
@@ -3308,6 +3455,115 @@
                     ],
                     "title": "Network IO Rate1m",
                     "type": "timeseries"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "ds-prometheus"
+                    },
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "thresholds"
+                            },
+                            "links": [
+                                {
+                                    "title": "Node : ${__field.labels.ip} Disks",
+                                    "url": "/d/node-instance?var-ip=${__field.labels.ip}&viewPanel=199&${__url_time_range}"
+                                }
+                            ],
+                            "mappings": [
+                                {
+                                    "options": {
+                                        "match": "null+nan",
+                                        "result": {
+                                            "color": "gray",
+                                            "index": 0,
+                                            "text": "\u2205"
+                                        }
+                                    },
+                                    "type": "special"
+                                }
+                            ],
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "#3e668f"
+                                    },
+                                    {
+                                        "color": "#346f36cc",
+                                        "value": 0.1
+                                    },
+                                    {
+                                        "color": "#fcdb72",
+                                        "value": 0.8
+                                    },
+                                    {
+                                        "color": "#f5a673",
+                                        "value": 0.85
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 0.9
+                                    },
+                                    {
+                                        "color": "#b783af",
+                                        "value": 0.95
+                                    },
+                                    {
+                                        "color": "text",
+                                        "value": 1
+                                    }
+                                ]
+                            },
+                            "unit": "percentunit",
+                            "unitScale": true
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 10,
+                        "w": 12,
+                        "x": 0,
+                        "y": 71
+                    },
+                    "id": 111,
+                    "options": {
+                        "colorMode": "background",
+                        "graphMode": "area",
+                        "justifyMode": "auto",
+                        "orientation": "auto",
+                        "reduceOptions": {
+                            "calcs": [
+                                "lastNotNull"
+                            ],
+                            "fields": "",
+                            "values": false
+                        },
+                        "showPercentChange": false,
+                        "textMode": "auto",
+                        "wideLayout": true
+                    },
+                    "pluginVersion": "10.3.3",
+                    "targets": [
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "ds-prometheus"
+                            },
+                            "editorMode": "code",
+                            "exemplar": false,
+                            "expr": "node:fs:space_usage{job=\"$job\"}",
+                            "instant": true,
+                            "interval": "",
+                            "legendFormat": "{{ ins }}:{{ mountpoint }}",
+                            "refId": "A"
+                        }
+                    ],
+                    "title": "Space Usage",
+                    "type": "stat"
                 },
                 {
                     "datasource": {
@@ -3356,8 +3612,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#3e668f",
-                                        "value": null
+                                        "color": "#3e668f"
                                     },
                                     {
                                         "color": "#346f36cc",
@@ -3381,15 +3636,51 @@
                                     }
                                 ]
                             },
-                            "unit": "s"
+                            "unit": "s",
+                            "unitScale": true
                         },
-                        "overrides": []
+                        "overrides": [
+                            {
+                                "matcher": {
+                                    "id": "byFrameRefID",
+                                    "options": "A"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "links",
+                                        "value": [
+                                            {
+                                                "title": "Node Instsance : ${__field.labels.ip}",
+                                                "url": "/d/node-instance?var-id=${__field.labels.ip}&${__url_time_range}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byFrameRefID",
+                                    "options": "B"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "links",
+                                        "value": [
+                                            {
+                                                "title": "Node VIP : ${__field.labels.vip}",
+                                                "url": "/d/node-vip?var-vip=${__field.labels.vip}&${__url_time_range}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
                     },
                     "gridPos": {
                         "h": 10,
                         "w": 12,
-                        "x": 0,
-                        "y": 55
+                        "x": 12,
+                        "y": 71
                     },
                     "id": 135,
                     "options": {
@@ -3404,9 +3695,11 @@
                             "fields": "",
                             "values": false
                         },
-                        "textMode": "auto"
+                        "showPercentChange": false,
+                        "textMode": "auto",
+                        "wideLayout": true
                     },
-                    "pluginVersion": "10.0.3",
+                    "pluginVersion": "10.3.3",
                     "targets": [
                         {
                             "datasource": {
@@ -3421,101 +3714,7 @@
                             "interval": "",
                             "legendFormat": "{{ ins }} @ {{ ip }}",
                             "refId": "A"
-                        }
-                    ],
-                    "title": "Ping RT",
-                    "type": "stat"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "ds-prometheus"
-                    },
-                    "fieldConfig": {
-                        "defaults": {
-                            "color": {
-                                "mode": "thresholds"
-                            },
-                            "links": [
-                                {
-                                    "title": "Node : ${__field.labels.ip} Disks",
-                                    "url": "/d/node-instance?var-ip=${__field.labels.ip}&viewPanel=199&${__url_time_range}"
-                                }
-                            ],
-                            "mappings": [
-                                {
-                                    "options": {
-                                        "match": "null+nan",
-                                        "result": {
-                                            "color": "gray",
-                                            "index": 0,
-                                            "text": "\u2205"
-                                        }
-                                    },
-                                    "type": "special"
-                                }
-                            ],
-                            "min": 0,
-                            "thresholds": {
-                                "mode": "absolute",
-                                "steps": [
-                                    {
-                                        "color": "#3e668f",
-                                        "value": null
-                                    },
-                                    {
-                                        "color": "#346f36cc",
-                                        "value": 0.1
-                                    },
-                                    {
-                                        "color": "#fcdb72",
-                                        "value": 0.8
-                                    },
-                                    {
-                                        "color": "#f5a673",
-                                        "value": 0.85
-                                    },
-                                    {
-                                        "color": "red",
-                                        "value": 0.9
-                                    },
-                                    {
-                                        "color": "#b783af",
-                                        "value": 0.95
-                                    },
-                                    {
-                                        "color": "text",
-                                        "value": 1
-                                    }
-                                ]
-                            },
-                            "unit": "percentunit"
                         },
-                        "overrides": []
-                    },
-                    "gridPos": {
-                        "h": 10,
-                        "w": 12,
-                        "x": 12,
-                        "y": 55
-                    },
-                    "id": 111,
-                    "options": {
-                        "colorMode": "background",
-                        "graphMode": "area",
-                        "justifyMode": "auto",
-                        "orientation": "auto",
-                        "reduceOptions": {
-                            "calcs": [
-                                "lastNotNull"
-                            ],
-                            "fields": "",
-                            "values": false
-                        },
-                        "textMode": "auto"
-                    },
-                    "pluginVersion": "10.0.3",
-                    "targets": [
                         {
                             "datasource": {
                                 "type": "prometheus",
@@ -3523,14 +3722,15 @@
                             },
                             "editorMode": "code",
                             "exemplar": false,
-                            "expr": "node:fs:space_usage{job=\"$job\"}",
+                            "expr": "avg by (job,vip) (probe_duration_seconds{job=~\".*vip\"})",
+                            "hide": false,
                             "instant": true,
                             "interval": "",
-                            "legendFormat": "{{ ins }}:{{ mountpoint }}",
-                            "refId": "A"
+                            "legendFormat": "{{ job }} @ {{ vip }}",
+                            "refId": "B"
                         }
                     ],
-                    "title": "Space Usage",
+                    "title": "Ping RT",
                     "type": "stat"
                 }
             ],
@@ -3572,8 +3772,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#346f36cc",
-                                        "value": null
+                                        "color": "#346f36cc"
                                     }
                                 ]
                             }
@@ -3694,8 +3893,7 @@
                                             "mode": "absolute",
                                             "steps": [
                                                 {
-                                                    "color": "#3e668f",
-                                                    "value": null
+                                                    "color": "#3e668f"
                                                 },
                                                 {
                                                     "color": "#346f36cc",
@@ -3754,7 +3952,7 @@
                         "h": 10,
                         "w": 8,
                         "x": 0,
-                        "y": 79
+                        "y": 82
                     },
                     "id": 130,
                     "options": {
@@ -3845,8 +4043,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#346f36cc",
-                                        "value": null
+                                        "color": "#346f36cc"
                                     }
                                 ]
                             }
@@ -3981,7 +4178,7 @@
                         "h": 10,
                         "w": 8,
                         "x": 8,
-                        "y": 79
+                        "y": 82
                     },
                     "id": 128,
                     "options": {
@@ -4092,8 +4289,11 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
+                                        "color": "#3e668f"
+                                    },
+                                    {
                                         "color": "#346f36cc",
-                                        "value": null
+                                        "value": 1
                                     }
                                 ]
                             }
@@ -4104,7 +4304,7 @@
                         "h": 10,
                         "w": 8,
                         "x": 16,
-                        "y": 79
+                        "y": 82
                     },
                     "id": 132,
                     "options": {
@@ -4130,7 +4330,7 @@
                             },
                             "editorMode": "code",
                             "exemplar": false,
-                            "expr": "sum by (proxy) (haproxy_backend_current_sessions{proxy!=\"stats\"}) > 0",
+                            "expr": "sum by (proxy) (haproxy_backend_current_sessions{proxy!=\"stats\"})",
                             "instant": true,
                             "legendFormat": "__auto",
                             "range": false,
@@ -4176,8 +4376,7 @@
                                 "mode": "absolute",
                                 "steps": [
                                     {
-                                        "color": "#cc4637d9",
-                                        "value": null
+                                        "color": "#cc4637d9"
                                     },
                                     {
                                         "color": "#346f36cc",
@@ -4192,7 +4391,7 @@
                         "h": 17,
                         "w": 24,
                         "x": 0,
-                        "y": 89
+                        "y": 92
                     },
                     "id": 141,
                     "options": {
@@ -4232,10 +4431,9 @@
             "type": "row"
         }
     ],
-    "refresh": "1m",
+    "refresh": "",
     "revision": 1,
-    "schemaVersion": 38,
-    "style": "light",
+    "schemaVersion": 39,
     "tags": [
         "Pigsty",
         "NODE",

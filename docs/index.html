@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <title>Pigsty Documentation</title>
+  <title>Pigsty Docs</title>
   <link rel="icon" href="_media/favicon.ico"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
   <meta name="keywords"
@@ -13,6 +13,13 @@
   <script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "https://hm.baidu.com/hm.js?3aa65794e93ce7bbcd78e6c2306db59e"; var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm, s);})();</script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LG1V9WTKGE"></script>
   <script>window.dataLayer = window.dataLayer || [];function gtag() {dataLayer.push(arguments);};gtag('js', new Date());gtag('config', 'G-LG1V9WTKGE');</script>
+  <style>
+    body {font-family: Source Sans Pro,Helvetica Neue,Arial,sans-serif;}
+    #main {max-width: 1000px;}
+    li {margin-bottom: 4px;}
+    #main p {line-height: 1.5}
+  </style>
+<!--  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/dark.css" />-->
 </head>
 
 <body>
@@ -36,24 +43,21 @@
     relativePath: true,
     maxLevel: 4,
     subMaxLevel: 2,
-    alias: {
-      '.*?/LICENSE': 'https://raw.githubusercontent.com/Vonng/pigsty/master/LICENSE',
-    },
     search: {
       maxAge: 10000,
       paths: 'auto',
       noData: {
         '/': 'No results!',
-        '/zh-cn/': '没有结果!',
+        '/zh/': '没有结果!',
       },
       placeholder: {
         '/': 'Search',
-        '/zh-cn/': '搜索',
+        '/zh/': '搜索',
       },
       requestHeaders: {
         'cache-control': 'max-age=0',
       },
-      // pathNamespaces: ['/zh-cn']
+      pathNamespaces: ['/zh']
     },
     plugins: [],
   };

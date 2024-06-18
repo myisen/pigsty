@@ -8,39 +8,69 @@
 
     # remove existing repos to /etc/yum.repos.d/backup
     - name: remove and backup existing repo file
+      tags: node_repo_remove
       when: node_repo_remove|bool
       shell: |
-        mkdir -p /etc/yum.repos.d/backup ; mv -f /etc/yum.repos.d/*.repo /etc/yum.repos.d/backup/; true
+        {% if os_package == 'rpm' %}
+        mkdir -p /etc/yum.repos.d/backup;
+        mv -f /etc/yum.repos.d/*.repo /etc/yum.repos.d/backup/
+        {% elif os_package == 'deb' %}
+        mkdir -p /etc/apt/backup;
+        mv -f /etc/apt/sources.list.d/* /etc/apt/backup/ 2> /dev/null || /bin/true
+        mv -f /etc/apt/sources.list     /etc/apt/backup/ 2> /dev/null || /bin/true
+        {% endif %}
+        /bin/true
+      args: { executable: /bin/bash }
 
-    # install local repo from url (default behaviour)
-    - name: add local repo file
-      when: node_repo_method == 'local' or node_repo_method == 'both'
-      get_url:
-        url: "{{ item|replace('${admin_ip}', admin_ip) }}"
-        dest: /etc/yum.repos.d/{{ item | basename }}
-      with_items: "{{ node_repo_local_urls }}"
-
-    # install public repo (use this if you have public internet access)
-    - name: add public upstream repo file
+    - name: add upstream repo file to nodes
+      tags: [ node_repo_upstream, node_repo_add ]
       copy:
-        dest: /etc/yum.repos.d/{{ item.name }}.repo
+        dest: "{{ upstream_dir }}/{{ upstream_file }}"
         content: |
-          [{{ item.name }}]
-          name = {{ item.description }} $releasever - $basearch
-          {% if region in item.baseurl and item.baseurl[region] != '' %}
-          baseurl = {{ item.baseurl[region] | replace('$releasever', os_version|string )  }}
+          #=========# [{{ module_name }}] on {{ os_vendor }}{{ os_version }} : {{ os_codename }} {{ os_package }} repo
+          
+          {% for repo in repo_upstream %}
+          {% if os_version|int in repo.releases and repo.module == module_name %}
+          {% if os_package == 'rpm' %}
+          {% if (os_version|int == 8 or os_version|int == 9) and (repo.name|lower in ['pgdg-common', 'pgdg12', 'pgdg13', 'pgdg14', 'pgdg15', 'pgdg16']) %}{% set target_version = os_version_full|string %}{% else %}{% set target_version = os_version|string %}{% endif %}
+          [{{ repo.name }}]
+          name = {{ repo.description }} $releasever - $basearch
+          {% if region in repo.baseurl and repo.baseurl[region] != '' %}
+          baseurl = {{ repo.baseurl[region] | replace('${admin_ip}', admin_ip) | replace('$releasever', target_version|string)  }}
           {% else %}
-          baseurl = {{ item.baseurl.default | replace('$releasever', os_version|string )  }}
+          baseurl = {{ repo.baseurl.default | replace('${admin_ip}', admin_ip)  | replace('$releasever', target_version|string)  }}
           {% endif %}
           gpgcheck = 0
           enabled = 1
           {% if os_version|int >= 8 %}
           module_hotfixes=1
           {% endif %}
-      when: (node_repo_method == 'public' or node_repo_method == 'both') and os_version|int in item.releases and item.module in repo_modules.split(',')
-      with_items: "{{ repo_upstream }}"
+          {% elif os_package == 'deb' %}
+          {% if region in repo.baseurl and repo.baseurl[region] != '' %}
+          # [module_name] [{{ os_codename }}:{{ os_version }}] {{ repo.name }}: {{ repo.description }}
+          deb [trusted=yes] {{ repo.baseurl[region] | replace('${admin_ip}', admin_ip)  | replace('${distro_codename}', os_codename) | replace('${distro_name}', os_vendor) }} 
+          {% else %}
+          deb [trusted=yes] {{ repo.baseurl.default | replace('${admin_ip}', admin_ip)  | replace('${distro_codename}', os_codename) | replace('${distro_name}', os_vendor)  }}
+          {% endif %}
+          {% endif %}
+          
+          {% endif %}
+          {% endfor %}
+      vars:
+        upstream_dir: "{% if os_package == 'rpm' %}/etc/yum.repos.d{% else %}/etc/apt/sources.list.d{% endif %}"
+        upstream_file: "{% if os_package == 'rpm' %}{{ item }}.repo{% else %}{{ item }}.list{% endif %}"
+        module_name: "{{ item }}"
+      with_items: "{{ node_repo_modules.split(',') }}"
 
-
+    - name: make node local repo cache
+      tags: node_repo_cache
+      shell: |
+        {% if os_package == 'rpm' %}
+        yum makecache;    
+        {% elif os_package == 'deb' %}
+        apt update
+        {% endif %}
+      args: { executable: /bin/bash }
 
 #--------------------------------------------------------------#
 # Install packages                                    [node_pkg]
@@ -49,14 +79,26 @@
   tags: node_pkg
   block:
 
+    - name: supress deb auto start with policy-rc.d
+      copy: src=policy-rc.d dest=/usr/sbin/policy-rc.d mode=0755
+      when: os_package == 'deb'
+
     - name: install default node packages
       environment: "{{ proxy_env | default({}) }}"
-      yum: name={{ item }} disable_gpg_check=true
+      package: name={{ item }}
       with_items: "{{ node_default_packages }}"
 
     - name: install extra node packages
       environment: "{{ proxy_env | default({}) }}"
-      yum: name={{ item }} disable_gpg_check=true
+      package: name={{ item }}
       with_items: "{{ node_packages }}"
 
+    - name: install keepalived if enabled
+      tags: node_vip
+      when: vip_enabled|bool
+      environment: "{{ proxy_env | default({}) }}"
+      package: name={{ item }}
+      with_items:
+        - keepalived
+        - "{% if os_package|default('rpm') == 'deb' %}keepalived-exporter{% else %}keepalived_exporter{% endif %}"
 ...
